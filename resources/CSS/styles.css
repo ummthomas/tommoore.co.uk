@@ -1,0 +1,287 @@
+/* Colour tokens */
+:root {
+  --highEmph: #1E1E1E;
+  --medEmph: #343434;
+  --lowEmph: #626262;
+  --black: #0B0B0B;
+  --white: #FFF;
+  --brandLight: #C5DDE6;
+  --brandDark: #1BA9DF;
+  --bgBlue: #F2F9FC;
+  --bgGrey: #F7F7F7;
+}
+
+/* Typeography styles */
+.title, h1 {
+  font-family: Inter;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 56px; /* 127.273% */
+}
+
+.headlinePrimary, h2 {
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 43.6px; /* 121.111% */
+}
+
+.headlineSecondary, h3 {
+  font-family: Inter;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 36.3px; /* 121% */
+}
+
+.subhead, h4 {
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24.2px; /* 121% */
+}
+
+.overline, h5 {
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 19.4px; /* 121.25% */
+  letter-spacing: 0.16px;
+  text-transform: uppercase;
+}
+
+.body, p {
+  font-family: Inter;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px; /* 157.895% */
+}
+
+.link {
+  font-family: Inter;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 147.368% */
+  text-decoration-line: underline;
+}
+
+.caption {
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+/* Global */
+img {
+  border-radius: 4px;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 0;
+  --bs-heading-color: var(--highEmph);
+}
+
+a {
+	text-decoration: none;
+  color: var(--highEmph);
+  transition: .15s ease-in-out;
+}
+
+a:hover {
+  color: var(--lowEmph) !important;
+}
+
+/* Navigation */
+.navbar {
+  padding: 1rem 0 1rem 0;
+}
+
+.navbar-expand-lg .navbar-collapse {
+  justify-content: flex-end;
+}
+
+.navbar-brand {
+  color: var(--highEmph);
+}
+
+.nav-link {
+  color: var(--lowEmph);
+  width: 80px;
+  text-align: center;
+}
+
+.nav-link.active  {
+  color: var(--highEmph) !important;
+}
+
+/* Hero */
+.hero {
+  padding: 160px 100px;
+}
+
+.hero h5 {
+  color: var(--brandDark);
+  margin-bottom: 16px;
+}
+
+/* Card */
+.card-container {
+  padding: 80px 0;
+}
+
+.bgBlue {
+  background: var(--bgBlue);
+}
+
+.card {
+  border: none;
+  background: none;
+}
+
+.card-body {
+  padding: 0 0 0 64px;
+}
+
+.card-body h5, .card-body h2 {
+  margin-bottom: 16px;
+}
+
+.card-body p {
+  color: var(--lowEmph);
+}
+
+.img-hover {
+  transition: .15s ease-in-out;
+}
+
+.img-hover:hover  {
+  opacity: .9;
+}
+
+/* Footer */
+.footer {
+  margin-top: 80px;
+  background-color: var(--bgGrey);
+  border: solid var(--brandLight);
+  border-width: 4px 0 0 0;
+}
+
+.footer .container {
+  padding: 160px 0 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 160px;
+}
+
+.footer-content h4 {
+  margin-bottom: 20px;
+}
+
+/* Text block */
+.text-block {
+  padding: 100px;
+}
+
+.text-block h5 {
+  color: var(--brandDark);
+  margin-bottom: 16px;
+}
+
+.text-block h1 {
+  margin-bottom: 16px;
+  color: var(--highEmph);
+}
+
+.text-block p {
+  color: var(--highEmph);
+}
+
+.text-block a {
+  color: var(--medEmph);
+}
+
+/* Large image */
+.large-img {
+  margin-bottom: 80px;
+}
+
+.large-img p {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--lowEmph);
+}
+
+/* Paragraph */
+.paragraph {
+  padding: 0px 100px 60px 100px;
+  color: var(--highEmph);
+}
+
+.paragraph h2 {
+  margin-bottom: 20px;
+}
+
+.paragraph p:last-child {
+  margin: 0 0 20px 0;
+}
+
+/* About imgage */
+.about-img {
+  margin-top: 80px;
+}
+
+/* Testimonial */
+.testimonial-container {
+  padding: 0px 100px;
+}
+
+.testimonial-card {
+  padding: 24px;
+  border: solid var(--brandLight);
+  border-width: 4px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.user-container {
+  display: flex;
+  padding: 16px;
+  background: var(--bgGrey);
+  border-radius: 4px;
+  transition: .15s ease-in-out;
+}
+
+.user-container:hover {
+  opacity: .9;
+}
+
+.user-container img {
+  border-radius: 1000px;
+  width: 64px;
+  height: 64px;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 16px;
+}
+
+.user-text h4 {
+  margin-bottom: 4px;
+}
+
+.user-text p {
+  margin-bottom: 0;
+}
