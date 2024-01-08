@@ -214,7 +214,8 @@ a:hover {
 }
 
 .large-img p {
-  margin-top: 20px;
+  margin: 20px 0 0 0;
+  padding: 0 80px;
   text-align: center;
   color: var(--lowEmph);
 }
@@ -285,4 +286,24 @@ a:hover {
 
 .user-text p {
   margin-bottom: 0;
+}
+
+/* Figma embed */
+.figma {
+  margin-bottom: 80px;
+}
+
+.figma iframe {
+  width: 100%;
+  height: 90vh;
+  border: 1px solid var(--lowEmph);
+  border-radius: 4px;
+  margin-bottom:
+}
+
+.figma p {
+  margin: 20px 0 0 0;
+  padding: 0 80px;
+  text-align: center;
+  color: var(--lowEmph);
 }
