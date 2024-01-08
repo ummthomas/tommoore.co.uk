@@ -291,12 +291,13 @@ a:hover {
 /* Figma embed */
 .figma {
   margin-bottom: 80px;
+  width: 100%;
   height: 90vh;
 }
 
 .figma iframe {
   width: 100%;
-  height: 100%;
+  height: 90vh;
   display: flex;
   align-items: center;
   border: 1px solid var(--lowEmph);
