@@ -38,10 +38,10 @@
 
 .subhead, h4 {
   font-family: Inter;
-  font-size: 20px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 600;
-  line-height: 24.2px; /* 121% */
+  line-height: 27px; /* 121% */
 }
 
 .overline, h5 {
@@ -234,7 +234,10 @@ a:hover {
   margin: 0 0 20px 0;
 }
 
-
+.paragraph h4 {
+  margin: 32px 0 12px 0;
+  color: var(--medEmph);
+}
 
 /* About imgage */
 .about-img {
