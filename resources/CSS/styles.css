@@ -208,10 +208,6 @@ a:hover {
   color: var(--highEmph);
 }
 
-.text-block a {
-  color: var(--medEmph);
-}
-
 /* Large image */
 .large-img {
   margin-bottom: 80px;
@@ -246,6 +242,15 @@ a:hover {
 /* About imgage */
 .about-img {
   margin-top: 80px;
+}
+
+/* Button */
+.text-block .about-button {
+  color: var(--white);
+  background: var(--highEmph);
+  padding: 12px 20px;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 /* Testimonial */
