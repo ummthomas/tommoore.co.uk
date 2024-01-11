@@ -212,6 +212,10 @@ a:hover {
   width: 80%;
 }
 
+.snug {
+  padding: 100px 100px 40px 100px;
+}
+
 /* Large image */
 .large-img {
   margin-bottom: 80px;
