@@ -330,3 +330,140 @@ a:hover {
   text-align: center;
   color: var(--lowEmph);
 }
+
+/* Media Querries */
+
+@media (max-width: 768px) {
+  /* Typeography styles */
+  .title, h1 {
+    font-family: Inter;
+    font-size: 37px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 47px; /* 127.273% */
+  }
+
+  .headlinePrimary, h2 {
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 40px; /* 121.111% */
+  }
+
+  .headlineSecondary, h3 {
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 36.3px; /* 121% */
+  }
+
+  .subhead, h4 {
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 27px; /* 121% */
+  }
+
+  .overline, h5 {
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19.4px; /* 121.25% */
+    letter-spacing: 0.16px;
+    text-transform: uppercase;
+  }
+
+  .body, p {
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; /* 157.895% */
+  }
+
+  .link {
+    font-family: Inter;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; /* 147.368% */
+    text-decoration-line: underline;
+  }
+
+  .caption {
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22 px; /* 150% */
+  }
+  /* Navbar */
+  .navbar-toggler {
+    padding: 8px 16px;
+    font-size: var(--bs-navbar-toggler-font-size);
+    line-height: 1;
+    color: var(--highEmph);
+    background-color: transparent;
+    border: 1px solid var(--lowEmph);
+    border-radius: 4px;
+    transition: none;
+  }
+  .nav-link {
+    text-align: left;
+    padding: 16px 12px;
+  }
+  /* Footer */
+  .footer .container {
+    padding: 80px 24px 20px 24px;
+    gap: 80px;
+  }
+  /* Work */
+  .hero {
+    padding: 80px 24px;
+  }
+  .card-container {
+    padding: 60px 0;
+  }
+  .card-body {
+    padding: 20px 0 0 0;
+  }
+  .card-body h5, .card-body h2 {
+    margin-bottom: 12px;
+  }
+  /* Project */
+  .text-block {
+    padding: 80px 24px;
+  }
+  .text-block h5 {
+    margin-bottom: 12px;
+  }
+  .paragraph {
+    padding: 0px 24px 60px 24px;
+  }
+  .paragraph h2 {
+    margin-bottom: 16px;
+  }
+  .figma iframe {
+    height: 70vh;
+  }
+  .figma p {
+    padding: 0 24px;
+  }
+  .large-img p {
+    padding: 0 24px;
+  }
+  .paragraph h4 {
+    margin: 28px 0 12px 0;
+  }
+  /* About */
+  .testimonial-container {
+    padding: 0px 12px 80px 12px;
+  }
+  .shorter {
+    width: 100%;
+  }
+}
