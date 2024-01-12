@@ -463,6 +463,15 @@ a:hover {
   .testimonial-container {
     padding: 0px 12px 80px 12px;
   }
+  .testimonial-card {
+    padding: 24px;
+    border: solid var(--brandLight);
+    border-width: 4px;
+    border-radius: 4px;
+    display: block;
+    height: auto;
+    margin: 0 0 16px 0;
+  }
   .shorter {
     width: 100%;
   }
