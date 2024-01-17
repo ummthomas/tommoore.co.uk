@@ -138,6 +138,11 @@ a:hover {
   color: var(--lowEmph);
   width: 80px;
   text-align: center;
+  transition: .15s ease-in-out;
+}
+
+.nav-link:hover {
+  opacity: .8;
 }
 
 .nav-link.active  {
