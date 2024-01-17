@@ -59,7 +59,7 @@
   font-size: 19px;
   font-style: normal;
   font-weight: 400;
-  line-height: 30px; /* 157.895% */
+  line-height: 31px; /* 157.895% */
 }
 
 .link {
@@ -86,6 +86,7 @@ body {
 
 img {
   border-radius: 4px;
+  background: var(--bgGrey);
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
@@ -221,6 +222,10 @@ a:hover {
   margin-bottom: 80px;
 }
 
+.large-img img {
+  width: 100%;
+}
+
 .large-img p {
   margin: 20px 0 0 0;
   padding: 0 80px;
@@ -230,7 +235,7 @@ a:hover {
 
 /* Paragraph */
 .paragraph {
-  padding: 0px 100px 60px 100px;
+  padding: 0px 100px 80px 100px;
   color: var(--highEmph);
 }
 
@@ -320,8 +325,9 @@ a:hover {
   height: 90vh;
   display: flex;
   align-items: center;
-  border: 1px solid var(--lowEmph);
+  border: 1px solid var(--bgGrey);
   border-radius: 4px;
+  background: var(--bgGrey);
 }
 
 .figma p {
