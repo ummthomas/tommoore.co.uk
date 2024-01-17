@@ -62,7 +62,7 @@
   line-height: 31px; /* 157.895% */
 }
 
-.link {
+.link-large {
   font-family: Inter;
   font-size: 19px;
   font-style: normal;
@@ -71,11 +71,28 @@
   text-decoration-line: underline;
 }
 
-.caption {
+.link-small {
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
+  line-height: 24px; /* 150% */
+  text-decoration-line: underline;
+}
+
+.caption-regular {
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+.caption-bold {
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
   line-height: 24px; /* 150% */
 }
 
@@ -391,7 +408,7 @@ a:hover {
     line-height: 28px; /* 157.895% */
   }
 
-  .link {
+  .link-large {
     font-family: Inter;
     font-size: 19px;
     font-style: normal;
@@ -400,7 +417,7 @@ a:hover {
     text-decoration-line: underline;
   }
 
-  .caption {
+  .caption-regular {
     font-family: Inter;
     font-size: 15px;
     font-style: normal;
