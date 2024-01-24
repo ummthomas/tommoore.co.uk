@@ -183,6 +183,7 @@ a:hover {
 
 .card-body p {
   color: var(--lowEmph);
+  margin: 0 0 0 0;
 }
 
 .img-hover {
