@@ -38,7 +38,7 @@
 
 .subhead, h4 {
   font-family: Inter;
-  font-size: 22px;
+  font-size: 21px;
   font-style: normal;
   font-weight: 600;
   line-height: 27px; /* 121% */
@@ -121,6 +121,10 @@ a:hover {
   color: var(--lowEmph) !important;
 }
 
+mark {
+  background-color: var(--brandLight);
+}
+
 /* Navigation */
 .navbar {
   padding: 1rem 0 1rem 0;
@@ -192,6 +196,12 @@ a:hover {
 
 .img-hover:hover  {
   opacity: .9;
+}
+
+/* Resirc */
+.recirc {
+  padding: 24px;
+  background: var(--bgBlue);
 }
 
 /* Footer */
@@ -396,7 +406,6 @@ a:hover {
 }
 
 /* Media Querries */
-
 @media (max-width: 768px) {
   /* Typeography styles */
   .title, h1 {
