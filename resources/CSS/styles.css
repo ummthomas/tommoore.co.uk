@@ -165,7 +165,7 @@ mark {
   color: var(--lowEmph);
   width: 80px;
   text-align: center;
-  transition: .15s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .nav-link:hover {
@@ -184,6 +184,23 @@ mark {
 .hero h5 {
   color: var(--brandDark);
   margin-bottom: 16px;
+}
+
+/* Cusrsor animation */
+.animation {
+  background: none;
+  width: 225px;
+  animation: animation 2s ease-in-out .3s infinite alternate-reverse both;
+}
+
+@keyframes animation {
+	0% {
+		transform: translateX(-60px);
+	}
+
+	100% {
+		transform: translateX(10px) translateY(10px);
+	}
 }
 
 /* Card */
@@ -214,7 +231,7 @@ mark {
 }
 
 .img-hover {
-  transition: .15s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .img-hover:hover  {
@@ -249,7 +266,7 @@ mark {
 
 .footer a {
   color: var(--highEmph);
-  transition: .15s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .footer a:hover {
@@ -284,7 +301,7 @@ mark {
 
 .text-block a {
   color: var(--highEmph);
-  transition: .15s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .text-block a:hover {
@@ -336,7 +353,7 @@ mark {
 
 .meta a {
   color: var(--lowEmph);
-  transition: .15s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .meta a:hover {
@@ -388,7 +405,7 @@ mark {
   padding: 16px;
   background: var(--bgGrey);
   border-radius: 4px;
-  transition: .15s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .user-container:hover {
