@@ -122,7 +122,7 @@ mark {
 
 /* Button */
 .btn-primary {
-    --bs-btn-color: #fff;
+    color: var(--white) !important;
     --bs-btn-bg: var(--medEmph);
     --bs-btn-border-color: none;
     --bs-btn-hover-color: #fff;
@@ -133,6 +133,10 @@ mark {
     --bs-btn-active-bg: var(--lowEmph);
     --bs-btn-active-border-color: #0a53be;
     --bs-btn-active-shadow: none;
+}
+
+.btn-primary:hover {
+    color: var(--white) !important;
 }
 
 .btn  {
@@ -243,6 +247,14 @@ mark {
   margin-bottom: 20px;
 }
 
+.footer a {
+  color: var(--highEmph);
+  transition: .15s ease-in-out;
+}
+
+.footer a:hover {
+  color: var(--lowEmph) !important;
+}
 /* Text block */
 .text-block {
   padding: 100px;
@@ -270,22 +282,13 @@ mark {
   padding: 100px 100px 40px 100px;
 }
 
-.footer a {
-  color: var(--highEmph);
-  transition: .15s ease-in-out;
-}
-
-.footer a:hover {
-  color: var(--lowEmph) !important;
-}
-
 .text-block a {
   color: var(--highEmph);
   transition: .15s ease-in-out;
 }
 
 .text-block a:hover {
-  color: var(--lowEmph) !important;
+  color: var(--lowEmph);
 }
 
 /* Large image */
@@ -333,6 +336,7 @@ mark {
 
 .meta a {
   color: var(--lowEmph);
+  transition: .15s ease-in-out;
 }
 
 .meta a:hover {
