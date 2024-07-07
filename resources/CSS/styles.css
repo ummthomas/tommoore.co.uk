@@ -190,16 +190,20 @@ mark {
 .animation {
   background: none;
   width: 225px;
-  animation: animation 2s ease-in-out .3s infinite alternate-reverse both;
+  animation: animation 3s ease-in-out 0s infinite alternate-reverse both;
 }
 
 @keyframes animation {
-	0% {
-		transform: translateX(-60px);
+	0%, 20% {
+		transform: translateX(-35px);
 	}
 
-	100% {
-		transform: translateX(10px) translateY(10px);
+  30%, 60% {
+    transform: translateX(30px) translateY(0px);
+  }
+
+	70%, 100% {
+		transform: translateX(-35px) translateY(-30px);
 	}
 }
 
