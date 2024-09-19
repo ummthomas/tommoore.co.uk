@@ -251,10 +251,6 @@ mark {
 }
 
 /* Asset Card */
-.asset-container {
-  padding: 0px 100px 60px 100px;
-}
-
 .asset-card {
   border-radius: 4px;
   padding: 24px;
@@ -662,8 +658,11 @@ mark {
   .paragraph h2 {
     margin-bottom: 16px;
   }
-  .asset-container {
-    padding: 0px 24px 60px 24px;
+  .asset-card {
+    padding: 16px;  
+  }
+  .asset-card .col-md-7 {
+    padding: 16px 0 0 0;
   }
   .figma iframe {
     height: 70vh;
