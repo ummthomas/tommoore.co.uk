@@ -113,6 +113,7 @@ img {
 
 a {
 	text-decoration: none;
+  color: var(--highEmph);
 }
 
 mark {
@@ -239,7 +240,7 @@ mark {
 }
 
 .img-hover:hover  {
-  opacity: .9;
+  opacity: .85;
 }
 
 /* Resirc */
@@ -247,6 +248,34 @@ mark {
   padding: 24px;
   border-radius: 4px;
   background: var(--bgBlue);
+}
+
+/* Asset Card */
+.asset-container {
+  padding: 0px 100px 60px 100px;
+}
+
+.asset-card {
+  border-radius: 4px;
+  padding: 24px;
+  background: var(--bgBlue);
+  margin-left: 0;
+}
+
+.asset-card .col-md-5 {
+  padding: 0;
+}
+
+.asset-card .col-md-7 {
+  padding-left: 32px;
+}
+
+.asset-card .subhead  {
+  margin: 0 0 8px 0 !important;
+}
+
+.asset-card .caption-regular {
+  margin: 0px !important;
 }
 
 /* Footer */
@@ -459,6 +488,17 @@ mark {
   color: var(--lowEmph);
 }
 
+/* Vimeo embed */
+.vimeo {
+  margin-bottom: 80px;
+}
+
+.vimeo iframe {
+  border: 1px solid var(--bgGrey);
+  border-radius: 4px;
+  background: var(--bgGrey);
+}
+
 /* Media Querries */
 @media (max-width: 992px) {
   /* Navbar */
@@ -621,6 +661,9 @@ mark {
   }
   .paragraph h2 {
     margin-bottom: 16px;
+  }
+  .asset-container {
+    padding: 0px 24px 60px 24px;
   }
   .figma iframe {
     height: 70vh;
