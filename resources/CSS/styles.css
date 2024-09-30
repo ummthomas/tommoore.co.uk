@@ -195,17 +195,15 @@ mark {
 }
 
 @keyframes animation {
-	0%, 20% {
-		transform: translateX(-35px);
-	}
-
-  30%, 60% {
-    transform: translateX(30px) translateY(0px);
-  }
-
-	70%, 100% {
-		transform: translateX(-35px) translateY(-30px);
-	}
+  0% {
+  		transform: translatey(0px);
+  	}
+  	50% {
+  		transform: translatey(-20px);
+  	}
+  	100% {
+  		transform: translatey(0px);
+  	}
 }
 
 /* Card */
