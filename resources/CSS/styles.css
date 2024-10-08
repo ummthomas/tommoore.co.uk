@@ -578,15 +578,15 @@ mark {
 
   .headlinePrimary, h2 {
     font-family: Inter;
-    font-size: 30px;
+    font-size: 28px;
     font-style: normal;
     font-weight: 600;
-    line-height: 40px; /* 121.111% */
+    line-height: 36.3px;
   }
 
   .headlineSecondary, h3 {
     font-family: Inter;
-    font-size: 30px;
+    font-size: 28px;
     font-style: normal;
     font-weight: 600;
     line-height: 36.3px; /* 121% */
@@ -682,7 +682,7 @@ mark {
     padding: 20px 0 0 0;
   }
   .card-body h5, .card-body h2 {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   /* Project */
   .meta {
