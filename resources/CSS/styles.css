@@ -11,89 +11,93 @@
   --bgGrey: #FAFAFA;
 }
 
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
 /* Typeography styles */
 .title, h1 {
   font-family: Inter;
-  font-size: 44px;
   font-style: normal;
-  font-weight: 600;
-  line-height: 56px; /* 127.273% */
+  font-size: 60px;
+  line-height: 125%;
+  font-weight: 500;
 }
 
 .headlinePrimary, h2 {
   font-family: Inter;
-  font-size: 36px;
+  font-size: 42px;
   font-style: normal;
-  font-weight: 600;
-  line-height: 43.6px; /* 121.111% */
+  font-weight: 500;
+  line-height: 123%;
 }
 
 .headlineSecondary, h3 {
   font-family: Inter;
   font-size: 30px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 36.3px; /* 121% */
 }
 
 .subhead, h4 {
   font-family: Inter;
-  font-size: 21px;
+  font-size: 24px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 27px; /* 121% */
 }
 
 .overline, h5 {
   font-family: Inter;
-  font-size: 16px;
+  font-size: 20px;
   font-style: normal;
-  font-weight: 600;
-  line-height: 19.4px; /* 121.25% */
-  letter-spacing: 0.16px;
+  font-weight: 500;
+  line-height: 100%;
+  letter-spacing: 0.15px;
   text-transform: uppercase;
 }
 
 .body, p {
   font-family: Inter;
-  font-size: 19px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 400;
-  line-height: 31px; /* 157.895% */
+  line-height: 150%;
 }
 
 .link-large {
   font-family: Inter;
-  font-size: 19px;
   font-style: normal;
-  font-weight: 400;
-  line-height: 28px; /* 147.368% */
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 160%;
   text-decoration-line: underline;
 }
 
 .link-small {
   font-family: Inter;
-  font-size: 16px;
+  font-size: 18px;
   font-style: normal;
-  font-weight: 400;
-  line-height: 24px; /* 150% */
+  font-weight: 500;
+  line-height: 160%;
   text-decoration-line: underline;
 }
 
 .caption-regular {
   font-family: Inter;
-  font-size: 16px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 150%;
 }
 
 .caption-bold {
   font-family: Inter;
-  font-size: 16px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  line-height: 24px; /* 150% */
+  line-height: 150%;
 }
 
 /* Global */
@@ -151,7 +155,7 @@ mark {
 
 /* Navigation */
 .navbar {
-  padding: 1rem 0 1rem 0;
+  padding: 2rem 0 2rem 0;
 }
 
 .navbar-expand-lg .navbar-collapse {
@@ -179,7 +183,7 @@ mark {
 
 /* Hero */
 .hero {
-  padding: 160px 100px;
+  padding: 160px 50px;
 }
 
 .hero h5 {
@@ -190,7 +194,7 @@ mark {
 /* Cusrsor animation */
 .animation {
   background: none;
-  width: 225px;
+  width: 275px;
   animation: animation 3s ease-in-out 0s infinite alternate-reverse both;
 }
 
@@ -301,7 +305,7 @@ mark {
 }
 /* Text block */
 .text-block {
-  padding: 100px;
+  padding: 100px 50px;
 }
 
 .text-block h5 {
@@ -323,7 +327,7 @@ mark {
 }
 
 .snug {
-  padding: 100px 100px 40px 100px;
+  padding: 100px 50px 40px 50px;
 }
 
 .text-block a {
@@ -413,7 +417,7 @@ mark {
 
 /* Testimonial */
 .testimonial-container {
-  padding: 0px 100px 100px 100px;
+  padding: 0px 50px 100px 50px;
 }
 
 .testimonial-card {
@@ -569,87 +573,43 @@ mark {
 @media (max-width: 768px) {
   /* Typeography styles */
   .title, h1 {
-    font-family: Inter;
     font-size: 37px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 47px; /* 127.273% */
   }
 
   .headlinePrimary, h2 {
-    font-family: Inter;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 36.3px;
+    font-size: 30px;
   }
 
   .headlineSecondary, h3 {
-    font-family: Inter;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 36.3px; /* 121% */
+    font-size: 30px;
   }
 
   .subhead, h4 {
-    font-family: Inter;
     font-size: 22px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 27px; /* 121% */
   }
 
   .overline, h5 {
-    font-family: Inter;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 19.4px; /* 121.25% */
-    letter-spacing: 0.16px;
-    text-transform: uppercase;
+    font-size: 16px;
   }
 
   .body, p {
-    font-family: Inter;
     font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 28px; /* 157.895% */
   }
 
   .link-large {
-    font-family: Inter;
     font-size: 19px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 28px; /* 147.368% */
-    text-decoration-line: underline;
   }
 
   .link-small {
-    font-family: Inter;
     font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px; /* 150% */
-    text-decoration-line: underline;
   }
 
   .caption-regular {
-    font-family: Inter;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22 px; /* 150% */
+    font-size: 16px;
   }
 
   .caption-bold {
-    font-family: Inter;
     font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 24px; /* 150% */
   }
   /* Navbar */
   .navbar-toggler {
