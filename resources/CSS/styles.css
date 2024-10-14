@@ -415,53 +415,36 @@ mark {
   margin-top: 80px;
 }
 
-/* Testimonial */
-.testimonial-container {
-  padding: 0px 50px 100px 50px;
+/* Testimonials */
+.testimonials-container {
+  padding: 0px 50px 200px 50px;
 }
 
-.testimonial-card {
+.testimonials-card {
+  background: var(--bgBlue);
   padding: 24px;
-  border: solid var(--brandLight);
-  border-width: 4px;
   border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  height: 100%;
 }
 
-.user-container {
-  display: flex;
-  padding: 16px;
-  background: var(--bgGrey);
-  border-radius: 4px;
-  transition: .1s ease-in-out;
+.testimonials-card .link-small  {
+  color: var(--medEmph);
+  border-left: 4px solid var(--brandDark);
+  padding: 2px 0 2px 16px;
+  margin: 0 0 4px 0;
 }
 
-.user-container:hover {
+.testimonials-card .quote {
+  margin: 0 0 24px 0;
+}
+
+.testimonials-card .role  {
+  color: var(--lowEmph);
+  padding: 0 0 0 20px;
+  margin: 0;
+}
+
+.testimonials-card a:hover {
   opacity: .8;
-}
-
-.user-container img {
-  border-radius: 1000px;
-  width: 64px;
-  height: 64px;
-}
-
-.user-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 16px;
-}
-
-.user-text h4 {
-  margin-bottom: 4px;
-}
-
-.user-text p {
-  margin-bottom: 0;
 }
 
 /* Figma embed */
@@ -689,17 +672,14 @@ mark {
     padding: 16px;
   }
   /* About */
-  .testimonial-container {
-    padding: 0px 12px 80px 12px;
+  .testimonials-container {
+    padding: 0px 24px 160px 24px;
   }
-  .testimonial-card {
-    padding: 24px;
-    border: solid var(--brandLight);
-    border-width: 4px;
-    border-radius: 4px;
-    display: block;
-    height: auto;
-    margin: 0 0 16px 0;
+  .testimonials-card {
+    margin-bottom: 24px;
+  }
+  .snug {
+    padding-bottom: 20px;
   }
   .shorter {
     width: 100%;
