@@ -237,6 +237,19 @@ mark {
   margin: 0 0 0 0;
 }
 
+.card-body-alt {
+  padding: 0 64px 0 0;
+}
+
+.card-body-alt h5, .card-body-alt h2 {
+  margin-bottom: 16px;
+}
+
+.card-body-alt p {
+  color: var(--lowEmph);
+  margin: 0 0 0 0;
+}
+
 .img-hover {
   transition: .1s ease-in-out;
 }
@@ -559,6 +572,13 @@ mark {
   .large-img p {
     padding: 0 24px;
   }
+  /* Index */
+  .wide-img-left {
+    margin-left: 0;
+  }
+  .wide-img-right {
+    margin-right: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -622,17 +642,17 @@ mark {
     padding: 80px 24px 20px 24px;
     gap: 80px;
   }
-  /* Work */
+  /* Index */
   .hero {
     padding: 80px 24px;
   }
   .card-container {
     padding: 60px 0;
   }
-  .card-body {
+  .card-body, .card-body-alt {
     padding: 20px 0 0 0;
   }
-  .card-body h5, .card-body h2 {
+  .card-body h5, .card-body h2, .card-body-alt h5, .card-body-alt h2 {
     margin-bottom: 8px;
   }
   /* Project */
