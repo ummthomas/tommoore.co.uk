@@ -245,6 +245,14 @@ mark {
   opacity: .85;
 }
 
+.wide-img-left {
+  margin-left: -6rem;
+}
+
+.wide-img-right {
+  margin-right: -6rem;
+}
+
 /* Resirc */
 .recirc {
   padding: 24px;
