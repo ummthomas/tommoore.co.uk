@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "pip install jinja2 && python3 build.py"
+  }
+}
