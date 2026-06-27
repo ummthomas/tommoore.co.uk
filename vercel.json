@@ -1,4 +1,9 @@
 {
   "buildCommand": "python3 build.py",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "functions": {
+    "api/*.py": {
+      "runtime": "vercel-python@0.7.4"
+    }
+  }
 }
