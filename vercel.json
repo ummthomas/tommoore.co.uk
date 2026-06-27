@@ -1,0 +1,9 @@
+{
+  "buildCommand": "python3 build.py",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/login", "destination": "/api/login.py" },
+    { "source": "/api/callback", "destination": "/api/callback.py" },
+    { "source": "/api/now-playing", "destination": "/api/now-playing.py" }
+  ]
+}
