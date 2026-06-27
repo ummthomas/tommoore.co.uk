@@ -1,9 +1,4 @@
 {
   "buildCommand": "",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/*.py": {
-      "includeFiles": "api/**"
-    }
-  }
+  "outputDirectory": "dist"
 }
