@@ -1,4 +1,9 @@
 {
   "buildCommand": "",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "functions": {
+    "api/*.py": {
+      "excludeFiles": "{dist,resources}/**"
+    }
+  }
 }
