@@ -1,0 +1,121 @@
+{% extends "_base.html" %}
+{% set title = "Tom Moore - Interactive Installation" %}
+{% set description = "Opening the doors to rave culture through a journey of accessibility and shared experience." %}
+{% set og_url = "https://www.tommoore.co.uk/installation" %}
+{% set og_image = "https://opengraph.b-cdn.net/production/images/f234a23b-311e-4399-96eb-3524e701450b.jpg?token=p5jOuw20EkI17z5LSk2wjtkG9AvwfH3YxT9JT228zyg&height=456&width=810&expires=33264313581" %}
+{% set active_page = "work" %}
+{% set lcp_image = "resources/images/installation/hero.jpg" %}
+
+{% block content %}
+
+    <!-- Text block -->
+    <div class="container text-block">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h5 class="overline">Personal project</h5>
+          <h1 class="title">Transience: an interactive installation</h1>
+          <p class="body">Opening the doors to rave culture through a journey of accessibility and shared experience.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large image -->
+    <div class="container large-img">
+        <img src="resources/images/installation/hero.jpg" class="img-fluid" alt=""></img>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h2 class="headlinePrimary">Objective</h2>
+          <p class="body">
+            Often inaccessible to many and historically demonised by the media, our objective is to offer a glimpse into the vibrant culture of raving and highlight the diverse individuals who contribute to it.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h2 class="headlinePrimary">Introducing Transience</h2>
+          <p class="body">
+            Transience is an interactive art installation featuring an accessible physical interface crafted from conductive ink applied to a bespoke wooden MIDI controller. This tactile interface enables participants to engage with three video channels that showcase individual personas as case studies for the project's themes. Users can also compose their own music through six audio channels, generating soundscapes that blend seamlessly with the projected visuals. Designed to accommodate musicians of all skill levels, including novices, the interface empowers anyone to be the creator of their own live event.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vimeo -->
+    <div class="container">
+      <div class="video-wrapper video-wrapper--default">
+        <iframe src="https://player.vimeo.com/video/347398736?embedparameter=value" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h2 class="headlinePrimary">Creative development</h2>
+          <p class="body">
+            The installation you see today began as a mere exploration of the themes, driven by a shared interest with my creative partner, Aidan Peat, for the culture itself. Ideas quickly took root and evolved through a series of tests, all while remaining focused on our vision of making rave culture more accessible and celebrating its vibrant diversity.
+          </p>
+          <p class="body">
+            As we engaged in this creative journey, we sought to design an immersive experience that authentically invites participants to connect with the culture. Our iterative process involved refining concepts, experimenting with materials and technologies, and gathering feedback from peers and potential users. This collaboration allowed us to craft an installation that reflects the fluidity of rave culture while empowering individuals to become active participants in their own creative journeys. Through Transience, we aim to inspire a deeper appreciation for this dynamic subculture and foster meaningful connections within its diverse community.
+          </p>
+        </div>
+      </div>
+      <!-- Asset Card -->
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <a href="installation-deck.html" target="_blank" class="img-hover">
+            <div class="row asset-card align-items-center">
+              <div class="col-5 col-sm-5">
+                <img src="resources/images/installation/interface-thumbnail.jpg" class="img-fluid" alt="..." loading="lazy">
+              </div>
+              <div class="col-7 col-sm-7">
+                <h4 class="subhead">Dive Deeper</h4>
+                <p class="caption-regular">Discover the complete study and its outcomes in this development deck.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h2 class="headlinePrimary">Outcome</h2>
+          <p class="body">
+            Transience and the associated body of work were part of my undergraduate degree in Interactive Design at the University of Lincoln, where I achieved a <mark>First Class with Honours.</mark>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resirc -->
+    <div class="container">
+      <div class="card">
+        <a href="/rapid-api" class="img-hover recirc">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <img src="resources/images/index/rapid-index.png" class="img-fluid" alt="..." loading="lazy">
+            </div>
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="overline">Rapid API</h5>
+                <h2 class="headlinePrimary">Optimised workflows for API developers increasing conversion by 30%</h2>
+                <p class="caption-regular">7 min read</p>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+{% endblock %}

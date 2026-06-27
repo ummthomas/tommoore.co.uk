@@ -1,0 +1,189 @@
+{% extends "_base.html" %}
+{% set title = "Tom Moore - About" %}
+{% set description = "Tom is a product designer with over 7 years of experience building products and teams." %}
+{% set og_url = "https://www.tommoore.co.uk/about" %}
+{% set og_image = "https://opengraph.b-cdn.net/production/images/5108494b-2a78-41a8-9ad8-e419707799c0.png?token=q5s69VIKu3HfIPmyLluFG0-vN0o-I90GSFFaARGtkmg&height=630&width=1200&expires=33264313679" %}
+{% set active_page = "about" %}
+{% set lcp_image = "resources/images/about/about.jpg" %}
+
+{% block content %}
+
+    <!-- Large image -->
+    <div class="container large-img">
+        <img src="resources/images/about/about.jpg" class="img-fluid about-img" alt="..."></img>
+    </div>
+
+    <!-- Text block -->
+    <div class="container text-block">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="overline">About</h5>
+          <h1 class="title">I'm a thoughtful and collaborative designer with over <span id="years-experience"></span> of industry experience, blending creative expertise with a solid foundation in computer science.</h1>
+          <a class="link-large" href="resources/files/TomMoore_ProductDesignLead_CV.pdf" target="_blank">See my CV →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text block -->
+    <div class="container text-block snug">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="overline">Testimonials</h5>
+          <h1 class="title">Kind words from amazing people</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="container testimonials-container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="testimonials-card">
+            <p class="caption-regular quote">
+              "Tom is an excellent communicator and empathetic collaborator. He establishes open lines of communication, actively seeks input from others, and fosters a supportive environment where everyone feels heard and valued. Tom's sharp communication skills and empathetic nature make him a joy to work with, and he has a knack for bringing out the best in his peers."
+            </p>
+            <a href="https://www.linkedin.com/in/jorgegarciarodriguez/" class="link-small" target="_blank">
+              Jorge García Rodríguez
+            </a>
+            <p class="caption-regular role">
+              Engineering Leader, Bloomberg
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonials-card">
+            <p class="caption-regular quote">
+              "We were heavily understaffed on the product side, Tom stepped up and beyond to fill the gaps in the organisation. Tom's focus went beyond designing great user workflows and solving users' problems. I could always count on Tom to ask the difficult questions, to challenge if our approach was the most efficient way to test out a hypothesis."
+            </p>
+            <a href="https://www.linkedin.com/in/yennycheung/" class="link-small" target="_blank">
+              Yenny Cheung
+            </a>
+            <p class="caption-regular role">
+              VP of Product, Charles
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonials-card">
+            <p class="caption-regular quote">
+              "I count myself lucky to have Tom as my mentor. He is incredibly knowledgeable and patient and most importantly he took the time to equip me with the right tools to help me succeed."
+            </p>
+            <a href="https://www.linkedin.com/in/andriecrossland/" class="link-small" target="_blank">
+              Annie Crossland
+            </a>
+            <p class="caption-regular role">
+              Product Designer, Cirevo
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text block -->
+    <div class="bgBlue">
+      <div class="container text-block">
+        <div class="row">
+          <div class="col-md-12">
+            <h5 class="overline">Personal projects</h5>
+            <h1 class="title">At my foundations I'm a creative.</h1>
+            <p class="body shorter">
+              When not crafting digital products for renowned organisations, institutions, or startups, you'll find me immersed in creative briefs, whether they're set by the community or self-generated.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card-container">
+      <div class="container">
+        <div class="card">
+          <a href="/garments" class="img-hover">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <img src="resources/images/about/garments-about.jpg" class="img-fluid" alt="..." loading="lazy">
+              </div>
+              <div class="col-md-6">
+                <div class="card-body">
+                  <h5 class="overline">Short film</h5>
+                  <h2 class="headlinePrimary">A study into the theme of objects and objectification</h2>
+                  <p class="caption-regular">5 min read</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card-container bgBlue">
+      <div class="container">
+        <div class="card">
+          <a href="/installation" class="img-hover">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <img src="resources/images/about/interface-about.png" class="img-fluid" alt="..." loading="lazy">
+              </div>
+              <div class="col-md-6">
+                <div class="card-body">
+                  <h5 class="overline">Interactive installation</h5>
+                  <h2 class="headlinePrimary">Opening the doors to rave culture through a journey of accessibility and shared experience</h2>
+                  <p class="caption-regular">8 min read</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card-container">
+      <div class="container">
+        <div class="card">
+          <a href="/family-portrait" class="img-hover">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <img src="resources/images/about/familyPortrait-about.jpg" class="img-fluid" alt="..." loading="lazy">
+              </div>
+              <div class="col-md-6">
+                <div class="card-body">
+                  <h5 class="overline">Short film</h5>
+                  <h2 class="headlinePrimary">A visual time capsule of 90s childhood captured in family holidays</h2>
+                  <p class="caption-regular">4 min read</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card-container bgBlue">
+      <div class="container">
+        <div class="card">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <img src="resources/images/about/dissertation-about.jpg" class="img-fluid" alt="..." loading="lazy">
+            </div>
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="overline">writing & Web platform</h5>
+                <h2 class="headlinePrimary">Inequality within algorithms and machine learning</h2>
+                <p class="caption-regular">Coming soon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+      const years = new Date().getFullYear() - 2017;
+      const words = ['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen'];
+      document.getElementById('years-experience').textContent = (words[years - 1] || years) + ' years';
+    </script>
+{% endblock %}

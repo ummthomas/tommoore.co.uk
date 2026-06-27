@@ -1,0 +1,89 @@
+{% extends "_base.html" %}
+{% set title = "Tom Moore - Product Designer" %}
+{% set description = "Tom is a product designer with over 7 years of experience building products and teams." %}
+{% set og_url = "https://www.tommoore.co.uk" %}
+{% set og_image = "https://opengraph.b-cdn.net/production/images/5108494b-2a78-41a8-9ad8-e419707799c0.png?token=OqLSxH9CN0ZXTIBtuAeWDgZeOhmydMdwKo3eJaIcr_4&height=630&width=1200&expires=33264312569" %}
+{% set active_page = "work" %}
+{% set lcp_image = "resources/images/index/cursor.png" %}
+
+{% block content %}
+
+    <!-- Hero -->
+    <div class="container hero">
+      <div class="row">
+        <img class="animation" src="resources/images/index/cursor.png"></img>
+        <h1 class="title">A Product Design Lead from London, who is dedicated to addressing intricate technical challenges through inclusive design.</h1>
+      </div>
+    </div>
+
+    <!-- Card - Rapid API -->
+    <div class="card-container bgBlue">
+      <div class="container">
+        <div class="card">
+          <a href="/rapid-api" class="img-hover">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <div class="wide-img-left">
+                  <img src="resources/images/index/rapid-index.png" class="img-fluid" alt="..." loading="lazy">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card-body">
+                  <h5 class="overline">Rapid API</h5>
+                  <h2 class="headlinePrimary">Optimised workflows for API developers increasing conversion by 30%</h2>
+                  <p class="caption-regular">7 min read</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card - Times Radio -->
+    <div class="card-container">
+      <div class="container">
+        <div class="card">
+          <a href="/times-radio" class="img-hover">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <div class="wide-img-right">
+                  <img src="resources/images/index/timesradio-index.png" class="img-fluid" alt="..." loading="lazy">
+                </div>
+              </div>
+              <div class="col-md-4 order-md-first">
+                <div class="card-body-alt">
+                  <h5 class="overline">Times radio</h5>
+                  <h2 class="headlinePrimary">New audio platform facilitating 4 million weekly listening hours</h2>
+                  <p class="caption-regular">6 min read</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card - My Account -->
+    <div class="card-container bgBlue">
+      <div class="container">
+        <div class="card">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <div class="wide-img-left">
+                  <img src="resources/images/index/myaccount-index.png" class="img-fluid" alt="..." loading="lazy">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card-body">
+                  <h5 class="overline">The Times</h5>
+                  <h2 class="headlinePrimary">Enhanced access to subscriber preferences reducing customer support interactions by 60%</h2>
+                  <p class="caption-regular">Coming soon</p>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
