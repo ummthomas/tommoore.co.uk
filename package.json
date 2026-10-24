@@ -1,5 +1,0 @@
-{
-  "scripts": {
-    "build": "uv pip install jinja2 --system && python3 build.py"
-  }
-}
