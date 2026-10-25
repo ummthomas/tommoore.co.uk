@@ -61,6 +61,7 @@
     </div>
 
     <script src="resources/JS/footer.js"></script>
+    <script src="resources/JS/cursor.js"></script>
     <script>
       (function () {
         const salt = '{{SALT}}', iv = '{{IV}}', iterations = {{ITERATIONS}}, payload = '{{PAYLOAD}}';
@@ -81,6 +82,9 @@
           const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bytes(iv) }, key, bytes(payload));
           // Remember the key (not the password) for this tab, so moving around the site doesn't ask again
           try { sessionStorage.setItem(storeKey, btoa(String.fromCharCode(...raw))); } catch (e) {}
+          // Swapping the page while it is still loading would write the case study in alongside
+          // the lock screen instead of replacing it, so wait for the lock screen to finish first
+          if (document.readyState !== 'complete') await new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
           document.open();
           document.write(new TextDecoder().decode(plain));
           document.close();
