@@ -28,33 +28,28 @@
     <link rel="stylesheet" type="text/css" href="resources/CSS/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   </head>
 
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container container-fluid">
-        <a class="navbar-brand subhead" href="./">Tom Moore</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active caption-regular" aria-current="page" href="./">Work</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link caption-regular" href="about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link caption-regular" target="_blank" href="https://www.linkedin.com/in/tommoore292/">Contact</a>
-            </li>
-          </ul>
-        </div>
+    <header class="site-nav is-case-study">
+      <div class="container">
+        <a class="site-name" href="./">Tom Moore</a>
+        <nav class="site-crumbs" aria-label="Breadcrumb">
+          <a href="./"><span aria-hidden="true">←</span> Work</a>
+          <span class="site-crumbs-sep" aria-hidden="true">/</span>
+          <span aria-current="page">Rapid API</span>
+        </nav>
+        <nav class="site-toc" aria-label="On this page"></nav>
+        <nav class="site-links" aria-label="Main">
+          <a href="./" aria-current="page">Work</a>
+          <a href="about.html">About</a>
+          <a href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">Contact</a>
+        </nav>
       </div>
-    </nav>
+    </header>
 
     <!-- Text block -->
     <div class="container text-block">
@@ -62,15 +57,10 @@
         <div class="col-md-12 col-lg-7">
           <h5 class="overline">Case study</h5>
           <h1 class="title">Rapid’s API Hub</h1>
-          <p class="body">Providing developers a seamless, connected experience to design, test, monitor and publish APIs.</p>
-          <a class="link-large" href="https://rapidapi.com/" target="_blank">Visit Rapid’s API Hub →</a>
+          <p class="body">Standardising and simplifying the API development workflow, so developers can design, test, monitor and publish APIs in one place.</p>
+          <a class="btn btn--secondary" href="https://rapidapi.com/" target="_blank" rel="noopener">Visit Rapid’s API Hub</a>
         </div>
       </div>
-    </div>
-
-    <!-- Large image -->
-    <div class="container large-img">
-        <img src="resources/images/rapid/hero.png" class="img-fluid" alt="two user interfaces"></img>
     </div>
 
     <!-- Meta -->
@@ -83,9 +73,7 @@
             </h6>
             <ul>
               <li class="caption-regular">
-                <a href="https://rapidapi.com/company/" target="_blank" class="link-small">
-                  Rapid
-                </a>
+                <a href="https://rapidapi.com/company/" target="_blank" class="link link--small" rel="noopener"><span class="link-text">Rapid</span></a>
               </li>
               <li class="caption-regular">
                 March 2022 - March 2023
@@ -133,14 +121,10 @@
             </h6>
             <ul>
               <li class="caption-regular">
-                <a href="https://rapidapi.com/blog/enhanced-functionality-and-improved-user-experience-with-the-rapid-api-enterprise-hub-november-2023-release/" target="_blank" class="link-small">
-                  Press release
-                </a>
+                <a href="https://rapidapi.com/blog/enhanced-functionality-and-improved-user-experience-with-the-rapid-api-enterprise-hub-november-2023-release/" target="_blank" class="link link--small" rel="noopener"><span class="link-text">Press release</span></a>
               </li>
               <li class="caption-regular">
-                <a href="https://rapidapi.com/developers/stories/aimad" target="_blank" class="link-small">
-                  Developer stories
-                </a>
+                <a href="https://rapidapi.com/developers/stories/aimad" target="_blank" class="link link--small" rel="noopener"><span class="link-text">Developer stories</span></a>
               </li>
             </ul>
           </div>
@@ -148,13 +132,29 @@
       </div>
     </div>
 
+    <!-- Large image -->
+    <div class="container large-img">
+        <img src="resources/images/rapid/hero.png" class="img-fluid" style="view-transition-name: project-rapid" alt="two user interfaces"></img>
+    </div>
+
+    <!-- Brief -->
+    <section class="container slice">
+      <div class="brief">
+        <h2 class="brief-title" id="brief" data-toc="Brief">The brief</h2>
+        <dl class="brief-grid">
+          <div><dt>Challenge</dt><dd>Designing, testing and monetising APIs meant juggling multiple platforms. Developers faced a clunky development process and a slow time to value.</dd></div>
+          <div><dt>Objective</dt><dd>Standardise and simplify the API development workflow at every stage, so developers and organisations deliver faster and code more efficiently.</dd></div>
+        </dl>
+      </div>
+    </section>
+
     <!-- Paragraph -->
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">The challenge</h2>
+          <h2 class="headlinePrimary" id="my-role" data-toc="My role">My role</h2>
           <p class="body">
-            Designing, testing and monetising APIs can be very difficult. Developers have to use multiple platforms and applications to make sure they get a quality API into the hands of their users. This takes a long time and as a result, slows the development time to deliver great products.
+            I owned the developer tools experience at Rapid, from conception to release. I worked with product and engineering squads across three time zones to make the tools that developers use every day simpler and more effective.
           </p>
         </div>
       </div>
@@ -164,9 +164,16 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">Introducing Rapid’s API Hub</h2>
+          <h2 class="headlinePrimary" id="users" data-toc="Users">Two very different users</h2>
           <p class="body">
-            With Rapid’s API Hub, developers use the same simplified workflow for every step of their API journey, enabling organisations to accelerate API delivery while providing a streamlined and more efficient coding experience.
+            Rapid’s revenue depended on two groups who wanted very different things from the same product.
+          </p>
+          <dl class="home-metrics stat-pair">
+            <div><dt>70%</dt><dd>of revenue-generating users weren’t technical API users</dd></div>
+            <div><dt>5%</dt><dd>of users, seasoned API developers, generated around half of our revenue</dd></div>
+          </dl>
+          <p class="body">
+            Any change had to make APIs approachable for newcomers without slowing down the experts.
           </p>
         </div>
       </div>
@@ -176,28 +183,22 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">My role</h2>
+          <h2 class="headlinePrimary" id="research" data-toc="Research">Understanding the existing product architecture</h2>
           <p class="body">
-            As the owner of Developer Tools Experience at Rapid, I led efforts to enhance the efficiency and effectiveness of our developer tools ecosystem. Overseeing the full lifecycle from conception to implementation, I strategically collaborated with cross-functional teams to create intuitive, high-impact tools that streamlined workflows and boosted developer productivity.
+            API development covers a vast technical landscape with a steep learning curve, especially for people without a computer science background. Rapid’s tools already covered most of the workflow, but the architecture grouped features by what they were rather than what users were trying to do.
+          </p>
+          <p class="body">
+            We ran remote tests with each user group and I turned the findings into empathy maps. They showed that moving between tasks in a journey was the hardest part. That led to our central hypothesis.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Paragraph -->
-    <div class="container paragraph">
-      <div class="row">
-        <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">Understanding the existing product architecture</h2>
-          <p class="body">
-            API development involves navigating a vast technical landscape, requiring precise data placement for seamless functionality. The learning curve can be steep, particularly for those without a formal computer science background. Despite enhancements from Rapid's tools to house most features of the API workflow, the existing design architecture opted to compartmentalise features rather than aligning with specific user goals, addressing only half the problem.
-          </p>
-          <p class="body">
-            To better grasp our users' needs, we ran remote tests with different user groups identified in past studies. I created empathy maps to organise these insights into practical tools. The results revealed a notable challenge in moving between tasks in a user journey, making it tough and counterintuitive, hindering users from reaching their goals. This led to a central hypothesis: users navigating a goal-oriented architecture would complete tasks more efficiently, giving us better visibility to guide them through our conversion funnel and increase annual recurring revenue.
-          </p>
-        </div>
-      </div>
-    </div>
+    <!-- Key insight -->
+    <figure class="container slice insight">
+      <blockquote><p>A goal-oriented architecture would help users finish tasks faster, and give us clearer sight of our conversion funnel.</p></blockquote>
+      <figcaption>Our central hypothesis</figcaption>
+    </figure>
 
     <!-- Figma embed -->
     <div class="container">
@@ -213,14 +214,150 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">
-            Agile iteration of the existing workflow & architecture
-          </h2>
+          <h2 class="headlinePrimary" id="workflow" data-toc="Workflow">Mapping the API workflow</h2>
           <p class="body">
-            By leveraging artefacts such as our empathy maps, I acquired the insights and guidance necessary to effectively communicate the problem to business leaders within the bounds of a lean and agile methodology. This approach empowered me to construct a persuasive case for redesigning the architecture, emphasising a model that promotes conversion through usability, all within a staged and iterative release model.
+            I mapped the whole journey of building an API so that every feature had a clear place in it, from kickoff through launch and beyond.
+          </p>
+          <ol class="workflow-steps">
+            <li><strong>Discover</strong>Understand user needs, use cases and the problems the API should solve.</li>
+            <li><strong>Define</strong>Define endpoints, data models, authentication and key success metrics.</li>
+            <li><strong>Develop</strong>Design, build and test endpoints, iterating through internal and external feedback.</li>
+            <li><strong>Deliver</strong>Finalise documentation, validate usability and prepare for public use.</li>
+            <li><strong>Post launch</strong>Monitor usage, performance and errors, and iterate on real-world feedback.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h2 class="headlinePrimary" id="principles" data-toc="Principles">Core design principles</h2>
+          <p class="body">
+            Four principles guided every decision, and each one shaped a specific part of the product.
+          </p>
+          <dl class="principles">
+            <div><dt>Onboarding and shared understanding</dt><dd>Introduce core concepts and terms early, so users can navigate the product with confidence.</dd></div>
+            <div><dt>Guided progression</dt><dd>Support users from start to finish with clear steps, reducing friction and uncertainty at each stage.</dd></div>
+            <div><dt>Clarity over complexity</dt><dd>Use simple, familiar patterns and plain language to make functionality accessible without technical knowledge.</dd></div>
+            <div><dt>Adaptive experience</dt><dd>Offer depth for experts while keeping the core experience approachable for everyone else.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h3 class="headlineSecondary" id="accessible">Making APIs accessible to everyone</h3>
+          <p class="body">
+            <em>Onboarding and shared understanding.</em> In the Discover stage, curated API discovery reduced the need for prior knowledge, while search-led entry supported people who already knew what they wanted.
           </p>
           <p class="body">
-            Additionally, the artefacts offered clear guidance for prioritising future initiatives. I worked with various product managers throughout the business to provide context for upcoming initiatives aimed at solving our problem. This led to the initiation of a strategy for continuous development. To ensure a smooth progression, we redesigned small issues within existing workflows simultaneously with the planning of larger, overarching challenges. This approach ensured that while Product and Design identified optimal paths, Engineering could still deliver effectively.
+            To meet developers where they work, the hub also had to live inside their IDE. Designing for Visual Studio Code meant balancing powerful features against an already busy interface, while respecting each user’s theme and interaction habits.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large image -->
+    <div class="container large-img">
+        <img src="resources/images/rapid/ide.png" class="img-fluid" alt="Two user interface screens fot the Rapid hubs seach extension for visual studio code"></img>
+        <p class="caption-regular">
+          The Rapid API Hub seamlessly integrating with Visual Studio Code, enabling users to search for and request from APIs without having to leave their developer environment.
+        </p>
+    </div>
+
+    <!-- Large image: placeholder until the export lands -->
+    <div class="container large-img">
+        <div class="img-slot" style="aspect-ratio: 16 / 10" data-file="resources/images/rapid/discover.jpg"><span>Rapid API Hub discovery in VS Code (deck slides 7–8)<br><code>resources/images/rapid/discover.jpg</code></span></div>
+        <p class="caption-regular">
+          Curated and search-led API discovery in the Rapid API Hub.
+        </p>
+    </div>
+
+    <!-- Figma embed -->
+    <div class="container">
+      <div class="figma">
+        <iframe loading="lazy" src="https://embed.figma.com/design/aDj1Kkii42yqkVklEAgaiO/Rapid-API?node-id=2338-23994&embed-host=share" allowfullscreen></iframe>
+        <p class="caption-regular">
+          Supporting design documentation that enabled the above product to be co-created with engineers - for engineers.
+        </p>
+      </div>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h3 class="headlineSecondary" id="guided">Supporting users from discovery to first call</h3>
+          <p class="body">
+            <em>Guided progression.</em> Step-by-step flows reduced uncertainty, and pre-configured requests sped up setup, so users could get from finding an API to making their first call without getting stuck.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large image: placeholder until the export lands -->
+    <div class="container large-img">
+        <div class="img-slot" style="aspect-ratio: 16 / 10" data-file="resources/images/rapid/first-call.jpg"><span>Making a first API request (deck slide 9)<br><code>resources/images/rapid/first-call.jpg</code></span></div>
+        <p class="caption-regular">
+          Pre-configured requests take users from discovery to their first call.
+        </p>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h3 class="headlineSecondary" id="clarity">Reducing complexity through familiar patterns</h3>
+          <p class="body">
+            <em>Clarity over complexity.</em> In the Develop stage, standardised endpoints built familiarity across APIs, and building requests inside the product simplified setup.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large image: placeholder until the export lands -->
+    <div class="container large-img">
+        <div class="img-slot" style="aspect-ratio: 16 / 10" data-file="resources/images/rapid/testing.jpg"><span>API testing in VS Code (deck slide 10)<br><code>resources/images/rapid/testing.jpg</code></span></div>
+        <p class="caption-regular">
+          Building and running API tests in Visual Studio Code.
+        </p>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h3 class="headlineSecondary" id="adaptive">Designed for beginners and experts alike</h3>
+          <p class="body">
+            <em>Adaptive experience.</em> In the Deliver stage, API linting offered simple entry points with advanced control when needed, and a consistent experience across the web, tools and integrations.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large image: placeholder until the export lands -->
+    <div class="container large-img">
+        <div class="img-slot" style="aspect-ratio: 16 / 10" data-file="resources/images/rapid/linting.jpg"><span>API linting on the web and in VS Code (deck slides 11–12)<br><code>resources/images/rapid/linting.jpg</code></span></div>
+        <p class="caption-regular">
+          Linting rules and results, consistent across the web and Visual Studio Code.
+        </p>
+    </div>
+
+    <!-- Paragraph -->
+    <div class="container paragraph">
+      <div class="row">
+        <div class="col-md-12 col-lg-7">
+          <h2 class="headlinePrimary" id="iteration" data-toc="Iteration">Iterating on a live product</h2>
+          <p class="body">
+            The empathy maps gave me what I needed to make the case to business leaders for redesigning the architecture, in staged releases that fitted a lean, agile way of working.
+          </p>
+          <p class="body">
+            They also helped other product managers prioritise their own work. We fixed small issues in existing workflows while planning the bigger changes, so Engineering could keep shipping while Product and Design worked out the best path.
           </p>
         </div>
       </div>
@@ -250,14 +387,12 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">
-            Squad coordination across three geographies
-          </h2>
+          <h2 class="headlinePrimary" id="squads" data-toc="Squads">Squad coordination across three geographies</h2>
           <p class="body">
-            Our team was spread across 3 distinct timezones, San Francisco, Central Europe and Tel Aviv. This presented both challenges and learning experiences. Coordinating meetings and collaborative efforts required meticulous scheduling to accommodate time differences. Embracing various collaboration platforms and establishing well-defined communication protocols became essential in overcoming the geographical barriers.
+            Our team was spread across San Francisco, Central Europe and Tel Aviv. Working well together took careful scheduling, the right collaboration tools and clear communication habits.
           </p>
           <p class="body">
-            Furthermore, engaging with diverse perspectives and work cultures significantly enhanced my grasp of global dynamics, promoting adaptability and nurturing a more inclusive problem-solving approach. Effectively coordinating tasks across different time zones not only fortified my organisational skills but also cultivated resilience and patience in managing the intricacies inherent in global collaboration.
+            Working across so many perspectives and cultures made me more adaptable, and taught me to be deliberate about how and when a distributed team makes decisions.
           </p>
         </div>
       </div>
@@ -275,117 +410,99 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">
-            Cross-platform support for IDE’s
-          </h2>
+          <h2 class="headlinePrimary" id="outcomes" data-toc="Outcomes">Outcomes</h2>
           <p class="body">
-            In order to integrate our product architecture into the workflow of API developers, an update to the structure or navigation of the product would not be sufficient to engage users. It was essential that existing features coexist seamlessly within Integrated Development Environments (IDEs), such as Visual Studio Code, providing seamless feature parity.
+            After a year of iterative design, conversion rose <mark>30% across every point in the workflow,</mark> from onboarding to monetisation, and across both core user segments.
           </p>
           <p class="body">
-            Designing for IDEs like Visual Studio Code presents a unique set of challenges. While these tools offer features to allow users to write code faster, the complexity of their interfaces can be overwhelming. Striking a balance between delivering robust functionality and maintaining a user-friendly experience required careful consideration, particularly when regarding user theming and interaction behaviours.
+            Our IDE extensions had the highest daily active users of any of our platforms, reaching <mark>100k users in their first week.</mark> In the Visual Studio Code marketplace, Rapid’s extension became <mark>the most popular that month.</mark>
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Large image -->
-    <div class="container large-img">
-        <img src="resources/images/rapid/ide.png" class="img-fluid" alt="Two user interface screens fot the Rapid hubs seach extension for visual studio code"></img>
-        <p class="caption-regular">
-          The Rapid API Hub seamlessly integrating with Visual Studio Code, enabling users to search for and request from APIs without having to leave their developer environment.
-        </p>
-    </div>
-
-    <!-- Figma embed -->
-    <div class="container">
-      <div class="figma">
-        <iframe loading="lazy" src="https://embed.figma.com/design/aDj1Kkii42yqkVklEAgaiO/Rapid-API?node-id=2338-23994&embed-host=share" allowfullscreen></iframe>
-        <p class="caption-regular">
-          Supporting design documentation that enabled the above product to be co-created with engineers - for engineers.
-        </p>
-      </div>
-    </div>
+    <!-- Results -->
+    <section class="container slice">
+      <dl class="results">
+          <div><dt>30%</dt><dd>increase in conversion across the whole workflow</dd></div>
+          <div><dt>100k</dt><dd>IDE extension users in the first week</dd></div>
+          <div><dt>#1</dt><dd>most popular VS Code extension that month</dd></div>
+      </dl>
+    </section>
 
     <!-- Paragraph -->
-    <div class="container paragraph">
+    <div class="container paragraph paragraph--tight">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">
-            Outcomes
-          </h2>
-          <p class="body">
-            After a year of iterative design, rapid experienced a <mark>30% increase in conversion rates across all user segments.</mark>
-          </p>
-          <p class="body">
-            Upon release, Rapid’s IDE extensions witnessed the highest daily active user rate among platforms, accumulating <mark>100k users in the first week.</mark> In the Visual Studio Code marketplace, Rapid's extension swiftly became the <mark>most popular that month.</mark>
-          </p>
+          <h2 class="headlinePrimary" id="learnings" data-toc="Learnings">Learnings</h2>
         </div>
       </div>
     </div>
 
-    <!-- Paragraph -->
-    <div class="container paragraph">
-      <div class="row">
-        <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">
-            Learnings
-          </h2>
-          <h4 class="subhead">
-            Be lean
-          </h4>
-          <p class="body">
-            Transitioning to Rapid, I encountered resourcing constraints that necessitated a more streamlined discovery period. This forced me to craft hypotheses aimed at delivering the most significant impact for the business — every decision had to be strategic. Developing a lean, macro perspective on our product was pivotal not only for justifying my design decisions but also for championing design thinking throughout the organisation.
-          </p>
-          <h4 class="subhead">
-            Prioritise impact
-          </h4>
-          <p class="body">
-            I've come to realise that attempting to grasp every technical detail simultaneously can be overwhelming and time consuming, leading me to prioritise and concentrate on areas where I can truly add value. This strategic focus has proven to be an effective approach, ensuring that my efforts are directed towards impactful contributions. Navigating the challenges of a global team has taught me the importance of recognising my limitations, strategically prioritising tasks, and acknowledging the strengths and expertise of team members.
-          </p>
-          <h4 class="subhead">
-            Balance is tough but worth it
-          </h4>
-          <p class="body">
-            At Rapid, Urgency and Rigour stand as core values. Balancing the urgency of meeting deadlines with a dedicated commitment to a thorough design process has proven to be a challenging yet crucial lesson. The ability to expedite decision-making without compromising quality is a skill refined through experience and a discerning sense of prioritisation. Recognising the subtle nuances between when to move swiftly and when to take deliberate, thoughtful steps has been integral to continuously delivering value as a design team while supporting the needs of wider business. These experiences emphasise the importance of optimising for efficiencies  while championing a comprehensive, user-focused design process, ultimately resulting in timely and impactful outcomes.
-          </p>
-        </div>
+    <!-- Learnings -->
+    <section class="container slice">
+      <div class="learning-grid">
+        <div class="learning"><h3>Be lean, and prioritise impact</h3><p>Limited resources meant a short discovery period, so I focused on hypotheses with the biggest impact for the business. Accepting that I couldn’t master every technical detail at once helped me focus where design could add the most value.</p></div>
+        <div class="learning"><h3>Balance urgency with rigour</h3><p>Urgency and rigour were both core values at Rapid. Knowing when to move fast and when to slow down was what let us keep delivering value without cutting corners.</p></div>
       </div>
-    </div>
+    </section>
 
-    <!-- Recirc -->
-    <div class="container">
-      <div class="card">
-        <a href="times-radio" class="img-hover recirc">
-          <div class="row align-items-center">
-            <div class="col-md-6">
-              <img src="resources/images/index/timesradio-index.png" class="img-fluid" alt="...">
+    <!-- Learnings -->
+    <section class="container slice">
+      <h3 class="learning-group">What I’d do differently</h3>
+      <div class="learning-grid">
+        <div class="learning"><h3>Get closer to a complex domain sooner</h3><p>More dogfooding and more time with technical peers would have shortened my ramp-up.</p></div>
+        <div class="learning"><h3>Share design patterns across the team</h3><p>Docs, dashboard and SDK examples each grew their own conventions. A shared pattern library would have made the product feel coherent sooner.</p></div>
+        <div class="learning"><h3>Align business units across regions</h3><p>Regional teams served customers with different levels of API maturity. Closer collaboration would have caught more edge cases earlier.</p></div>
+        <div class="learning"><h3>Tighten feedback loops with developers</h3><p>Usability issues often reached us through support tickets. More frequent sessions with real customers would have caught friction sooner.</p></div>
+      </div>
+    </section>
+
+    <!-- Next project -->
+    <section class="container recirc-next" aria-labelledby="recirc-title">
+      <h2 class="home-section-title recirc-title" id="recirc-title">Next case study</h2>
+      <div class="home-cards">
+        <a class="home-card" href="times-radio.html" data-cursor="View case study">
+          <div class="home-card-head">
+            <div class="home-card-title">
+              <p class="home-caption"><span class="home-name">Times Radio</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">UX lead, 2019–20</span></p>
+              <h3>A new audio platform for live and on-demand radio</h3>
             </div>
-            <div class="col-md-6">
-              <div class="card-body">
-                <h5 class="overline">Times radio</h5>
-                <h2 class="headlinePrimary">New audio platform facilitating 4 million weekly listening hours</h2>
-                <p class="caption-regular">6 min read</p>
-              </div>
+            <div class="home-card-summary">
+              <p class="home-desc">Led UX for a new national radio station, from testing early concepts to launch.</p>
             </div>
           </div>
+          <div class="home-card-stats">
+            <dl class="home-metrics"><div><dt>600k</dt><dd>weekly listeners</dd></div><div><dt>3.96m</dt><dd>weekly listening hours</dd></div></dl>
+            <span class="btn btn--secondary home-card-cta">View case study</span>
+          </div>
+          <div class="home-card-media home-drift" style="view-transition-name: project-timesradio"><img src="resources/images/index/timesradio-index.png" alt="Times Radio app and website showing the breakfast show"></div>
         </a>
       </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <div class="footer">
+      <div class="home-marquee home-marquee-footer" aria-hidden="true" data-direction="-1">
+        <svg class="home-marquee-svg">
+          <path class="home-marquee-line" fill="none" />
+        </svg>
+      </div>
       <div class="container">
         <div class="footer-content">
           <h4 class="title">Let's connect!</h4>
-          <p class="body"><a class="link-large" href="https://www.linkedin.com/in/tommoore292/" target="_blank">Connect on LinkedIn</a> and let’s discuss how I can help you.</p>
+          <p class="body"><a class="link link--large" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener"><span class="link-text">Connect on LinkedIn</span></a> and let’s discuss how I can help you.</p>
         </div>
-        <p class="caption-regular">Copyright © 2024 Tom Moore</p>
+        <p class="caption-regular">Copyright © 2026 Tom Moore</p>
       </div>
     </div>
 
 
 
+    <script src="resources/JS/case-study.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="resources/JS/footer.js"></script>
+    <script src="resources/JS/cursor.js"></script>
   </body>
 
 </html>

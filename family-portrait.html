@@ -28,33 +28,28 @@
     <link rel="stylesheet" type="text/css" href="resources/CSS/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   </head>
 
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container container-fluid">
-        <a class="navbar-brand subhead" href="./">Tom Moore</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link caption-regular" aria-current="page" href="./">Work</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link caption-regular" href="about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link caption-regular" target="_blank" href="https://www.linkedin.com/in/tommoore292/">Contact</a>
-            </li>
-          </ul>
-        </div>
+    <header class="site-nav is-case-study">
+      <div class="container">
+        <a class="site-name" href="./">Tom Moore</a>
+        <nav class="site-crumbs" aria-label="Breadcrumb">
+          <a href="./"><span aria-hidden="true">←</span> Work</a>
+          <span class="site-crumbs-sep" aria-hidden="true">/</span>
+          <span aria-current="page">Family Portrait</span>
+        </nav>
+        <nav class="site-toc" aria-label="On this page"></nav>
+        <nav class="site-links" aria-label="Main">
+          <a href="./" aria-current="page">Work</a>
+          <a href="about.html">About</a>
+          <a href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">Contact</a>
+        </nav>
       </div>
-    </nav>
+    </header>
 
     <!-- Text block -->
     <div class="container text-block">
@@ -69,32 +64,38 @@
 
     <!-- Large image -->
     <div class="container large-img">
-        <img src="resources/images/familyportrait/hero.jpg" class="img-fluid" alt=""></img>
+        <img src="resources/images/familyportrait/hero.jpg" class="img-fluid" style="view-transition-name: project-family" alt=""></img>
     </div>
 
-    <!-- Paragraph -->
-    <div class="container paragraph">
-      <div class="row">
-        <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">Objective</h2>
-          <p class="body">
-            To consolidated a collection of digitised family holiday tapes from my childhood into a cohesive short film, designed for easy and enjoyable viewing.
-          </p>
-        </div>
+    <!-- Brief -->
+    <section class="container slice">
+      <div class="brief">
+        <h2 class="brief-title" id="brief" data-toc="Brief">The brief</h2>
+        <dl class="brief-grid">
+          <div><dt>Objective</dt><dd>Consolidate a collection of digitised family holiday tapes from my childhood into a cohesive short film, designed for easy and enjoyable viewing.</dd></div>
+          <div><dt>Format</dt><dd>Short film</dd></div>
+          <div><dt>Context</dt><dd>Personal project, made from digitised family holiday tapes</dd></div>
+        </dl>
       </div>
-    </div>
+    </section>
 
     <!-- Paragraph -->
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">Introducing Family Portrait</h2>
+          <h2 class="headlinePrimary" id="introduction" data-toc="Introduction">Introducing Family Portrait</h2>
           <p class="body">
               Combining nostalgic, unedited visuals with a narrative that encapsulates my family’s experiences during our 90s holidays, Family Portrait acts as a time capsule, allowing us to reflect on a previous chapter in our lives.
           </p>
         </div>
       </div>
     </div>
+
+    <!-- Key insight -->
+    <figure class="container slice insight">
+      <blockquote><p>Each frame is a portal to moments long past.</p></blockquote>
+      <figcaption>The idea</figcaption>
+    </figure>
 
     <!-- Vimeo -->
     <div class="container">
@@ -107,7 +108,7 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">
+          <h2 class="headlinePrimary" id="outcome" data-toc="Outcome">
             Outcome
           </h2>
           <p class="body">
@@ -120,40 +121,51 @@
       </div>
     </div>
 
-    <!-- Resirc -->
-    <div class="container">
-      <div class="card">
-        <a href="rapid-api" class="img-hover recirc">
-          <div class="row align-items-center">
-            <div class="col-md-6">
-              <img src="resources/images/index/rapid-index.png" class="img-fluid" alt="...">
+    <!-- Next project -->
+    <section class="container recirc-next" aria-labelledby="recirc-title">
+      <h2 class="home-section-title recirc-title" id="recirc-title">Next project</h2>
+      <div class="home-cards">
+        <a class="home-card" href="garments.html" data-cursor="View project">
+          <div class="home-card-head">
+            <div class="home-card-title">
+              <p class="home-caption"><span class="home-name">Garments</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Short film</span></p>
+              <h3>A study into the theme of objects and objectification</h3>
             </div>
-            <div class="col-md-6">
-              <div class="card-body">
-                <h5 class="overline">Rapid API</h5>
-                <h2 class="headlinePrimary">Optimised workflows for API developers increasing conversion by 30%</h2>
-                <p class="caption-regular">7 min read</p>
-              </div>
+            <div class="home-card-summary">
+              <p class="home-desc">A body of work representing three words: object, objection and objectification.</p>
             </div>
           </div>
+          <div class="home-card-stats">
+            <p class="home-card-read">5 min read</p>
+            <span class="btn btn--secondary home-card-cta">View project</span>
+          </div>
+          <div class="home-card-media home-drift" style="view-transition-name: project-garments"><img src="resources/images/about/garments-about.jpg" alt="Still from the short film Garments"></div>
         </a>
       </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <div class="footer">
+      <div class="home-marquee home-marquee-footer" aria-hidden="true" data-direction="-1">
+        <svg class="home-marquee-svg">
+          <path class="home-marquee-line" fill="none" />
+        </svg>
+      </div>
       <div class="container">
         <div class="footer-content">
           <h4 class="title">Let's connect!</h4>
-          <p class="body"><a class="link-large" href="https://www.linkedin.com/in/tommoore292/" target="_blank">Connect on LinkedIn</a> and let’s discuss how I can help you.</p>
+          <p class="body"><a class="link link--large" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener"><span class="link-text">Connect on LinkedIn</span></a> and let’s discuss how I can help you.</p>
         </div>
-        <p class="caption-regular">Copyright © 2024 Tom Moore</p>
+        <p class="caption-regular">Copyright © 2026 Tom Moore</p>
       </div>
     </div>
 
 
 
+    <script src="resources/JS/case-study.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="resources/JS/footer.js"></script>
+    <script src="resources/JS/cursor.js"></script>
   </body>
 
 </html>
