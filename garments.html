@@ -28,33 +28,28 @@
     <link rel="stylesheet" type="text/css" href="resources/CSS/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   </head>
 
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container container-fluid">
-        <a class="navbar-brand subhead" href="./">Tom Moore</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link caption-regular" aria-current="page" href="./">Work</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link caption-regular" href="about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link caption-regular" target="_blank" href="https://www.linkedin.com/in/tommoore292/">Contact</a>
-            </li>
-          </ul>
-        </div>
+    <header class="site-nav is-case-study">
+      <div class="container">
+        <a class="site-name" href="./">Tom Moore</a>
+        <nav class="site-crumbs" aria-label="Breadcrumb">
+          <a href="./"><span aria-hidden="true">←</span> Work</a>
+          <span class="site-crumbs-sep" aria-hidden="true">/</span>
+          <span aria-current="page">Garments</span>
+        </nav>
+        <nav class="site-toc" aria-label="On this page"></nav>
+        <nav class="site-links" aria-label="Main">
+          <a href="./" aria-current="page">Work</a>
+          <a href="about.html">About</a>
+          <a href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">Contact</a>
+        </nav>
       </div>
-    </nav>
+    </header>
 
     <!-- Text block -->
     <div class="container text-block">
@@ -69,32 +64,38 @@
 
     <!-- Large image -->
     <div class="container large-img">
-        <img src="resources/images/garments/hero.jpg" class="img-fluid" alt=""></img>
+        <img src="resources/images/garments/hero.jpg" class="img-fluid" style="view-transition-name: project-garments" alt=""></img>
     </div>
 
-    <!-- Paragraph -->
-    <div class="container paragraph">
-      <div class="row">
-        <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">Objective</h2>
-          <p class="body">
-            To create a body of work that is consequentially representative of the words: object, objection, and objectification.
-          </p>
-        </div>
+    <!-- Brief -->
+    <section class="container slice">
+      <div class="brief">
+        <h2 class="brief-title" id="brief" data-toc="Brief">The brief</h2>
+        <dl class="brief-grid">
+          <div><dt>Objective</dt><dd>Create a body of work that is consequentially representative of the words: object, objection, and objectification.</dd></div>
+          <div><dt>Format</dt><dd>Short film</dd></div>
+          <div><dt>Context</dt><dd>Final year project, BA Interactive Design, University of Lincoln</dd></div>
+        </dl>
       </div>
-    </div>
+    </section>
 
     <!-- Paragraph -->
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">Introducing Garments</h2>
+          <h2 class="headlinePrimary" id="introduction" data-toc="Introduction">Introducing Garments</h2>
           <p class="body">
             Garments is the result of an in-depth exploration into the theme of objectification, focusing on the physical objects we use to clothe ourselves. The film follows an individual through the ritual of getting dressed, capturing the thoughts and associations that may arise during this intimate process.
           </p>
         </div>
       </div>
     </div>
+
+    <!-- Key insight -->
+    <figure class="container slice insight">
+      <blockquote><p>The film follows one person through the ritual of getting dressed, and the thoughts that surface in that intimate moment.</p></blockquote>
+      <figcaption>The idea</figcaption>
+    </figure>
 
     <!-- Vimeo -->
     <div class="container">
@@ -107,7 +108,7 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">Creative development</h2>
+          <h2 class="headlinePrimary" id="development" data-toc="Development">Creative development</h2>
           <p class="body">
             The film you see today originated as an editorial piece exploring the relationships between various individuals and their emotional connections to specific items of clothing. Insights from four interviews ultimately shaped the short film’s narrative, emphasising the anxieties, practicalities, and personal expressions tied to a garment.
           </p>
@@ -139,7 +140,7 @@
     <div class="container paragraph">
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary">
+          <h2 class="headlinePrimary" id="outcome" data-toc="Outcome">
             Outcome
           </h2>
           <p class="body">
@@ -149,40 +150,57 @@
       </div>
     </div>
 
-    <!-- Resirc -->
-    <div class="container">
-      <div class="card">
-        <a href="rapid-api" class="img-hover recirc">
-          <div class="row align-items-center">
-            <div class="col-md-6">
-              <img src="resources/images/index/rapid-index.png" class="img-fluid" alt="...">
+    <!-- Results -->
+    <section class="container slice">
+      <dl class="results">
+          <div><dt>1st</dt><dd>Class Honours, BA Interactive Design</dd></div>
+      </dl>
+    </section>
+
+    <!-- Next project -->
+    <section class="container recirc-next" aria-labelledby="recirc-title">
+      <h2 class="home-section-title recirc-title" id="recirc-title">Next project</h2>
+      <div class="home-cards">
+        <a class="home-card" href="installation.html">
+          <div class="home-card-head">
+            <div class="home-card-title">
+              <p class="home-caption"><span class="home-name">Transience</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Interactive installation</span></p>
+              <h3>Opening the doors to rave culture through a journey of accessibility and shared experience</h3>
             </div>
-            <div class="col-md-6">
-              <div class="card-body">
-                <h5 class="overline">Rapid API</h5>
-                <h2 class="headlinePrimary">Optimised workflows for API developers increasing conversion by 30%</h2>
-                <p class="caption-regular">7 min read</p>
-              </div>
+            <div class="home-card-summary">
+              <p class="home-desc">A glimpse into the vibrant culture of raving and the diverse people behind it, for a scene that is often inaccessible and demonised by the media.</p>
             </div>
           </div>
+          <div class="home-card-stats">
+            <p class="home-card-read">8 min read</p>
+            <span class="btn btn--secondary home-card-cta">View project</span>
+          </div>
+          <div class="home-card-media home-drift" style="view-transition-name: project-installation"><img src="resources/images/about/interface-about.png" alt="Control interface from the interactive installation"></div>
         </a>
       </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <div class="footer">
+      <div class="home-marquee home-marquee-footer" aria-hidden="true" data-direction="-1">
+        <svg class="home-marquee-svg">
+          <path class="home-marquee-line" fill="none" />
+        </svg>
+      </div>
       <div class="container">
         <div class="footer-content">
           <h4 class="title">Let's connect!</h4>
-          <p class="body"><a class="link-large" href="https://www.linkedin.com/in/tommoore292/" target="_blank">Connect on LinkedIn</a> and let’s discuss how I can help you.</p>
+          <p class="body"><a class="link link--large" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener"><span class="link-text">Connect on LinkedIn</span></a> and let’s discuss how I can help you.</p>
         </div>
-        <p class="caption-regular">Copyright © 2024 Tom Moore</p>
+        <p class="caption-regular">Copyright © 2026 Tom Moore</p>
       </div>
     </div>
 
 
 
+    <script src="resources/JS/case-study.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="resources/JS/footer.js"></script>
   </body>
 
 </html>

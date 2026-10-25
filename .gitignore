@@ -3,3 +3,6 @@
 .vercel/
 .claude/
 dist/
+
+# Readable sources for password-protected pages (only the encrypted build is published)
+private/
