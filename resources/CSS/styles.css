@@ -135,7 +135,7 @@ a {
 }
 
 mark {
-  background-color: var(--brandLight);
+  background-color: var(--bgBlue);
   color: var(--black);
 }
 
@@ -2557,64 +2557,51 @@ a.home-card:hover .home-card-video {
   color: #B3261E;
 }
 
-/* Case study content blocks: stat pair, numbered workflow, principles, reflection list */
+/* Case study content blocks: stat pair, principles, reflection list */
 .stat-pair {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px 40px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
   margin: 32px 0;
 }
 
-.stat-pair dt {
-  margin-bottom: 6px;
-  font-family: Inter;
-  font-size: clamp(36px, 3.4vw, 48px);
-  font-weight: 500;
-  line-height: 1;
-  color: var(--highEmph);
+/* Each persona in its own card, label first like the brief */
+.stat {
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: var(--radius);
+  background: var(--bgBlue);
 }
 
-.stat-pair dd {
-  max-width: 26ch;
+.stat p {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--lowEmph);
 }
 
-.workflow-steps {
-  counter-reset: step;
-  list-style: none;
-  margin: 32px 0 0;
-  padding: 0;
-  border-top: 1px solid rgba(30, 30, 30, .12);
-}
-
-.workflow-steps li {
-  counter-increment: step;
-  display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
-  column-gap: 8px;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(30, 30, 30, .12);
-  font-size: 17px;
-  line-height: 1.55;
-  color: var(--lowEmph);
-}
-
-.workflow-steps li::before {
-  content: counter(step);
-  grid-row: span 2;
+.stat-persona {
+  margin-bottom: 14px !important;
   font-family: Inter;
   font-size: 15px;
+  font-weight: 500;
   color: var(--brandDark);
 }
 
-.workflow-steps strong {
-  display: block;
+.stat-value {
+  margin-bottom: 8px !important;
+  font-family: Inter;
+  font-size: clamp(40px, 4vw, 56px);
   font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: var(--highEmph);
 }
+
+.stat-label {
+  max-width: 24ch;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  color: var(--lowEmph);
+}
+
+
 
 .principles {
   display: grid;
@@ -2713,10 +2700,11 @@ a.home-card:hover .home-card-video {
 
 .brief-grid dd {
   margin: 0;
-  font-family: "Libre Baskerville", Georgia, serif;
-  font-size: clamp(19px, 1.7vw, 23px);
-  line-height: 1.5;
-  letter-spacing: -0.01em;
+  font-family: Inter;
+  font-size: clamp(18px, 1.5vw, 21px);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
   color: var(--highEmph);
 }
 
@@ -2738,7 +2726,7 @@ a.home-card:hover .home-card-video {
 }
 
 .insight figcaption {
-  margin-top: 16px;
+  margin-bottom: 14px;
   padding-left: clamp(23px, 3vw, 35px);
   font-family: Inter;
   font-size: 15px;
@@ -2935,4 +2923,21 @@ a.home-card:hover .home-card-video {
     animation: none;
     transform: translateY(-12%);
   }
+}
+
+/* Document tours: an exported file animated as a loop. The video has the standard pane
+   background (resources/images/backgrounds/panes.svg) baked in, with the whole document
+   zooming as a card across it, so the stage is just a 16:9 frame */
+.doc-stage {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #2A3596 url("../images/backgrounds/panes.svg") center / cover;
+}
+
+.doc-stage-screen {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }

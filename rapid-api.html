@@ -166,12 +166,20 @@
         <div class="col-md-12 col-lg-7">
           <h2 class="headlinePrimary" id="users" data-toc="Users">Two very different users</h2>
           <p class="body">
-            Rapid’s revenue depended on two groups who wanted very different things from the same product.
+            Most of Rapid’s paying users weren’t technical, but a small group of experts drove half the revenue.
           </p>
-          <dl class="home-metrics stat-pair">
-            <div><dt>70%</dt><dd>of revenue-generating users weren’t technical API users</dd></div>
-            <div><dt>5%</dt><dd>of users, seasoned API developers, generated around half of our revenue</dd></div>
-          </dl>
+          <div class="stat-pair">
+            <div class="stat">
+              <p class="stat-persona">Non&#8209;technical users</p>
+              <p class="stat-value">70%</p>
+              <p class="stat-label">of paying users</p>
+            </div>
+            <div class="stat">
+              <p class="stat-persona">Seasoned API developers</p>
+              <p class="stat-value">5%</p>
+              <p class="stat-label">of users, generating around half of revenue</p>
+            </div>
+          </div>
           <p class="body">
             Any change had to make APIs approachable for newcomers without slowing down the experts.
           </p>
@@ -196,37 +204,18 @@
 
     <!-- Key insight -->
     <figure class="container slice insight">
-      <blockquote><p>A goal-oriented architecture would help users finish tasks faster, and give us clearer sight of our conversion funnel.</p></blockquote>
       <figcaption>Our central hypothesis</figcaption>
+      <blockquote><p>A goal-oriented architecture would help users finish tasks faster, and give us clearer sight of our conversion funnel.</p></blockquote>
     </figure>
 
-    <!-- Figma embed -->
-    <div class="container">
-      <div class="figma">
-        <iframe loading="lazy" src="https://embed.figma.com/design/aDj1Kkii42yqkVklEAgaiO/Rapid-API?node-id=2338-33308&embed-host=share" allowfullscreen></iframe>
-        <p class="caption-regular">
-          Empathy map using data sourced from initial user research and testing sessions.
-        </p>
+    <!-- Video: a tour of the empathy map, in place of the Figma embed -->
+    <div class="container large-img">
+      <div class="doc-stage">
+        <video class="doc-stage-screen loop-video" width="1600" height="900" src="resources/video/rapid-empathy-map.mp4" poster="resources/video/rapid-empathy-map.jpg" autoplay muted loop playsinline preload="metadata" aria-label="A tour of the Customer Journey empathy map: Sarah Cox's profile, her experience across each stage of building an API, and the opportunities found"></video>
       </div>
-    </div>
-
-    <!-- Paragraph -->
-    <div class="container paragraph">
-      <div class="row">
-        <div class="col-md-12 col-lg-7">
-          <h2 class="headlinePrimary" id="workflow" data-toc="Workflow">Mapping the API workflow</h2>
-          <p class="body">
-            I mapped the whole journey of building an API so that every feature had a clear place in it, from kickoff through launch and beyond.
-          </p>
-          <ol class="workflow-steps">
-            <li><strong>Discover</strong>Understand user needs, use cases and the problems the API should solve.</li>
-            <li><strong>Define</strong>Define endpoints, data models, authentication and key success metrics.</li>
-            <li><strong>Develop</strong>Design, build and test endpoints, iterating through internal and external feedback.</li>
-            <li><strong>Deliver</strong>Finalise documentation, validate usability and prepare for public use.</li>
-            <li><strong>Post launch</strong>Monitor usage, performance and errors, and iterate on real-world feedback.</li>
-          </ol>
-        </div>
-      </div>
+      <p class="caption-regular">
+        Empathy map using data sourced from initial user research and testing sessions.
+      </p>
     </div>
 
     <!-- Paragraph -->
@@ -253,7 +242,7 @@
         <div class="col-md-12 col-lg-7">
           <h3 class="headlineSecondary" id="accessible">Making APIs accessible to everyone</h3>
           <p class="body">
-            <em>Onboarding and shared understanding.</em> In the Discover stage, curated API discovery reduced the need for prior knowledge, while search-led entry supported people who already knew what they wanted.
+            <em>Onboarding and shared understanding.</em> Curated API discovery reduced the need for prior knowledge, while search-led entry supported people who already knew what they wanted.
           </p>
           <p class="body">
             To meet developers where they work, the hub also had to live inside their IDE. Designing for Visual Studio Code meant balancing powerful features against an already busy interface, while respecting each user’s theme and interaction habits.
@@ -278,14 +267,14 @@
         </p>
     </div>
 
-    <!-- Figma embed -->
-    <div class="container">
-      <div class="figma">
-        <iframe loading="lazy" src="https://embed.figma.com/design/aDj1Kkii42yqkVklEAgaiO/Rapid-API?node-id=2338-23994&embed-host=share" allowfullscreen></iframe>
-        <p class="caption-regular">
-          Supporting design documentation that enabled the above product to be co-created with engineers - for engineers.
-        </p>
+    <!-- Video: a tour of the VS Code API Hub documentation, in place of the Figma embed -->
+    <div class="container large-img">
+      <div class="doc-stage">
+        <video class="doc-stage-screen loop-video" width="1600" height="900" src="resources/video/rapid-vscode-docs.mp4" poster="resources/video/rapid-vscode-docs.jpg" autoplay muted loop playsinline preload="metadata" aria-label="A tour of the VS Code API Hub design documentation: the builder core flow for unsigned, registered and paying users, the Hub discovery screens, and breakpoints"></video>
       </div>
+      <p class="caption-regular">
+        Supporting design documentation that enabled the above product to be co-created with engineers - for engineers.
+      </p>
     </div>
 
     <!-- Paragraph -->
@@ -314,7 +303,7 @@
         <div class="col-md-12 col-lg-7">
           <h3 class="headlineSecondary" id="clarity">Reducing complexity through familiar patterns</h3>
           <p class="body">
-            <em>Clarity over complexity.</em> In the Develop stage, standardised endpoints built familiarity across APIs, and building requests inside the product simplified setup.
+            <em>Clarity over complexity.</em> Standardised endpoints built familiarity across APIs, and building requests inside the product simplified setup.
           </p>
         </div>
       </div>
@@ -334,7 +323,7 @@
         <div class="col-md-12 col-lg-7">
           <h3 class="headlineSecondary" id="adaptive">Designed for beginners and experts alike</h3>
           <p class="body">
-            <em>Adaptive experience.</em> In the Deliver stage, API linting offered simple entry points with advanced control when needed, and a consistent experience across the web, tools and integrations.
+            <em>Adaptive experience.</em> API linting offered simple entry points with advanced control when needed, and a consistent experience across the web, tools and integrations.
           </p>
         </div>
       </div>
@@ -363,24 +352,24 @@
       </div>
     </div>
 
-    <!-- Figma embed -->
-    <div class="container">
-      <div class="figma">
-        <iframe loading="lazy" src="https://embed.figma.com/design/aDj1Kkii42yqkVklEAgaiO/Rapid-API?node-id=2338-45776&embed-host=share" allowfullscreen></iframe>
-        <p class="caption-regular">
-          Handover documentation example for a micro issues highlighted via testing. Processes to create design such as this would only take a matter of days due to using existing design system components.
-        </p>
+    <!-- Video: a tour of the document, in place of the Figma embed -->
+    <div class="container large-img">
+      <div class="doc-stage">
+        <video class="doc-stage-screen loop-video" width="1600" height="900" src="resources/video/rapid-logs-handoff.mp4" poster="resources/video/rapid-logs-handoff.jpg" autoplay muted loop playsinline preload="metadata" aria-label="A tour of the Logs handoff documentation: the export CSV flow, from the logs table to processing, log details and downloading exports"></video>
       </div>
+      <p class="caption-regular">
+        Handover documentation example for a micro issues highlighted via testing. Processes to create design such as this would only take a matter of days due to using existing design system components.
+      </p>
     </div>
 
-    <!-- Figma embed -->
-    <div class="container">
-      <div class="figma">
-        <iframe loading="lazy" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FaDj1Kkii42yqkVklEAgaiO%2FRapid-API%3Ftype%3Ddesign%26node-id%3D1%253A6951%26mode%3Ddesign%26t%3DXDPazCvZkhtOpOIl-1" allowfullscreen></iframe>
-        <p class="caption-regular">
-          Flow documentation example for a macro issue used to align stakeholders and provide deeper level analysis to inform further strategic planning, ideation and engineering focus.
-        </p>
+    <!-- Video: a tour of the document, in place of the Figma embed -->
+    <div class="container large-img">
+      <div class="doc-stage">
+        <video class="doc-stage-screen loop-video" width="1600" height="900" src="resources/video/rapid-testing-flow.mp4" poster="resources/video/rapid-testing-flow.jpg" autoplay muted loop playsinline preload="metadata" aria-label="A tour of the testing conversion flow from VS Code: discovery, account creation and acquisition, with the feature and strategic issues found"></video>
       </div>
+      <p class="caption-regular">
+        Flow documentation example for a macro issue used to align stakeholders and provide deeper level analysis to inform further strategic planning, ideation and engineering focus.
+      </p>
     </div>
 
     <!-- Paragraph -->
@@ -502,6 +491,7 @@
     <script src="resources/JS/case-study.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="resources/JS/footer.js"></script>
+    <script src="resources/JS/loops.js"></script>
     <script src="resources/JS/cursor.js"></script>
   </body>
 

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1125" preserveAspectRatio="xMidYMid slice">
+  <!-- Standard case study background: a blue-to-purple gradient with tilted glass panes that drift
+       slightly. Use it as a CSS background (background: url(panes.svg) center / cover). -->
+  <style>
+    .pane { transform-box: fill-box; transform-origin: center; animation: drift 14s ease-in-out infinite alternate; }
+    .pane-a { animation-duration: 16s; }
+    .pane-b { animation-duration: 13s; animation-delay: -4s; animation-direction: alternate-reverse; }
+    .pane-c { animation-duration: 15s; animation-delay: -7s; }
+    .pane-d { animation-duration: 12s; animation-delay: -2s; animation-direction: alternate-reverse; }
+    @keyframes drift {
+      from { transform: translate(0, 0) rotate(0deg); }
+      to { transform: translate(-18px, 12px) rotate(-0.8deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pane { animation: none; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1F6FDE"/>
+      <stop offset=".45" stop-color="#2A3596"/>
+      <stop offset="1" stop-color="#6B3A93"/>
+    </linearGradient>
+    <radialGradient id="glow-bl" cx="0" cy="1" r="0.75">
+      <stop offset="0" stop-color="#86BDF0"/>
+      <stop offset="1" stop-color="#86BDF0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow-tr" cx="1" cy="0" r="0.6">
+      <stop offset="0" stop-color="#0A1466"/>
+      <stop offset="1" stop-color="#0A1466" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow-br" cx="1" cy="1" r="0.6">
+      <stop offset="0" stop-color="#7C68C8"/>
+      <stop offset="1" stop-color="#8A5DC0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pane-blue" x1="0.35" y1="1" x2="0.85" y2="0.2">
+      <stop offset="0" stop-color="#1E6DE6" stop-opacity=".86"/>
+      <stop offset=".55" stop-color="#1D62DC" stop-opacity=".82"/>
+      <stop offset="1" stop-color="#5A5EC4" stop-opacity=".62"/>
+    </linearGradient>
+    <linearGradient id="pane-pink" x1="0" y1="0" x2="0.25" y2="0.5">
+      <stop offset="0" stop-color="#D03A78"/>
+      <stop offset=".5" stop-color="#B85CA8" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#7C6CCC" stop-opacity=".55"/>
+    </linearGradient>
+    <linearGradient id="pane-green" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#BDE08A"/>
+      <stop offset="1" stop-color="#B6DAE6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="2000" height="1125" fill="url(#base)"/>
+  <rect width="2000" height="1125" fill="url(#glow-tr)"/>
+  <rect width="2000" height="1125" fill="url(#glow-br)"/>
+  <rect width="2000" height="1125" fill="url(#glow-bl)"/>
+
+  <!-- Each pane is placed by its visible corner and rotated 15°, extending off canvas -->
+  <g transform="translate(894 870) rotate(15)">
+    <rect class="pane pane-b" x="-2400" y="-1700" width="2400" height="1700" rx="58" fill="#B3DDEC" fill-opacity=".94"/>
+  </g>
+  <g transform="translate(1124 787) rotate(15)">
+    <rect class="pane pane-a" x="-2600" y="-1900" width="2600" height="1900" rx="58" fill="url(#pane-blue)"/>
+  </g>
+  <g transform="translate(1425 622) rotate(15)">
+    <rect class="pane pane-d" x="0" y="0" width="1600" height="1400" rx="58" fill="url(#pane-green)" fill-opacity=".92"/>
+  </g>
+  <g transform="translate(1655 478) rotate(15)">
+    <rect class="pane pane-c" x="0" y="0" width="1600" height="1400" rx="58" fill="url(#pane-pink)" fill-opacity=".9"/>
+  </g>
+</svg>
