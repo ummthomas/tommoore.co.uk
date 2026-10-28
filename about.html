@@ -49,19 +49,21 @@
     <div class="container large-img">
       <!-- Lines are redrawn as SVG behind a cutout of the photo so they can animate -->
       <figure class="about-hero">
-        <svg class="about-hero-lines" viewBox="0 0 1600 1106" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <mask id="about-dash-reveal" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1800" height="1306">
-              <path class="about-line-reveal" pathLength="1" d="M-60,540 C-45,532 2,510 29,494 C56,478 82,464 100,442 C118,420 127,387 137,359 C147,331 150,299 162,272 C174,245 187,215 209,196 C231,177 264,161 292,159 C320,157 354,168 379,182 C404,196 428,220 445,245 C462,270 475,300 481,329 C487,358 487,392 482,421 C477,450 465,481 449,506 C433,531 412,554 387,573 C362,592 334,605 302,618 C270,631 232,638 197,650 C162,662 115,670 92,693 C69,716 54,761 59,790 C64,819 93,852 119,865 C145,878 183,874 214,870 C245,866 276,853 306,844 C336,835 366,823 397,814 C428,805 459,791 490,792 C521,793 565,802 585,820 C605,838 617,874 610,900 C603,926 561,948 542,974 C523,1000 516,1024 497,1057 C478,1090 441,1151 430,1170"/>
-            </mask>
-            <mask id="about-solid-reveal" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1800" height="1306">
-              <path class="about-line-reveal about-line-reveal-late" pathLength="1" d="M850,-60 C850,-35 848,38 850,90 C852,142 851,198 862,250 C873,302 896,368 915,400 C934,432 960,442 975,445 C990,448 996,428 1008,415 C1020,402 1034,384 1048,366 C1062,348 1078,326 1092,306 C1106,286 1119,266 1134,246 C1149,226 1163,204 1181,186 C1199,168 1220,147 1240,137 C1260,127 1280,125 1300,128 C1320,131 1344,139 1360,153 C1376,167 1392,191 1395,211 C1398,231 1390,251 1381,271 C1372,291 1357,311 1343,331 C1329,351 1312,371 1297,391 C1282,411 1266,431 1254,451 C1242,471 1233,491 1226,511 C1219,531 1215,551 1213,571 C1211,591 1212,611 1215,631 C1218,651 1223,671 1232,691 C1241,711 1253,733 1269,751 C1285,769 1309,788 1329,800 C1349,812 1369,820 1389,825 C1409,830 1429,832 1449,831 C1469,830 1490,828 1509,819 C1528,810 1554,792 1566,774 C1578,756 1580,734 1583,714 C1586,694 1584,674 1582,654 C1580,634 1575,614 1569,594 C1563,574 1552,554 1546,534 C1540,514 1534,494 1533,474 C1532,454 1532,434 1539,414 C1546,394 1564,374 1574,354 C1584,334 1590,314 1599,294 C1608,274 1621,245 1625,235"/>
-            </mask>
-          </defs>
-          <path class="about-line about-line-dashed" mask="url(#about-dash-reveal)" d="M-60,540 C-45,532 2,510 29,494 C56,478 82,464 100,442 C118,420 127,387 137,359 C147,331 150,299 162,272 C174,245 187,215 209,196 C231,177 264,161 292,159 C320,157 354,168 379,182 C404,196 428,220 445,245 C462,270 475,300 481,329 C487,358 487,392 482,421 C477,450 465,481 449,506 C433,531 412,554 387,573 C362,592 334,605 302,618 C270,631 232,638 197,650 C162,662 115,670 92,693 C69,716 54,761 59,790 C64,819 93,852 119,865 C145,878 183,874 214,870 C245,866 276,853 306,844 C336,835 366,823 397,814 C428,805 459,791 490,792 C521,793 565,802 585,820 C605,838 617,874 610,900 C603,926 561,948 542,974 C523,1000 516,1024 497,1057 C478,1090 441,1151 430,1170"/>
-          <path class="about-line about-line-dashed about-line-reverse" mask="url(#about-solid-reveal)" d="M850,-60 C850,-35 848,38 850,90 C852,142 851,198 862,250 C873,302 896,368 915,400 C934,432 960,442 975,445 C990,448 996,428 1008,415 C1020,402 1034,384 1048,366 C1062,348 1078,326 1092,306 C1106,286 1119,266 1134,246 C1149,226 1163,204 1181,186 C1199,168 1220,147 1240,137 C1260,127 1280,125 1300,128 C1320,131 1344,139 1360,153 C1376,167 1392,191 1395,211 C1398,231 1390,251 1381,271 C1372,291 1357,311 1343,331 C1329,351 1312,371 1297,391 C1282,411 1266,431 1254,451 C1242,471 1233,491 1226,511 C1219,531 1215,551 1213,571 C1211,591 1212,611 1215,631 C1218,651 1223,671 1232,691 C1241,711 1253,733 1269,751 C1285,769 1309,788 1329,800 C1349,812 1369,820 1389,825 C1409,830 1429,832 1449,831 C1469,830 1490,828 1509,819 C1528,810 1554,792 1566,774 C1578,756 1580,734 1583,714 C1586,694 1584,674 1582,654 C1580,634 1575,614 1569,594 C1563,574 1552,554 1546,534 C1540,514 1534,494 1533,474 C1532,454 1532,434 1539,414 C1546,394 1564,374 1574,354 C1584,334 1590,314 1599,294 C1608,274 1621,245 1625,235"/>
-        </svg>
-        <img class="about-hero-cutout" src="resources/images/about/about-cutout.webp" width="1600" height="1106" alt="Tom smiling with his hands on his cheeks">
+        <div class="about-hero-art">
+          <svg class="about-hero-lines" viewBox="0 0 1600 1106" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <mask id="about-dash-reveal" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1800" height="1306">
+                <path class="about-line-reveal" pathLength="1" d="M-60,540 C-45,532 2,510 29,494 C56,478 82,464 100,442 C118,420 127,387 137,359 C147,331 150,299 162,272 C174,245 187,215 209,196 C231,177 264,161 292,159 C320,157 354,168 379,182 C404,196 428,220 445,245 C462,270 475,300 481,329 C487,358 487,392 482,421 C477,450 465,481 449,506 C433,531 412,554 387,573 C362,592 334,605 302,618 C270,631 232,638 197,650 C162,662 115,670 92,693 C69,716 54,761 59,790 C64,819 93,852 119,865 C145,878 183,874 214,870 C245,866 276,853 306,844 C336,835 366,823 397,814 C428,805 459,791 490,792 C521,793 565,802 585,820 C605,838 617,874 610,900 C603,926 561,948 542,974 C523,1000 516,1024 497,1057 C478,1090 441,1151 430,1170"/>
+              </mask>
+              <mask id="about-solid-reveal" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1800" height="1306">
+                <path class="about-line-reveal about-line-reveal-late" pathLength="1" d="M850,-60 C850,-35 848,38 850,90 C852,142 851,198 862,250 C873,302 896,368 915,400 C934,432 960,442 975,445 C990,448 996,428 1008,415 C1020,402 1034,384 1048,366 C1062,348 1078,326 1092,306 C1106,286 1119,266 1134,246 C1149,226 1163,204 1181,186 C1199,168 1220,147 1240,137 C1260,127 1280,125 1300,128 C1320,131 1344,139 1360,153 C1376,167 1392,191 1395,211 C1398,231 1390,251 1381,271 C1372,291 1357,311 1343,331 C1329,351 1312,371 1297,391 C1282,411 1266,431 1254,451 C1242,471 1233,491 1226,511 C1219,531 1215,551 1213,571 C1211,591 1212,611 1215,631 C1218,651 1223,671 1232,691 C1241,711 1253,733 1269,751 C1285,769 1309,788 1329,800 C1349,812 1369,820 1389,825 C1409,830 1429,832 1449,831 C1469,830 1490,828 1509,819 C1528,810 1554,792 1566,774 C1578,756 1580,734 1583,714 C1586,694 1584,674 1582,654 C1580,634 1575,614 1569,594 C1563,574 1552,554 1546,534 C1540,514 1534,494 1533,474 C1532,454 1532,434 1539,414 C1546,394 1564,374 1574,354 C1584,334 1590,314 1599,294 C1608,274 1621,245 1625,235"/>
+              </mask>
+            </defs>
+            <path class="about-line about-line-dashed" mask="url(#about-dash-reveal)" d="M-60,540 C-45,532 2,510 29,494 C56,478 82,464 100,442 C118,420 127,387 137,359 C147,331 150,299 162,272 C174,245 187,215 209,196 C231,177 264,161 292,159 C320,157 354,168 379,182 C404,196 428,220 445,245 C462,270 475,300 481,329 C487,358 487,392 482,421 C477,450 465,481 449,506 C433,531 412,554 387,573 C362,592 334,605 302,618 C270,631 232,638 197,650 C162,662 115,670 92,693 C69,716 54,761 59,790 C64,819 93,852 119,865 C145,878 183,874 214,870 C245,866 276,853 306,844 C336,835 366,823 397,814 C428,805 459,791 490,792 C521,793 565,802 585,820 C605,838 617,874 610,900 C603,926 561,948 542,974 C523,1000 516,1024 497,1057 C478,1090 441,1151 430,1170"/>
+            <path class="about-line about-line-dashed about-line-reverse" mask="url(#about-solid-reveal)" d="M850,-60 C850,-35 848,38 850,90 C852,142 851,198 862,250 C873,302 896,368 915,400 C934,432 960,442 975,445 C990,448 996,428 1008,415 C1020,402 1034,384 1048,366 C1062,348 1078,326 1092,306 C1106,286 1119,266 1134,246 C1149,226 1163,204 1181,186 C1199,168 1220,147 1240,137 C1260,127 1280,125 1300,128 C1320,131 1344,139 1360,153 C1376,167 1392,191 1395,211 C1398,231 1390,251 1381,271 C1372,291 1357,311 1343,331 C1329,351 1312,371 1297,391 C1282,411 1266,431 1254,451 C1242,471 1233,491 1226,511 C1219,531 1215,551 1213,571 C1211,591 1212,611 1215,631 C1218,651 1223,671 1232,691 C1241,711 1253,733 1269,751 C1285,769 1309,788 1329,800 C1349,812 1369,820 1389,825 C1409,830 1429,832 1449,831 C1469,830 1490,828 1509,819 C1528,810 1554,792 1566,774 C1578,756 1580,734 1583,714 C1586,694 1584,674 1582,654 C1580,634 1575,614 1569,594 C1563,574 1552,554 1546,534 C1540,514 1534,494 1533,474 C1532,454 1532,434 1539,414 C1546,394 1564,374 1574,354 C1584,334 1590,314 1599,294 C1608,274 1621,245 1625,235"/>
+          </svg>
+          <img class="about-hero-cutout" src="resources/images/about/about-cutout.webp" width="1600" height="1106" alt="Tom smiling with his hands on his cheeks">
+        </div>
       </figure>
     </div>
 
@@ -70,30 +72,93 @@
       <div class="row">
         <div class="col-md-12">
           <h5 class="overline">About</h5>
-          <h1 class="title">I lead product design teams and still do the work, with ten years of shipping products and a foundation in computer science.</h1>
+          <h1 class="title">I lead product design teams, and I still design. Ten years of shipping products, built on a background in computer science.</h1>
           <a class="btn btn--primary" href="resources/files/TomMoore_ProductDesignLead_CV.pdf" target="_blank" rel="noopener">View resume</a>
         </div>
       </div>
     </div>
 
+    <!-- Experience -->
+    <section class="container experience" aria-labelledby="experience-title">
+      <h2 class="home-section-title" id="experience-title">Experience</h2>
+      <ol class="experience-list">
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/zinc.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">Zinc</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Product Design Lead</span></p>
+          <p class="experience-dates">Jul 2025 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> Today</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/almedia.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">Almedia</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Product Design Lead</span></p>
+          <p class="experience-dates">Jan 2025 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> Jul 2025</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/patchwork.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">Patchwork Health</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Senior Product Designer</span></p>
+          <p class="experience-dates">Jan 2024 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> Oct 2024</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/cirevo.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">Cirevo</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Senior Product Designer, part-time</span></p>
+          <p class="experience-dates">Jul 2023 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> Feb 2024</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/rapid.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">Rapid</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Product Designer</span></p>
+          <p class="experience-dates">May 2022 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> May 2023</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/bx.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">BX</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Founding Product Designer</span></p>
+          <p class="experience-dates">Nov 2020 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> May 2022</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/newsuk.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">News UK</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Junior Product Designer</span></p>
+          <p class="experience-dates">Aug 2019 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> Nov 2020</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/lincoln.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">University of Lincoln</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Junior Product Designer, part-time</span></p>
+          <p class="experience-dates">Nov 2017 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> Jun 2019</p>
+        </li>
+        <li class="experience-item">
+          <img class="experience-logo" src="resources/images/about/logos/thetimes.png" width="40" height="40" alt="" loading="lazy">
+          <p class="home-caption experience-caption"><span class="home-name">The Times</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">UX Design Intern</span></p>
+          <p class="experience-dates">Jul 2018 <span aria-hidden="true">→</span><span class="visually-hidden"> to</span> Aug 2018</p>
+        </li>
+      </ol>
+    </section>
+
     <!-- How I player-coach -->
-    <section class="container home-lead about-lead" aria-labelledby="home-lead-title">
-      <h2 class="home-section-title" id="home-lead-title">How I player-coach</h2>
-      <div class="home-lead-grid">
-        <div class="home-lead-item">
-          <h3>Direction</h3>
-          <p>I set a clear vision for design and tie it to business outcomes, from founding BX’s design function to aligning design with commercial goals at Zinc.</p>
-          <a class="link lead-link" href="#testimonials" data-filter="direction"><span class="link-text">What people say</span></a>
+    <section class="container practice" aria-labelledby="practice-title">
+      <h2 class="home-section-title" id="practice-title">How I player-coach</h2>
+      <div class="practice-grid">
+        <div class="practice-head">
+          <p class="practice-statement"><span>Lead the team.</span> <span>Still do the work.</span></p>
+          <p class="home-desc">The best design leadership happens close to the work. I set direction with product and engineering, grow designers into senior roles, and still design every week.</p>
         </div>
-        <div class="home-lead-item">
-          <h3>People</h3>
-          <p>I hire, mentor and grow designers into senior roles, and build the rituals that let a team do its best work.</p>
-          <a class="link lead-link" href="#testimonials" data-filter="people"><span class="link-text">What people say</span></a>
-        </div>
-        <div class="home-lead-item">
-          <h3>Craft</h3>
-          <p>I still design every week, using AI across design and development to move from discovery to working prototypes faster, with enough front-end to work as a peer with engineering.</p>
-          <a class="link lead-link" href="#testimonials" data-filter="craft"><span class="link-text">What people say</span></a>
+        <div class="practice-body">
+          <div class="practice-tabs" role="tablist" aria-label="How I player-coach">
+          <button class="practice-tab" type="button" role="tab" id="practice-tab-direction" aria-controls="practice-panel-direction" aria-selected="true">Direction</button>
+          <button class="practice-tab" type="button" role="tab" id="practice-tab-people" aria-controls="practice-panel-people" aria-selected="false" tabindex="-1">People</button>
+          <button class="practice-tab" type="button" role="tab" id="practice-tab-craft" aria-controls="practice-panel-craft" aria-selected="false" tabindex="-1">Craft</button>
+          </div>
+          <div class="practice-panel" role="tabpanel" id="practice-panel-direction" aria-labelledby="practice-tab-direction">
+            <h3>Set the direction.</h3>
+            <p>I set a clear vision for design and tie it to business outcomes, from founding BX’s design function to aligning design with commercial goals at Zinc.</p>
+            <a class="link lead-link" href="#testimonials" data-filter="direction"><span class="link-text">What people say</span></a>
+          </div>
+          <div class="practice-panel" role="tabpanel" id="practice-panel-people" aria-labelledby="practice-tab-people" hidden>
+            <h3>Grow the people.</h3>
+            <p>I hire, mentor and grow designers into senior roles, and build the rituals that let a team do its best work.</p>
+            <a class="link lead-link" href="#testimonials" data-filter="people"><span class="link-text">What people say</span></a>
+          </div>
+          <div class="practice-panel" role="tabpanel" id="practice-panel-craft" aria-labelledby="practice-tab-craft" hidden>
+            <h3>Stay in the craft.</h3>
+            <p>I still design every week, using AI across design and development to move from discovery to working prototypes faster, with enough front-end to work as a peer with engineering.</p>
+            <a class="link lead-link" href="#testimonials" data-filter="craft"><span class="link-text">What people say</span></a>
+          </div>
         </div>
       </div>
     </section>
@@ -258,7 +323,7 @@
             <p class="home-card-read">5 min read</p>
             <span class="btn btn--secondary home-card-cta">View project</span>
           </div>
-          <div class="home-card-media home-drift" style="view-transition-name: project-garments"><video class="home-card-video loop-video" src="resources/video/garments-wide.mp4" poster="resources/video/garments-wide.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Clips from the short film Garments"></video></div>
+          <div class="home-card-media home-drift" style="view-transition-name: project-garments"><video class="home-card-video loop-video loop-video--landscape" src="resources/video/garments-wide.mp4" poster="resources/video/garments-wide.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Clips from the short film Garments"></video><video class="home-card-video loop-video loop-video--portrait" src="resources/video/garments-portrait.mp4" poster="resources/video/garments-portrait.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video></div>
         </a>
         <a class="home-card" href="installation.html" data-cursor="View project">
           <div class="home-card-head">
@@ -274,7 +339,7 @@
             <p class="home-card-read">8 min read</p>
             <span class="btn btn--secondary home-card-cta">View project</span>
           </div>
-          <div class="home-card-media home-drift" style="view-transition-name: project-installation"><video class="home-card-video loop-video" src="resources/video/transience-wide.mp4" poster="resources/video/transience-wide.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Clips of visitors using the Transience installation"></video></div>
+          <div class="home-card-media home-drift" style="view-transition-name: project-installation"><video class="home-card-video loop-video loop-video--landscape" src="resources/video/transience-wide.mp4" poster="resources/video/transience-wide.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Clips of visitors using the Transience installation"></video><video class="home-card-video loop-video loop-video--portrait" src="resources/video/transience-portrait.mp4" poster="resources/video/transience-portrait.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video></div>
         </a>
         <a class="home-card" href="family-portrait.html" data-cursor="View project">
           <div class="home-card-head">
@@ -290,7 +355,7 @@
             <p class="home-card-read">4 min read</p>
             <span class="btn btn--secondary home-card-cta">View project</span>
           </div>
-          <div class="home-card-media home-drift" style="view-transition-name: project-family"><video class="home-card-video loop-video" src="resources/video/family-wide.mp4" poster="resources/video/family-wide.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Clips from the short film Family Portrait"></video></div>
+          <div class="home-card-media home-drift" style="view-transition-name: project-family"><video class="home-card-video loop-video loop-video--landscape" src="resources/video/family-wide.mp4" poster="resources/video/family-wide.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Clips from the short film Family Portrait"></video><video class="home-card-video loop-video loop-video--portrait" src="resources/video/family-portrait.mp4" poster="resources/video/family-portrait.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video></div>
         </a>
         <div class="home-card is-wip" data-cursor="Coming soon">
           <div class="home-card-head">
@@ -312,7 +377,7 @@
     </section>
 
     <!-- Footer -->
-    <div class="footer">
+    <footer class="footer">
       <div class="home-marquee home-marquee-footer" aria-hidden="true" data-direction="-1">
         <svg class="home-marquee-svg">
           <path class="home-marquee-line" fill="none" />
@@ -320,20 +385,33 @@
       </div>
       <div class="container">
         <div class="footer-content">
-          <h4 class="title">Let's connect!</h4>
-          <p class="body"><a class="link link--large" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener"><span class="link-text">Connect on LinkedIn</span></a> and let’s discuss how I can help you.</p>
+          <p class="footer-kicker">Good products start with a conversation.</p>
+          <a class="footer-cta" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener" data-cursor="Say hello"><span class="footer-cta-text">Let’s build something<br class="footer-break"> your team is proud to&nbsp;ship.</span><span class="footer-cta-arrow" aria-hidden="true">↗</span></a>
         </div>
-        <p class="caption-regular">Copyright © 2026 Tom Moore</p>
+        <div class="footer-meta">
+          <p>Product Design Lead at Zinc</p>
+          <a class="footer-link" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">Message me on LinkedIn</a>
+        </div>
+        <div class="footer-base">
+          <p>Tom Moore © 2026</p>
+          <nav class="footer-nav" aria-label="Footer">
+            <a href="./">Work</a>
+            <a href="about.html">About</a>
+            <a href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">LinkedIn<span aria-hidden="true"> ↗</span></a>
+          </nav>
+        </div>
       </div>
-    </div>
+    </footer>
 
 
 
+    <script src="resources/JS/practice.js"></script>
     <script src="resources/JS/testimonials.js"></script>
     <script src="resources/JS/loops.js"></script>
     <script src="resources/JS/dash-lines.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="resources/JS/footer.js"></script>
+    <script src="resources/JS/highlights.js"></script>
     <script src="resources/JS/cursor.js"></script>
   </body>
 

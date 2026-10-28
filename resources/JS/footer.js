@@ -1,5 +1,5 @@
 // Footer dashed line, shared by every page: one smooth sine wave flowing across the gap
-// between "Let's connect!" and the copyright, fading in when the footer comes into view
+// between the invitation and the meta row, fading in when the footer comes into view
 (function () {
   const footer = document.querySelector('.footer');
   const marquee = footer && footer.querySelector('.home-marquee-footer');
@@ -27,12 +27,12 @@
     return d;
   }
 
-  // A sine wave sampled every 24px: one full wave, dipping low above the copyright line
+  // A sine wave sampled every 24px: one full wave, dipping low above the meta row
   function build() {
     const box = svg.getBoundingClientRect();
     if (!box.width || !box.height) return;
-    const textBottom = footer.querySelector('.footer-content p').getBoundingClientRect().bottom - box.top;
-    const gap = footer.querySelector('.footer > .container > .caption-regular').getBoundingClientRect().top - box.top - textBottom;
+    const textBottom = footer.querySelector('.footer-content').getBoundingClientRect().bottom - box.top;
+    const gap = footer.querySelector('.footer-meta').getBoundingClientRect().top - box.top - textBottom;
     const mid = textBottom + gap * 0.45;
     const points = [];
     for (let x = 0; x <= box.width + 24; x += 24) {

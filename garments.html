@@ -64,7 +64,7 @@
 
     <!-- Large image -->
     <div class="container large-img">
-        <img src="resources/images/garments/hero.jpg" class="img-fluid" style="view-transition-name: project-garments" alt=""></img>
+        <img src="resources/images/garments/hero.jpg" class="img-fluid" width="2880" height="1620" style="view-transition-name: project-garments" alt=""></img>
     </div>
 
     <!-- Brief -->
@@ -98,10 +98,13 @@
     </figure>
 
     <!-- Vimeo -->
-    <div class="container">
+    <div class="container large-img">
       <div class="video-wrapper-narrow">
         <iframe src="https://player.vimeo.com/video/331812388?embedparameter=value"  frameborder="0" allowfullscreen></iframe>
       </div>
+      <p class="caption-regular">
+        The full film: one person getting dressed, and the thoughts and associations that surface along the way.
+      </p>
     </div>
 
     <!-- Paragraph -->
@@ -114,23 +117,16 @@
           </p>
         </div>
       </div>
-      <!-- Asset Card -->
+      <!-- Development deck -->
       <div class="row">
         <div class="col-md-12 col-lg-7">
-          <a href="resources/files/Garments_Development.pdf" target="_blank" class="img-hover">
-            <div class="row asset-card align-items-center">
-              <div class="col-5 col-sm-5">
-                <img src="resources/images/garments/garments-thumbnail.jpg" class="img-fluid" alt="...">
-              </div>
-              <div class="col-7 col-sm-7">
-                <h4 class="subhead">
-                  Dive Deeper
-                </h4>
-                <p class="caption-regular">
-                  Discover the complete study and its outcomes in this development deck.
-                </p>
-              </div>
-            </div>
+          <a class="asset" href="resources/files/Garments_Development.pdf" target="_blank" rel="noopener" data-cursor="Open deck">
+            <span class="asset-thumb"><img src="resources/images/garments/garments-thumbnail.jpg" width="320" height="180" alt="Title slide of the Garments development deck" loading="lazy"></span>
+            <span class="asset-text">
+              <span class="home-caption"><span class="home-name">Garments</span><span class="home-sep" aria-hidden="true"></span><span class="home-status">Development deck, PDF</span></span>
+              <span class="asset-title">The complete study, from interviews to the finished film</span>
+            </span>
+            <span class="btn btn--secondary asset-cta">View deck</span>
           </a>
         </div>
       </div>
@@ -181,7 +177,7 @@
     </section>
 
     <!-- Footer -->
-    <div class="footer">
+    <footer class="footer">
       <div class="home-marquee home-marquee-footer" aria-hidden="true" data-direction="-1">
         <svg class="home-marquee-svg">
           <path class="home-marquee-line" fill="none" />
@@ -189,18 +185,30 @@
       </div>
       <div class="container">
         <div class="footer-content">
-          <h4 class="title">Let's connect!</h4>
-          <p class="body"><a class="link link--large" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener"><span class="link-text">Connect on LinkedIn</span></a> and let’s discuss how I can help you.</p>
+          <p class="footer-kicker">Good products start with a conversation.</p>
+          <a class="footer-cta" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener" data-cursor="Say hello"><span class="footer-cta-text">Let’s build something<br class="footer-break"> your team is proud to&nbsp;ship.</span><span class="footer-cta-arrow" aria-hidden="true">↗</span></a>
         </div>
-        <p class="caption-regular">Copyright © 2026 Tom Moore</p>
+        <div class="footer-meta">
+          <p>Product Design Lead at Zinc</p>
+          <a class="footer-link" href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">Message me on LinkedIn</a>
+        </div>
+        <div class="footer-base">
+          <p>Tom Moore © 2026</p>
+          <nav class="footer-nav" aria-label="Footer">
+            <a href="./">Work</a>
+            <a href="about.html">About</a>
+            <a href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">LinkedIn<span aria-hidden="true"> ↗</span></a>
+          </nav>
+        </div>
       </div>
-    </div>
+    </footer>
 
 
 
     <script src="resources/JS/case-study.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="resources/JS/footer.js"></script>
+    <script src="resources/JS/highlights.js"></script>
     <script src="resources/JS/cursor.js"></script>
   </body>
 
