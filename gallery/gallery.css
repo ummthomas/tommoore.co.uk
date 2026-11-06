@@ -1,0 +1,984 @@
+/* The Gallery: everything here sits on top of the site's styles.css and uses its tokens */
+
+html,
+body.g-body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bgGrey);
+  overscroll-behavior: none;
+}
+
+body.g-body {
+  padding: 0;
+}
+
+.g-arrive body {
+  animation: g-arrive .38s ease;
+}
+
+@keyframes g-arrive {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-arrive body {
+    animation: none;
+  }
+}
+
+#world {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: 0;
+  touch-action: none;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+
+/* The rooms take a moment to set up, so they fade in once they're ready rather than popping */
+.is-revealed #world {
+  opacity: 1;
+}
+
+.g-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 62%, rgba(11, 11, 11, .14) 100%);
+}
+
+/* A quick dip when jumping between rooms */
+.g-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  background: var(--bgGrey);
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+
+.g-veil.is-on {
+  opacity: 1;
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  margin-right: 3px;
+  border: 1px solid rgba(30, 30, 30, .22);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--highEmph);
+  font-family: Inter;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* In-world display */
+.g-hud {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.is-walking .g-hud {
+  opacity: 1;
+}
+
+.is-reading .g-hud {
+  opacity: 0;
+}
+
+.g-room {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  max-width: min(460px, calc(100vw - 48px));
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .92);
+  box-shadow: 0 6px 24px rgba(11, 11, 11, .08);
+}
+
+.g-room.is-in {
+  animation: g-rise .5s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.g-room .home-caption {
+  flex-wrap: wrap;
+  margin: 0;
+  font-size: 15px;
+}
+
+.g-room-title {
+  margin: 6px 0 0;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--highEmph);
+}
+
+@keyframes g-rise {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+.g-mini {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 232px;
+  padding: 10px;
+  border: 0;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .92);
+  box-shadow: 0 6px 24px rgba(11, 11, 11, .08);
+  pointer-events: auto;
+}
+
+.is-locked .g-mini {
+  pointer-events: none;
+}
+
+.g-mini svg,
+.g-map-plan svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.g-plan-walls line {
+  stroke: var(--highEmph);
+  stroke-width: .28;
+  stroke-linecap: round;
+}
+
+.g-plan-route {
+  fill: none;
+  stroke: var(--brandDark);
+  stroke-width: .34;
+  stroke-dasharray: .9 .6;
+}
+
+.g-plan-you circle,
+.g-plan-you path {
+  fill: var(--brandDark);
+  stroke: var(--white);
+  stroke-width: .35;
+}
+
+.g-hint {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 14px;
+  margin: 0;
+  padding: 9px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, .92);
+  box-shadow: 0 6px 24px rgba(11, 11, 11, .08);
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--medEmph);
+  transform: translateX(-50%);
+  transition: opacity .8s ease 3s;
+}
+
+.g-hint.is-used {
+  opacity: 0;
+}
+
+.g-hint-keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.g-hint kbd {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  font-size: 12px;
+}
+
+.g-hint-touch,
+.g-hint-drag,
+.g-touch-note {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .g-hint {
+    left: 24px;
+    transform: none;
+  }
+
+  .g-hint-keys:nth-child(n+4) {
+    display: none;
+  }
+}
+
+/* The site's cursor, pinned to the centre of the screen while walking */
+.g-reticle {
+  transform: translate(calc(50vw - 3px), calc(50vh - 1px));
+}
+
+.is-locked .g-reticle {
+  opacity: 1;
+}
+
+.is-locked.is-reading .g-reticle {
+  opacity: 0;
+}
+
+.is-locked .tm-cursor:not(.g-reticle) {
+  opacity: 0 !important;
+}
+
+/* Thumbstick */
+.g-stick {
+  position: fixed;
+  top: -56px;
+  left: -56px;
+  z-index: 11;
+  display: none;
+  width: 112px;
+  height: 112px;
+  border: 2px dashed rgba(27, 169, 223, .7);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  pointer-events: none;
+}
+
+.g-stick.is-on {
+  display: block;
+}
+
+.g-stick span {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--brandDark);
+}
+
+/* Reading panel */
+.g-reader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  width: min(42vw, 560px);
+  background: var(--white);
+  box-shadow: -12px 0 48px rgba(11, 11, 11, .12);
+  transform: translateX(102%);
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1);
+}
+
+.g-reader.is-film {
+  width: min(42vw, 680px);
+}
+
+.g-reader.is-open {
+  transform: none;
+}
+
+.g-reader-head,
+.g-reader-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 28px;
+  flex-shrink: 0;
+}
+
+.g-reader-head {
+  border-bottom: 1px solid rgba(30, 30, 30, .06);
+}
+
+.g-reader-foot {
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(30, 30, 30, .06);
+}
+
+.g-reader-head .home-caption {
+  flex-wrap: wrap;
+  margin: 0;
+  font-size: 15px;
+}
+
+.g-reader-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+  overscroll-behavior: contain;
+}
+
+.g-reader-body > :first-child {
+  margin-top: 0;
+}
+
+.g-reader-body > :last-child {
+  margin-bottom: 0;
+}
+
+.g-reader-body .headlinePrimary {
+  margin: 0 0 16px;
+}
+
+.g-reader-over {
+  margin: 0 0 12px;
+}
+
+.g-reader-body .body {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.g-reader-body .brief-grid {
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.g-reader-body .brief-grid dd {
+  font-size: 18px;
+}
+
+.g-reader-body .results {
+  grid-template-columns: 1fr;
+  margin-bottom: 24px;
+  padding: 24px;
+}
+
+.g-reader-body .results > div {
+  padding: 16px 0;
+  border-left: 0;
+  border-top: 2px dashed rgba(255, 255, 255, .18);
+}
+
+.g-reader-body .results > div:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.g-reader-body .results dd {
+  max-width: none;
+}
+
+.g-reader-body .insight {
+  margin: 0 0 24px;
+}
+
+.g-reader-body .g-reader-more {
+  margin-top: 32px;
+}
+
+.g-reader-caption {
+  color: var(--lowEmph);
+}
+
+/* The piece itself is in view beside the panel, so only repeat it where the panel covers it */
+.g-reader-media {
+  display: none;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: var(--radius);
+}
+
+.g-reader-film {
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--black);
+  aspect-ratio: 16 / 9;
+}
+
+.g-reader-film iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.g-reader-steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.g-reader-count {
+  min-width: 56px;
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  color: var(--lowEmph);
+}
+
+.g-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid rgba(30, 30, 30, .22);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--highEmph);
+  font-family: Inter;
+  font-size: 18px;
+  line-height: 1;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.g-icon-btn:hover {
+  border-color: var(--brandDark);
+  background: var(--brandDark);
+  color: var(--white);
+}
+
+.g-icon-btn:focus-visible,
+.g-map-rooms button:focus-visible,
+.g-mini:focus-visible {
+  outline: 2px solid var(--brandDark);
+  outline-offset: 2px;
+}
+
+@media (max-width: 899.98px) {
+  .g-reader,
+  .g-reader.is-film {
+    width: 100%;
+  }
+
+  .g-reader-media {
+    display: block;
+  }
+
+  .g-reader-head,
+  .g-reader-foot,
+  .g-reader-body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Map */
+.g-map {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(11, 11, 11, .28);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s ease, visibility .2s;
+}
+
+.g-map.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.g-map-card {
+  width: min(760px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 24px 28px;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: 0 24px 64px rgba(11, 11, 11, .2);
+}
+
+.g-map-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.g-map-head h2 {
+  margin: 0;
+}
+
+.g-map-plan svg {
+  max-height: 38vh;
+}
+
+.g-plan-label {
+  font-family: Inter;
+  font-size: 1.5px;
+  font-weight: 500;
+  text-anchor: middle;
+  fill: var(--highEmph);
+}
+
+.g-map-plan {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: var(--radius);
+  background: var(--bgBlue);
+}
+
+.g-map-rooms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2px;
+  padding: 0;
+  margin: 0 0 12px;
+  list-style: none;
+}
+
+.g-map-rooms button {
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  text-align: left;
+  transition: background .2s ease;
+}
+
+.g-map-rooms button:hover,
+.g-map-rooms button[aria-current] {
+  background: var(--bgBlue);
+}
+
+.g-map-rooms .home-caption {
+  margin: 0;
+  font-size: 14px;
+}
+
+.g-map-rooms .home-name {
+  white-space: nowrap;
+}
+
+/* Start and pause screen */
+.g-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  color: var(--highEmph);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, visibility .35s;
+}
+
+.g-intro.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* The gallery stays in plain view on the right, with a soft fade to carry the words. There's one
+   fade for light rooms and one for dark rooms, crossfading so the words melt into either. */
+.g-intro::before,
+.g-intro::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity .7s ease;
+}
+
+.g-intro::before {
+  background:
+    linear-gradient(0deg, rgba(250, 250, 250, .96) 0, rgba(250, 250, 250, .88) 84px, rgba(250, 250, 250, 0) 190px),
+    linear-gradient(90deg, rgba(250, 250, 250, .99) 0, rgba(250, 250, 250, .98) 670px, rgba(250, 250, 250, 0) 890px);
+}
+
+.g-intro::after {
+  background:
+    linear-gradient(0deg, rgba(14, 14, 14, .96) 0, rgba(14, 14, 14, .88) 84px, rgba(14, 14, 14, 0) 190px),
+    linear-gradient(90deg, rgba(14, 14, 14, .99) 0, rgba(14, 14, 14, .98) 670px, rgba(14, 14, 14, 0) 890px);
+  opacity: 0;
+}
+
+.g-intro.is-dark::before {
+  opacity: 0;
+}
+
+.g-intro.is-dark::after {
+  opacity: 1;
+}
+
+/* Everything on the screen eases across with it */
+.g-intro,
+.g-intro .title,
+.g-intro .overline,
+.g-intro .site-name,
+.g-intro .site-links a,
+.g-keys dd,
+.g-touch-note,
+.g-intro-room-name,
+.g-intro-room-status,
+.g-intro kbd {
+  transition-property: color, background-color, border-color, opacity, visibility;
+  transition-duration: .5s;
+  transition-timing-function: ease;
+}
+
+.g-intro.is-dark,
+.g-intro.is-dark .title {
+  color: var(--white);
+}
+
+.g-intro.is-dark .overline,
+.g-intro.is-dark .g-keys dd,
+.g-intro.is-dark .g-touch-note,
+.g-intro.is-dark .g-intro-room-status {
+  color: #A8A8A8;
+}
+
+.g-intro.is-dark .site-name,
+.g-intro.is-dark .site-links a {
+  color: rgba(255, 255, 255, .6);
+}
+
+.g-intro.is-dark .site-name:hover,
+.g-intro.is-dark .site-links a:hover {
+  color: var(--brandDark);
+}
+
+.g-intro.is-dark kbd {
+  border-color: rgba(255, 255, 255, .24);
+  background: #262626;
+  color: var(--white);
+}
+
+.g-intro.is-dark .g-intro-room-name {
+  color: var(--white);
+}
+
+.g-intro.is-dark .g-intro-rooms button:hover .g-intro-room-name,
+.g-intro.is-dark .g-intro-rooms button[aria-current] .g-intro-room-name {
+  color: var(--brandDark);
+}
+
+/* Buttons swap over: the primary becomes white on dark, the secondary a pale outline */
+.g-intro.is-dark .btn.btn--primary,
+.g-intro.is-dark .btn.btn--primary:focus-visible {
+  border-color: var(--white);
+  background: var(--white);
+  color: var(--highEmph);
+}
+
+.g-intro.is-dark .btn.btn--primary:hover:not(:disabled),
+.g-intro.is-dark .btn.btn--primary:active:not(:disabled) {
+  border-color: var(--brandDark);
+  background: var(--brandDark);
+  color: var(--white);
+}
+
+.g-intro.is-dark .btn.btn--secondary,
+.g-intro.is-dark .btn.btn--secondary:focus-visible {
+  border-color: rgba(255, 255, 255, .32);
+  background: transparent;
+  color: var(--white);
+}
+
+.g-intro.is-dark .btn.btn--secondary:hover:not(:disabled),
+.g-intro.is-dark .btn.btn--secondary:active:not(:disabled) {
+  border-color: var(--white);
+  background: var(--white);
+  color: var(--highEmph);
+}
+
+.g-intro.is-dark .g-intro-actions .btn[disabled] {
+  border-color: rgba(255, 255, 255, .32);
+  background: transparent;
+  color: #A8A8A8;
+}
+
+.g-intro-main {
+  width: min(600px, 100%);
+  margin: auto 0;
+  padding: 24px clamp(20px, 4vw, 48px);
+}
+
+/* Every room in a row, lighting up as the tour passes through it */
+.g-intro-rooms {
+  opacity: 0;
+  transition: opacity .6s ease;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(118px, 1fr);
+  align-items: start;
+  gap: 16px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  padding: 0 clamp(20px, 4vw, 48px) 24px;
+  scrollbar-width: none;
+}
+
+.is-revealed .g-intro-rooms {
+  opacity: 1;
+}
+
+.g-intro-rooms button {
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 2px dashed rgba(27, 169, 223, .45);
+  background: transparent;
+  text-align: left;
+  font-family: Inter;
+  line-height: 1.35;
+  transition: border-color .3s ease;
+}
+
+.g-intro-rooms button:hover,
+.g-intro-rooms button[aria-current] {
+  border-top: 2px solid var(--brandDark);
+}
+
+.g-intro-rooms button:focus-visible {
+  outline: 2px solid var(--brandDark);
+  outline-offset: 2px;
+}
+
+.g-intro-room-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--highEmph);
+  transition: color .2s ease;
+}
+
+.g-intro-rooms button:hover .g-intro-room-name,
+.g-intro-rooms button[aria-current] .g-intro-room-name {
+  color: var(--brandDark);
+}
+
+.g-intro-room-status {
+  display: block;
+  font-size: 13px;
+  color: var(--lowEmph);
+}
+
+/* Clear of the side rail once the navigation moves there */
+@media (min-width: 1024px) {
+  .g-intro-main {
+    margin-left: var(--rail);
+    padding-left: 0;
+  }
+
+  .g-intro-rooms {
+    margin-left: var(--rail);
+    padding-left: 0;
+  }
+}
+
+/* Too narrow to read over the rooms, so the words get a full panel and the view shows above */
+@media (max-width: 899.98px) {
+  .g-intro::before {
+    background: linear-gradient(0deg, rgba(250, 250, 250, .97) 0, rgba(250, 250, 250, .95) 72%, rgba(250, 250, 250, 0) 92%);
+  }
+
+  .g-intro::after {
+    background: linear-gradient(0deg, rgba(14, 14, 14, .97) 0, rgba(14, 14, 14, .95) 72%, rgba(14, 14, 14, 0) 92%);
+  }
+
+  .g-intro .site-nav {
+    background: rgba(250, 250, 250, .92);
+    transition: background-color .5s ease, border-color .5s ease;
+  }
+
+  .g-intro.is-dark .site-nav {
+    border-color: rgba(255, 255, 255, .1);
+    background: rgba(14, 14, 14, .92);
+  }
+
+  .g-intro-main {
+    margin: auto 0 0;
+    padding-top: 130px;
+  }
+}
+
+.g-intro-main .overline {
+  margin: 0 0 16px;
+}
+
+.g-intro-main .title {
+  margin: 0 0 20px;
+  font-size: clamp(40px, 5vw, 64px);
+}
+
+.g-intro-lede {
+  margin: 0 0 28px;
+  font-size: 18px;
+}
+
+.g-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 0 0 32px;
+}
+
+.g-keys > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.g-keys dt {
+  display: flex;
+  font-weight: 400;
+}
+
+.g-keys dd {
+  margin: 0;
+  font-family: Inter;
+  font-size: 15px;
+  color: var(--medEmph);
+}
+
+.g-intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.g-intro-actions .btn[disabled] {
+  border-color: rgba(30, 30, 30, .22);
+  background: transparent;
+  color: var(--lowEmph);
+  opacity: 1;
+}
+
+.g-no-webgl,
+.g-noscript {
+  display: none;
+}
+
+.g-noscript {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 50;
+  display: block;
+  padding: 16px 24px;
+  background: var(--white);
+}
+
+.no-webgl .g-no-webgl {
+  display: block;
+  margin-top: 24px;
+}
+
+.no-webgl #enter,
+.no-webgl .g-keys {
+  display: none;
+}
+
+/* Touch screens get a thumbstick rather than keys */
+@media (hover: none) and (pointer: coarse) {
+  .g-keys,
+  .g-hint-keys {
+    display: none;
+  }
+
+  .g-touch-note {
+    display: block;
+    margin: 0 0 28px;
+    font-family: Inter;
+    font-size: 16px;
+    color: var(--medEmph);
+  }
+
+  .g-hint-touch {
+    display: inline;
+  }
+
+  .g-hint {
+    top: auto;
+    left: 16px;
+    right: 16px;
+    bottom: 96px;
+    white-space: normal;
+    border-radius: var(--radius);
+    line-height: 1.4;
+    transform: none;
+  }
+
+  .g-reticle {
+    display: none;
+  }
+}
+
+/* Without pointer lock, say drag rather than mouse */
+.is-drag .g-reticle {
+  display: none;
+}
+
+.is-drag .g-hint-drag {
+  display: inline;
+}
+
+@media (max-width: 767.98px) {
+  .g-room {
+    left: 16px;
+    bottom: 16px;
+    right: 16px;
+    max-width: none;
+    padding: 10px 14px;
+  }
+
+  .g-room-title {
+    display: none;
+  }
+
+  .g-mini {
+    top: 16px;
+    right: 16px;
+    width: 160px;
+    padding: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-intro::before,
+  .g-intro::after,
+  #world,
+  .g-intro-rooms,
+  .g-reader,
+  .g-veil,
+  .g-intro,
+  .g-map,
+  .g-room.is-in {
+    animation: none;
+    transition: none;
+  }
+}
