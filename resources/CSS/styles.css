@@ -1090,6 +1090,14 @@ a.home-side-item:hover .home-drift img {
   transform: scale(1);
 }
 
+/* Near the right edge the label opens to the left, so it stays on screen */
+.tm-cursor.is-flipped .tm-cursor-label {
+  left: auto;
+  right: 14px;
+  border-radius: 20px var(--radius-sm) 20px 20px;
+  transform-origin: top right;
+}
+
 @media (max-width: 767.98px) {
   .home-hero {
     padding-top: 48px;
@@ -1522,6 +1530,56 @@ a.home-side-item:hover .home-drift img {
   outline: 2px solid var(--brandDark);
   outline-offset: 4px;
   border-radius: var(--radius-sm);
+}
+
+/* The way into the 3D gallery: an icon at the far end of the navigation, on every page */
+.site-gallery {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  border-radius: var(--radius-sm);
+  color: rgba(30, 30, 30, .45);
+  transition: color .2s ease;
+}
+
+.site-gallery:hover,
+.site-gallery.is-active {
+  color: var(--brandDark);
+}
+
+.site-gallery:active {
+  opacity: .7;
+}
+
+.site-gallery:focus-visible {
+  outline: 2px solid var(--brandDark);
+  outline-offset: 0;
+}
+
+.site-gallery-route {
+  stroke: var(--brandDark);
+}
+
+@media (max-width: 1023.98px) {
+  .site-nav .container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+/* On wide screens it mirrors the name in the opposite corner, and stays put on scroll */
+@media (min-width: 1024px) {
+  .site-gallery {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    pointer-events: auto;
+  }
 }
 
 h1[id],
@@ -2200,16 +2258,32 @@ a.home-side-item:focus-visible,
   color: var(--white);
 }
 
-a.btn--primary:hover,
-.text-block a.btn--primary:hover {
+/* Bootstrap gives .btn its own focus and pressed colours, from variables this site doesn't set,
+   which turn a button transparent. So these states are all spelled out, for links and buttons alike. */
+.btn.btn--primary:focus-visible {
+  border-color: var(--highEmph);
+  background: var(--highEmph);
+  color: var(--white);
+}
+
+.btn.btn--secondary:focus-visible {
+  border-color: rgba(30, 30, 30, .22);
+  background: transparent;
+  color: var(--highEmph);
+}
+
+.btn.btn--primary:hover:not(:disabled),
+.btn.btn--primary:active:not(:disabled),
+.text-block a.btn.btn--primary:hover {
   border-color: var(--brandDark);
   background: var(--brandDark);
   color: var(--white);
   text-decoration: none;
 }
 
-a.btn--secondary:hover,
-.text-block a.btn--secondary:hover,
+.btn.btn--secondary:hover:not(:disabled),
+.btn.btn--secondary:active:not(:disabled),
+.text-block a.btn.btn--secondary:hover,
 a.home-card:hover .btn--secondary,
 a.home-side-item:hover .btn--secondary {
   border-color: var(--highEmph);

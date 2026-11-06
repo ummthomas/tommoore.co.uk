@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <!-- Relative paths need the trailing slash, which some static hosts don't add -->
+    <script>
+      if (!location.pathname.endsWith('/') && !location.pathname.endsWith('.html')) location.replace(location.pathname + '/' + location.search + location.hash);
+    </script>
+
+    <!-- The browser usually dissolves between pages, as it does across the site, but it sometimes
+         skips this page and some browsers don't do it at all. Fade in here whenever it doesn't. -->
+    <script>
+      document.documentElement.classList.add('g-arrive');
+      addEventListener('pagereveal', (event) => {
+        if (event.viewTransition) document.documentElement.classList.remove('g-arrive');
+      });
+    </script>
+
+    <!-- HTML Meta Tags -->
+    <title>Tom Moore - The Gallery</title>
+    <meta name="description" content="Walk through Tom Moore's case studies in a 3D gallery, from NHS onboarding to the launch of Times Radio.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://www.tommoore.co.uk/gallery/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tom Moore - The Gallery">
+    <meta property="og:description" content="Walk through Tom Moore's case studies in a 3D gallery, from NHS onboarding to the launch of Times Radio.">
+
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../resources/CSS/styles.css">
+    <link rel="stylesheet" type="text/css" href="gallery.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <script type="importmap">
+      { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js" } }
+    </script>
+    <!-- Start fetching the code straight away, so the rooms are ready sooner after the transition -->
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js" crossorigin="anonymous">
+    <link rel="modulepreload" href="gallery.js">
+    <link rel="modulepreload" href="content.js">
+    <link rel="modulepreload" href="pages.js">
+  </head>
+
+  <body class="g-body">
+    <canvas id="world" tabindex="-1" aria-label="A 3D gallery of Tom Moore's case studies"></canvas>
+    <div class="g-vignette" aria-hidden="true"></div>
+    <div class="g-veil" id="veil" aria-hidden="true"></div>
+
+    <!-- In-world display -->
+    <div class="g-hud" aria-live="polite">
+      <div class="g-room" id="room"></div>
+      <button class="g-mini" id="open-map" type="button" aria-label="Open the map"><span id="mini"></span></button>
+      <p class="g-hint" id="hint">
+        <span class="g-hint-keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> walk</span>
+        <span class="g-hint-keys"><kbd>Mouse</kbd> <span class="g-hint-drag">drag</span> look</span>
+        <span class="g-hint-keys"><kbd>E</kbd> look closer</span>
+        <span class="g-hint-keys"><kbd>M</kbd> map</span>
+        <span class="g-hint-keys"><kbd>Esc</kbd> pause</span>
+        <span class="g-hint-touch">Left thumb to walk, right thumb to look, tap a piece to look closer</span>
+      </p>
+    </div>
+    <div class="tm-cursor g-reticle" id="reticle" aria-hidden="true">
+      <svg class="tm-cursor-arrow" width="16" height="17" viewBox="5 3.5 15.5 17"><path d="M8.75418 20L5.62291 4.04089L20 11.9182L12.9181 13.9727L8.75418 20Z" fill="#000" stroke="#fff"/></svg>
+      <span class="tm-cursor-label"></span>
+    </div>
+    <div class="g-stick" id="stick" aria-hidden="true"><span></span></div>
+
+    <!-- Reading panel: opens when you look closer at a piece -->
+    <aside class="g-reader" id="reader" role="dialog" aria-label="Exhibit details" inert>
+      <header class="g-reader-head">
+        <p class="home-caption" id="reader-room"></p>
+        <button class="g-icon-btn g-reader-close" type="button" aria-label="Back to walking">×</button>
+      </header>
+      <div class="g-reader-body" id="reader-body"></div>
+      <footer class="g-reader-foot">
+        <div class="g-reader-steps">
+          <button class="g-icon-btn g-reader-prev" type="button" aria-label="Previous piece">←</button>
+          <span class="g-reader-count" id="reader-count"></span>
+          <button class="g-icon-btn g-reader-next" type="button" aria-label="Next piece">→</button>
+        </div>
+        <a class="btn btn--secondary" id="reader-cta" href="../"></a>
+      </footer>
+    </aside>
+
+    <!-- Map -->
+    <div class="g-map" id="map" role="dialog" aria-label="Map of the gallery" inert>
+      <div class="g-map-card">
+        <header class="g-map-head">
+          <h2 class="headlineSecondary">Where to next?</h2>
+          <button class="g-icon-btn g-map-close" type="button" aria-label="Close the map">×</button>
+        </header>
+        <div class="g-map-plan" id="map-plan"></div>
+        <ul class="g-map-rooms" id="map-rooms"></ul>
+        <a class="link g-map-leave" href="../"><span class="link-text">Back to the site</span></a>
+      </div>
+    </div>
+
+    <!-- Start and pause screen -->
+    <section class="g-intro is-open" id="intro" aria-labelledby="intro-title">
+      <header class="site-nav">
+        <div class="container">
+          <a class="site-name" href="../">Tom Moore</a>
+          <nav class="site-links" aria-label="Main">
+            <a href="../">Work</a>
+            <a href="../about.html">About</a>
+            <a href="https://www.linkedin.com/in/tommoore292/" target="_blank" rel="noopener">Contact</a>
+          </nav>
+          <!-- Lit up because you're in the gallery, and from here it takes you back out -->
+          <a class="site-gallery is-active" href="../" aria-label="Back to the site" data-cursor="Back to the site"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.75" y="2.75" width="18.5" height="18.5" rx="2"/><rect x="8" y="7" width="8" height="8"/><path d="M3.4 3.4 8 7M20.6 3.4 16 7M3.4 20.6 8 15M20.6 20.6 16 15"/><path class="site-gallery-route" d="M12 17.25v2.5"/></svg></a>
+        </div>
+      </header>
+      <div class="g-intro-main">
+        <p class="overline" id="intro-note">The Gallery</p>
+        <h1 class="title" id="intro-title">Walk through the&nbsp;work.</h1>
+        <p class="body g-intro-lede">Six projects hung across six rooms. Follow the dashed line, or wander. Walk up to anything and look closer.</p>
+        <dl class="g-keys">
+          <div><dt><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>Walk</dd></div>
+          <div><dt><kbd>Shift</kbd></dt><dd>Run</dd></div>
+          <div><dt><kbd>Space</kbd></dt><dd>Jump</dd></div>
+          <div><dt><kbd>Mouse</kbd></dt><dd>Look around</dd></div>
+          <div><dt><kbd>E</kbd></dt><dd>Look closer</dd></div>
+          <div><dt><kbd>M</kbd></dt><dd>Map</dd></div>
+        </dl>
+        <p class="g-touch-note">Left thumb to walk, right thumb to look, and tap a piece to look closer.</p>
+        <div class="g-intro-actions">
+          <button class="btn btn--primary" id="enter" type="button" disabled>Hanging the work…</button>
+          <a class="btn btn--secondary" href="../">Prefer to read? Back to the site</a>
+        </div>
+        <div class="g-no-webgl">
+          <p class="body" id="no-webgl-note">This gallery needs WebGL, which isn’t available in this browser. All of the work is on the main site.</p>
+        </div>
+      </div>
+      <nav class="g-intro-rooms" id="intro-rooms" aria-label="Jump to a room"></nav>
+    </section>
+
+    <noscript>
+      <div class="g-noscript">
+        <p class="body">This gallery needs JavaScript. All of the work is on the <a href="../">main site</a>.</p>
+      </div>
+    </noscript>
+
+    <script src="../resources/JS/cursor.js"></script>
+    <script type="module" src="gallery.js" onerror="document.body.classList.add('no-webgl')"></script>
+  </body>
+</html>

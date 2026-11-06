@@ -27,6 +27,7 @@
     x = e.clientX;
     y = e.clientY;
     cursor.style.transform = `translate(${x}px, ${y}px)`;
+    cursor.classList.toggle('is-flipped', x > window.innerWidth - 220);
     cursor.classList.add('is-visible');
     updateLabel();
   });
