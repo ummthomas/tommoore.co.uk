@@ -230,7 +230,9 @@ const floorMaterial = new THREE.ShaderMaterial({
     varying vec3 vView;
     varying float vRefl;
     void main() {
-      float facing = abs(normalize(vView).y);
+      // Clamped: rounding can push this a hair past 1, and pow() of a negative is undefined on
+      // many phone GPUs, which shows up as black speckles on the floor
+      float facing = clamp(abs(normalize(vView).y), 0.0, 1.0);
       float fresnel = pow(1.0 - facing, 2.5);
       float mirror = uRefl * vRefl * (0.28 + 0.72 * fresnel);
       gl_FragColor = vec4(vColor, 1.0 - mirror);
@@ -285,10 +287,20 @@ const planeGeometry = new THREE.PlaneGeometry(1, 1);
 const LAYER = { floor: 0, light: 1, edges: 2, shadow: 3, route: 3, lettering: 4 };
 const MIRROR_OFFSET = -10;
 
+// Phones and tablets have coarse depth buffers, so a few millimetres between a wall and what's on
+// it isn't enough: the two flicker through each other in stripes. Polygon offset also nudges each
+// layer towards the camera in depth, by a step that scales with the buffer's own precision.
+function lift(material, layer) {
+  material.polygonOffset = true;
+  material.polygonOffsetFactor = -1;
+  material.polygonOffsetUnits = -4 * (layer + 1);
+  return material;
+}
+
 function decal(texture, color, opacity, layer = LAYER.light) {
-  const mesh = new THREE.Mesh(planeGeometry, new THREE.MeshBasicMaterial({
+  const mesh = new THREE.Mesh(planeGeometry, lift(new THREE.MeshBasicMaterial({
     map: texture, color, opacity, transparent: true, depthWrite: false, toneMapped: false,
-  }));
+  }), layer));
   mesh.renderOrder = layer;
   return mesh;
 }
@@ -531,14 +543,14 @@ function panelTexture({ ops, width, height, shift }, bg) {
 }
 
 function lettering(bg) {
-  return new THREE.MeshBasicMaterial({
+  return lift(new THREE.MeshBasicMaterial({
     transparent: !bg,
     depthWrite: Boolean(bg),
     toneMapped: false,
     blending: bg ? THREE.NormalBlending : THREE.CustomBlending,
     blendSrc: THREE.OneFactor,
     blendDst: THREE.OneMinusSrcAlphaFactor,
-  });
+  }), LAYER.lettering);
 }
 
 function loadPicture(url) {
@@ -563,7 +575,7 @@ function loadPicture(url) {
 
 let renderer;
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(68, 1, 0.08, 160);
+const camera = new THREE.PerspectiveCamera(68, 1, 0.2, 120);
 camera.rotation.order = 'YXZ';
 const world = new THREE.Group();
 const overlay = new THREE.Group();
@@ -678,8 +690,8 @@ function buildShell() {
       shell.quad([ox, 0, oz], [ex, 0, ez], [ex, h, ez], [ox, h, oz], wall, h);
 
       // A dark shadow gap where the wall meets the floor
-      const gx = run.n[0] * 0.003;
-      const gz = run.n[1] * 0.003;
+      const gx = run.n[0] * 0.008;
+      const gz = run.n[1] * 0.008;
       shell.quad([ox + gx, 0, oz + gz], [ex + gx, 0, ez + gz], [ex + gx, 0.07, ez + gz], [ox + gx, 0.07, oz + gz], skirting, 99);
 
       // Physically the wall is half its thickness either side of the plan line
@@ -759,9 +771,9 @@ function buildShell() {
   aoGeometry.setAttribute('uv', new THREE.Float32BufferAttribute(ao.uv, 2));
   aoGeometry.setAttribute('color', new THREE.Float32BufferAttribute(ao.color, 4));
   aoGeometry.setIndex(ao.index);
-  const aoMesh = new THREE.Mesh(aoGeometry, new THREE.MeshBasicMaterial({
+  const aoMesh = new THREE.Mesh(aoGeometry, lift(new THREE.MeshBasicMaterial({
     map: softTextures.fade, vertexColors: true, transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false,
-  }));
+  }), LAYER.edges));
   aoMesh.renderOrder = LAYER.edges;
   overlay.add(aoMesh);
 }
@@ -803,20 +815,19 @@ function buildRoute() {
   texture.wrapS = THREE.RepeatWrapping;
   texture.anisotropy = 8;
 
-  const mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+  const mesh = new THREE.Mesh(geometry, lift(new THREE.MeshBasicMaterial({
     map: texture, color: BRAND, transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false,
-  }));
+  }), LAYER.route));
   mesh.renderOrder = LAYER.route;
   overlay.add(mesh);
   return texture;
 }
 
 function floorShadow(x, z, width, depth, opacity = 0.3) {
-  const mesh = decal(softTextures.shadow, 0x000000, opacity);
+  const mesh = decal(softTextures.shadow, 0x000000, opacity, LAYER.edges);
   mesh.rotation.x = -Math.PI / 2;
   mesh.position.set(x, 0.004, z);
   mesh.scale.set(width * 1.5, depth * 1.5, 1);
-  mesh.renderOrder = LAYER.edges;
   overlay.add(mesh);
 }
 
@@ -924,7 +935,7 @@ function placeExhibit(ex, room, position, normal, wall) {
     const back = new THREE.Mesh(new THREE.BoxGeometry(ex.w + 0.05, ex.h + 0.05, depth), new THREE.MeshBasicMaterial({ color: INK, toneMapped: false }));
     back.position.z = depth / 2 + (onWall ? 0.009 : -0.02);
     group.add(back);
-    ex.material = new THREE.MeshBasicMaterial({ color: theme === THEMES.dark ? 0x2c2c2c : 0xd5dadd, toneMapped: false });
+    ex.material = lift(new THREE.MeshBasicMaterial({ color: theme === THEMES.dark ? 0x2c2c2c : 0xd5dadd, toneMapped: false }), LAYER.lettering);
     const face = new THREE.Mesh(planeGeometry, ex.material);
     face.scale.set(ex.w, ex.h, 1);
     face.position.z = back.position.z + depth / 2 + 0.002;
