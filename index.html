@@ -52,11 +52,6 @@
 
     <!-- Hero -->
     <div class="home-hero-wrap">
-    <div class="home-marquee home-marquee-top" aria-hidden="true" data-direction="-1" data-shape="top">
-      <svg class="home-marquee-svg">
-        <path class="home-marquee-line" fill="none" />
-      </svg>
-    </div>
     <div class="container home-hero">
       <h1 class="home-title" data-cursor="Hello! I’m Tom :)">I’m Tom Moore, a product design lead who sets the direction and still ships the work.</h1>
       <dl class="home-facts">
@@ -283,7 +278,7 @@
       })();
     </script>
     <script>
-      // Dashed lines flowing in opposite directions around the hero (the footer line is in footer.js),
+      // Dashed line flowing below the hero (the footer line is in footer.js),
       // echoing the dashed line in the about photo
       (function () {
         const wrap = document.querySelector('.home-hero-wrap');
@@ -330,18 +325,10 @@
         // The side rail layout (1024px and up) has room for the lines to reach the headline
         const wide = () => window.matchMedia('(min-width: 1024px)').matches;
 
-        // The shared hero wave: the same height, length and phase for both lines
-        const heroWave = (w, mid) => sine(w, mid, mid, wide() ? 40 : 16, 1.25, Math.PI / 2);
-
-        // Points for each line, worked out from where the headline and facts actually sit
+        // Points for each line: a horizontal sine wave centred in its own band
         const shapes = {
-          // Both hero lines share one horizontal sine wave, each centred in its own band
-          top(w, h) {
-            // Sits a little higher without the side rail, between the top nav and the headline
-            return heroWave(w, wide() ? h / 2 : h * 0.42);
-          },
           bottom(w, h) {
-            return heroWave(w, h / 2);
+            return sine(w, h / 2, h / 2, wide() ? 40 : 16, 1.25, Math.PI / 2);
           },
         };
 
