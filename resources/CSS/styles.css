@@ -1273,8 +1273,7 @@ a.home-side-item:hover .home-drift img {
   }
 }
 
-/* Home hero dashed lines: one swelling across the top of the hero, one sweeping up
-   from the intro to the end of the headline. Both are drawn by the page script. */
+/* Home hero dashed line, below the hero. Drawn by the page script. */
 .home-hero-wrap {
   position: relative;
 }
@@ -1303,14 +1302,6 @@ a.home-side-item:hover .home-drift img {
   stroke-dasharray: 44 28;
 }
 
-.home-marquee-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 96px;
-}
-
 /* The bottom line sits in its own band between the facts and the intro */
 .home-marquee-bottom {
   position: relative;
@@ -1326,15 +1317,6 @@ a.home-side-item:hover .home-drift img {
 }
 
 @media (min-width: 1024px) {
-  /* Top line sits in the space above the headline, below the name, and fades out on the right */
-  .home-marquee-top {
-    top: -64px;
-    right: var(--rail);
-    height: 136px;
-    -webkit-mask-image: linear-gradient(to left, transparent, #000 160px);
-    mask-image: linear-gradient(to left, transparent, #000 160px);
-  }
-
   /* Bottom line starts at the side rail and fades in from it. Its drawing reaches
      110px below the hero so the low left end sits down beside the intro */
   .home-marquee-bottom .home-marquee-svg {
@@ -1348,9 +1330,6 @@ a.home-side-item:hover .home-drift img {
 @media (max-width: 767.98px) {
   .home-hero-wrap .home-hero {
     padding-top: 80px;
-  }
-  .home-marquee-top {
-    height: 80px;
   }
   .home-marquee-bottom {
     height: 100px;
