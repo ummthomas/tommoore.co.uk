@@ -27,6 +27,19 @@ export const COLOURS = ['#FFE58F', '#FFC9D9', '#BFE6F6', '#CDEDC1', '#FFD4AE'];
 
 export const UNKNOWN_PLACE = 'somewhere on Earth';
 
+// The wall's note area, in centimetres. Visitors put a note anywhere in it, in steps of `snap`, and
+// each note stores where its middle is (x across from the left, y down from the top). Newer notes
+// cover older ones. Don't change these once notes exist, or old notes will move.
+export const BOARD = { width: 600, height: 300, top: 44, margin: 16, note: 40, snap: 4 };
+
+// The range a note's middle can sit in
+export const BOUNDS = {
+  x0: BOARD.margin + BOARD.note / 2,
+  x1: BOARD.width - BOARD.margin - BOARD.note / 2,
+  y0: BOARD.top + BOARD.note / 2,
+  y1: BOARD.height - BOARD.margin - BOARD.note / 2,
+};
+
 export function noteText(note) {
   return `${MESSAGES[note.m] || MESSAGES[0]} from ${note.place || UNKNOWN_PLACE}`;
 }

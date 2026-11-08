@@ -59,6 +59,7 @@ const dom = {
   mapPlan: $('#map-plan'),
   mapRooms: $('#map-rooms'),
   stick: $('#stick'),
+  placeHint: $('#place-hint'),
   veil: $('#veil'),
 };
 
@@ -917,7 +918,8 @@ function placeExhibit(ex, room, position, normal, wall) {
   world.add(group);
   ex.group = group;
 
-  const isArt = ex.kind !== 'text';
+  // The note wall is see-through, laid straight onto the wall like lettering
+  const isArt = ex.kind !== 'text' && ex.kind !== 'notes';
 
   if (onWall) {
     group.add(wallDecal(softTextures.pool, 0xffffff, theme.pool * (isArt ? 1 : 0.7), wall, 0, ex.h * 0.08, 0.005, ex.w * 1.75 + 1, ex.h * 1.6 + 1.2));
@@ -964,6 +966,7 @@ function placeExhibit(ex, room, position, normal, wall) {
     face.position.z = onWall ? 0.012 : 0.022;
     face.renderOrder = LAYER.lettering;
     group.add(face);
+    ex.faceZ = face.position.z;
     if (ex.bg && !onWall) {
       const back = new THREE.Mesh(new THREE.BoxGeometry(ex.w + 0.05, ex.h + 0.05, 0.04), new THREE.MeshBasicMaterial({ color: '#0B0B0B', toneMapped: false }));
       group.add(back);
@@ -1054,6 +1057,7 @@ function buildExhibits() {
     if (ex.kind === 'notes') {
       ex.wall = createNoteWall(ex, {
         THREE, renderer, canvasOf, setFont, wrap, lift, revealTexture, planeGeometry, layer: LAYER.lettering, pixelsPerMetre: PIXELS_PER_METRE,
+        onChoose: () => chooseSpot(ex),
       });
       noteWalls.push(ex.wall);
     }
@@ -1150,6 +1154,8 @@ let glide = null;
 let viewShift = 0;
 let viewShiftTarget = 0;
 let mouseNdc = null;
+// Set when walking resumes from the panel or the map, where an Esc may have just been pressed
+let keepWalkingUnlocked = false;
 
 function collide(pos) {
   for (let pass = 0; pass < 2; pass++) {
@@ -1351,7 +1357,7 @@ function setHovered(ex) {
   dom.reticle.classList.toggle('has-label', Boolean(ex));
   if (ex) dom.reticle.querySelector('.tm-cursor-label').textContent = label;
   // Without pointer lock, the shared cursor from cursor.js carries the label instead
-  if (ex && dragMode) dom.canvas.dataset.cursor = label;
+  if (ex && (dragMode || !locked)) dom.canvas.dataset.cursor = label;
   else delete dom.canvas.dataset.cursor;
 }
 
@@ -1360,7 +1366,8 @@ function updateHover() {
     setHovered(null);
     return;
   }
-  if (dragMode && !isTouch && mouseNdc) setHovered(exhibitUnder(mouseNdc.x, mouseNdc.y));
+  // Without pointer lock, point with the mouse itself
+  if ((dragMode || !locked) && !isTouch && mouseNdc) setHovered(exhibitUnder(mouseNdc.x, mouseNdc.y));
   else setHovered(exhibitUnder(0, 0));
 }
 
@@ -1394,8 +1401,8 @@ function shortestAngle(from, to) {
 }
 
 // Where to stand to see a piece whole in the part of the screen the panel leaves free
-function viewingSpot(ex) {
-  const width = window.innerWidth - panelWidth();
+function viewingSpot(ex, panel = panelWidth()) {
+  const width = window.innerWidth - panel;
   const height = window.innerHeight;
   const halfTan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   const fitHeight = (ex.h / 2 * 1.3) / halfTan;
@@ -1526,7 +1533,7 @@ function stepReader(direction) {
   openReader(next);
 }
 
-function closeReader() {
+function closeReader({ byKey = false } = {}) {
   dom.reader.classList.remove('is-open', 'is-film');
   dom.reader.setAttribute('inert', '');
   dom.body.classList.remove('is-reading');
@@ -1541,7 +1548,7 @@ function closeReader() {
   player.x = pos.x;
   player.z = pos.z;
   player.vx = player.vz = 0;
-  resumeWalking();
+  resumeWalking({ fromPanel: true, lock: !byKey });
 }
 
 function updateGlide(dt) {
@@ -1571,6 +1578,216 @@ function applyViewOffset() {
   if (viewShift !== 0) camera.setViewOffset(w, h, viewShift, 0, w, h);
   else camera.clearViewOffset();
   camera.updateProjectionMatrix();
+}
+
+/* ------------------------------------------------------------------- Putting a note on the wall */
+
+// Two parts. Choosing: the panel slides away and you step back to see the whole wall, and a
+// see-through copy of your note follows the pointer (or the arrow keys) anywhere on it. Then putting
+// it up, close up: once it's saved you walk up to the spot, the note comes up into view as if in
+// your hand, and you press it onto the wall. A ring of blue flashes round it, you step back, and the
+// panel returns with your note pinned among the rest.
+let placing = null;
+const wallPlane = new THREE.Plane();
+const onWall = new THREE.Vector3();
+const held = new THREE.Vector3();
+const heldTurn = new THREE.Quaternion();
+const tipBack = new THREE.Quaternion();
+const PLACE = { lift: 0.6, reach: 1.15, press: 1.65, admire: 3 };
+
+function hidePanel() {
+  dom.reader.classList.remove('is-open', 'is-film');
+  dom.reader.setAttribute('inert', '');
+  dom.body.classList.remove('is-reading');
+  reading = null;
+  viewShiftTarget = 0;
+}
+
+function glideTo(to, duration) {
+  glide = { t: 0, duration, from: { x: player.x, z: player.z, yaw: player.yaw, pitch: player.pitch }, to: { ...to, yaw: shortestAngle(player.yaw, to.yaw) } };
+}
+
+function makeRing(size) {
+  const ring = new THREE.Mesh(outlineGeometry(size, size, 0.012), new THREE.MeshBasicMaterial({
+    color: BRAND, transparent: true, opacity: 0, depthWrite: false, toneMapped: false,
+  }));
+  ring.renderOrder = LAYER.lettering + 2;
+  return ring;
+}
+
+function chooseSpot(ex) {
+  const { wall } = ex;
+  state = 'placing';
+  hidePanel();
+  glideTo(viewingSpot(ex, 0), 0.9);
+  wall.showArea(true);
+
+  const point = wall.startPoint();
+  const ghost = wall.noteMesh(wall.draft());
+  ghost.material.opacity = 0;
+  const start = wall.pose({ id: 0, ...point });
+  ghost.position.copy(start.position).addScaledVector(ex.normal, 0.01);
+  ghost.quaternion.copy(start.quaternion);
+  const ring = makeRing(0.43);
+  scene.add(ghost, ring);
+
+  placing = { ex, ghost, ring, point, phase: 'choosing', t: 0, shown: null };
+  dom.placeHint.hidden = false;
+  dom.body.classList.add('is-placing');
+  dom.canvas.focus({ preventScroll: true });
+}
+
+function pointUnder(clientX, clientY) {
+  const { ex } = placing;
+  ndc.set(clientX / window.innerWidth * 2 - 1, -(clientY / window.innerHeight * 2 - 1));
+  ray.setFromCamera(ndc, camera);
+  wallPlane.setFromNormalAndCoplanarPoint(ex.normal, ex.center);
+  if (!ray.ray.intersectPlane(wallPlane, onWall)) return null;
+  const local = ex.group.worldToLocal(onWall.clone());
+  return ex.wall.pointAt(local.x, local.y);
+}
+
+function movePoint(point) {
+  if (placing && placing.phase === 'choosing' && point) placing.point = point;
+}
+
+async function pressNote() {
+  if (!placing || placing.phase !== 'choosing') return;
+  const p = placing;
+  p.phase = 'saving';
+  try {
+    p.note = await p.ex.wall.post(p.point);
+  } catch {
+    // The panel says what went wrong
+    finishPlacing();
+    return;
+  }
+  if (reduceMotion) finishPlacing();
+  else startCloseUp(p);
+}
+
+// Walk up to the spot with the note in hand
+function startCloseUp(p) {
+  const { ex, note } = p;
+  p.target = ex.wall.pose(note);
+  p.phase = 'close-up';
+  p.t = 0;
+  dom.placeHint.hidden = true;
+  ex.wall.showArea(false);
+  p.ghost.visible = false;
+
+  const { position } = p.target;
+  const distance = 0.95;
+  glideTo({
+    x: position.x + ex.normal.x * distance,
+    z: position.z + ex.normal.z * distance,
+    yaw: Math.atan2(ex.normal.x, ex.normal.z),
+    pitch: Math.atan2(position.y - EYE, distance) * 0.85,
+  }, PLACE.reach - 0.1);
+
+  p.hand = ex.wall.noteMesh(note);
+  p.hand.material.opacity = 0;
+  scene.add(p.hand);
+}
+
+function cancelPlacing() {
+  if (placing && placing.phase === 'choosing') finishPlacing();
+}
+
+function finishPlacing() {
+  const { ex, ghost, ring, hand } = placing;
+  placing = null;
+  [ghost, ring, hand].filter(Boolean).forEach((mesh) => {
+    scene.remove(mesh);
+    if (mesh.material.map) mesh.material.map.dispose();
+    mesh.material.dispose();
+    if (mesh.geometry !== planeGeometry) mesh.geometry.dispose();
+  });
+  dom.placeHint.hidden = true;
+  dom.body.classList.remove('is-placing');
+  ex.wall.showArea(false);
+  ex.wall.settle();
+  openReader(ex);
+}
+
+function updatePlacing(dt) {
+  if (!placing) return;
+  const p = placing;
+  p.t += dt;
+  if (p.phase === 'close-up') updateCloseUp(p, dt);
+  else updateChoosing(p, dt);
+}
+
+function updateChoosing(p, dt) {
+  const { ex, ghost, ring } = p;
+  const clamp = (u) => Math.min(1, Math.max(0, u));
+  const target = ex.wall.pose({ id: 0, ...p.point });
+  const k = 1 - Math.exp(-dt * 16);
+  ghost.position.lerp(target.position.clone().addScaledVector(ex.normal, 0.01), k);
+  ghost.quaternion.slerp(target.quaternion, k);
+  ghost.material.opacity = 0.75 * clamp(p.t / 0.3);
+  ring.position.copy(ghost.position).addScaledVector(ex.normal, 0.002);
+  ring.quaternion.copy(ghost.quaternion);
+  ring.material.opacity = p.phase === 'saving' ? 1 : 0.5 + 0.3 * Math.sin(p.t * 5);
+
+  const key = `${p.point.x},${p.point.y}`;
+  if (p.shown !== key) {
+    p.shown = key;
+    const covered = ex.wall.covers(p.point);
+    dom.placeHint.querySelector('.g-place-covers').textContent = covered
+      ? `This covers a note from ${covered.place || 'somewhere on Earth'}, which stays in the list.`
+      : '';
+  }
+}
+
+function updateCloseUp(p) {
+  const { ex, hand, ring } = p;
+  const clamp = (u) => Math.min(1, Math.max(0, u));
+  const ease = (u) => (u < 0.5 ? 4 * u * u * u : 1 - (-2 * u + 2) ** 3 / 2);
+
+  // Held low in view and tipped back, rising as you walk up
+  const rise = 1 - (1 - clamp(p.t / PLACE.lift)) ** 3;
+  camera.updateMatrixWorld();
+  held.set(0.06, -0.42 + 0.28 * rise, -0.5).applyMatrix4(camera.matrixWorld);
+  tipBack.setFromEuler(new THREE.Euler(-0.32 * (1 - rise) - 0.12, 0, 0.1));
+  heldTurn.copy(camera.quaternion).multiply(tipBack);
+
+  const { position, quaternion } = p.target;
+  if (p.t < PLACE.reach) {
+    hand.position.copy(held);
+    hand.quaternion.copy(heldTurn);
+    hand.material.opacity = clamp(p.t / 0.18);
+    // A faint outline on the wall where it's going
+    ring.position.copy(position).addScaledVector(ex.normal, 0.006);
+    ring.quaternion.copy(quaternion);
+    ring.material.opacity = 0.3;
+  } else if (p.t < PLACE.press) {
+    // Out to the wall, stopping just short of it
+    const u = ease(clamp((p.t - PLACE.reach) / (PLACE.press - PLACE.reach)));
+    hand.position.lerpVectors(held, position.clone().addScaledVector(ex.normal, 0.05), u);
+    hand.quaternion.slerpQuaternions(heldTurn, quaternion, u);
+    hand.material.opacity = 1;
+    ring.material.opacity = 0.3 * (1 - u);
+  } else {
+    // Pressed flat, with a little give, and a nod of the head as it sticks
+    const u = clamp((p.t - PLACE.press) / 0.12);
+    hand.position.copy(position).addScaledVector(ex.normal, 0.05 * (1 - u * u));
+    hand.quaternion.copy(quaternion);
+    const give = 1 - 0.035 * Math.sin(Math.PI * u);
+    hand.scale.set(0.48 * give, 0.48 * give, 1);
+    if (!p.nodded && u >= 1) {
+      p.nodded = true;
+      player.pitch -= 0.012;
+    }
+    const after = p.t - PLACE.press;
+    ring.position.copy(position).addScaledVector(ex.normal, 0.006);
+    ring.quaternion.copy(quaternion);
+    ring.material.opacity = after < 0.12 ? after / 0.12 : Math.max(0, 1 - (after - 0.12) / 0.9);
+    const grow = 1 + after * 0.05;
+    ring.scale.set(grow, grow, 1);
+  }
+
+  if (p.t >= PLACE.admire) finishPlacing();
 }
 
 /* ----------------------------------------------------------------------------------------- Maps */
@@ -1636,11 +1853,11 @@ function openMap() {
   dom.map.querySelector('.g-map-close').focus({ preventScroll: true });
 }
 
-function closeMap() {
+function closeMap({ byKey = false } = {}) {
   dom.map.classList.remove('is-open');
   dom.map.setAttribute('inert', '');
   dom.body.classList.remove('is-reading');
-  resumeWalking();
+  resumeWalking({ fromPanel: true, lock: !byKey });
 }
 
 /* ------------------------------------------------------------------------------- The opening tour */
@@ -1713,8 +1930,10 @@ function requestLock() {
 function lockFailed() {
   if (locked) return;
   if (everLocked) {
-    // Browsers refuse to re-lock for a moment after Esc, so ask for one more click
-    if (state === 'walking') pause();
+    // Browsers refuse to re-lock for a moment after Esc. Coming back from the panel or the map,
+    // carry on walking (drag to look, or click to lock again) and let a second Esc pause.
+    // Otherwise ask for one more click on the pause screen.
+    if (state === 'walking' && !keepWalkingUnlocked) pause();
     return;
   }
   // No pointer lock here at all, as in some embedded browsers: drag to look instead
@@ -1727,7 +1946,11 @@ function introShift() {
   return window.innerWidth >= 900 ? -window.innerWidth * 0.2 : 0;
 }
 
-function resumeWalking() {
+// Closing the panel or map with a key doesn't ask for pointer lock: after Esc the browser either
+// refuses it or grants it and drops it again, which looked like a pause. You walk on with the normal
+// cursor (drag to look) until you click, which locks it again.
+function resumeWalking({ fromPanel = false, lock = true } = {}) {
+  keepWalkingUnlocked = fromPanel;
   state = 'walking';
   viewShiftTarget = 0;
   syncAddress();
@@ -1735,7 +1958,7 @@ function resumeWalking() {
   dom.intro.setAttribute('inert', '');
   dom.body.classList.add('is-walking');
   dom.canvas.focus({ preventScroll: true });
-  requestLock();
+  if (lock) requestLock();
 }
 
 function pause() {
@@ -1762,8 +1985,12 @@ function bindInput() {
   document.addEventListener('pointerlockchange', () => {
     locked = document.pointerLockElement === dom.canvas;
     dom.body.classList.toggle('is-locked', locked);
-    if (locked) everLocked = true;
-    else if (state === 'walking') pause();
+    if (locked) {
+      everLocked = true;
+      keepWalkingUnlocked = false;
+    } else if (state === 'walking') {
+      pause();
+    }
   });
   document.addEventListener('pointerlockerror', lockFailed);
 
@@ -1838,23 +2065,54 @@ function bindInput() {
     const pointer = pointers.get(event.pointerId);
     pointers.delete(event.pointerId);
     if (pointer && pointer.moved < 8 && event.type === 'pointerup' && state === 'walking') {
-      interact(exhibitUnder(event.clientX / window.innerWidth * 2 - 1, -(event.clientY / window.innerHeight * 2 - 1)));
+      const ex = exhibitUnder(event.clientX / window.innerWidth * 2 - 1, -(event.clientY / window.innerHeight * 2 - 1));
+      if (ex) interact(ex);
+      // Back from the panel without the pointer locked: a click locks it again
+      else if (!dragMode && !locked) requestLock();
     }
   };
   dom.canvas.addEventListener('pointerup', release);
   dom.canvas.addEventListener('pointercancel', release);
 
+  // Choosing a spot for a note: point (or tap) at a spot, click to press it on
+  dom.canvas.addEventListener('pointermove', (event) => {
+    if (state === 'placing' && placing) movePoint(pointUnder(event.clientX, event.clientY));
+  });
+  dom.canvas.addEventListener('pointerup', (event) => {
+    if (state !== 'placing' || !placing) return;
+    const point = pointUnder(event.clientX, event.clientY);
+    if (!point) return;
+    movePoint(point);
+    pressNote();
+  });
+  dom.placeHint.querySelector('.g-place-back').addEventListener('click', cancelPlacing);
+
   window.addEventListener('keydown', (event) => {
     if (event.metaKey || event.ctrlKey || event.altKey) return;
 
     if (state === 'reading') {
-      if (event.code === 'Escape' || event.code === 'KeyE') closeReader();
+      if (event.code === 'Escape' || event.code === 'KeyE') closeReader({ byKey: true });
       else if (event.code === 'ArrowRight' && !reading.wall) stepReader(1);
       else if (event.code === 'ArrowLeft' && !reading.wall) stepReader(-1);
       return;
     }
     if (state === 'map') {
-      if (event.code === 'Escape' || event.code === 'KeyM') closeMap();
+      if (event.code === 'Escape' || event.code === 'KeyM') closeMap({ byKey: true });
+      return;
+    }
+    if (state === 'placing') {
+      // Let the Back button work as a button
+      if (!placing || event.target.closest?.('.g-place-back')) return;
+      const steps = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      if (steps[event.code]) {
+        event.preventDefault();
+        movePoint(placing.ex.wall.nudge(placing.point, ...steps[event.code].map((n) => n * (event.shiftKey ? 4 : 1))));
+      } else if (event.code === 'Enter' || event.code === 'KeyE' || event.code === 'Space') {
+        event.preventDefault();
+        pressNote();
+      } else if (event.code === 'Escape') {
+        cancelPlacing();
+      }
       return;
     }
     if (state !== 'walking') return;
@@ -1969,7 +2227,7 @@ function frame(now) {
   if (tick % 20 === 0) updateVideos();
 
   if (routeTexture && !reduceMotion) routeTexture.offset.x = -now * 0.00042;
-  noteWalls.forEach((wall) => wall.update(dt));
+  updatePlacing(dt);
 
   const job = jobs.shift();
   if (job) job();

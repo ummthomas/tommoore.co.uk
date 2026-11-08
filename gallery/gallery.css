@@ -569,6 +569,18 @@ kbd {
   white-space: nowrap;
 }
 
+.g-note-yours {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--brandDark);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 500;
+  vertical-align: 2px;
+}
+
 .g-note-dot {
   width: 12px;
   height: 12px;
@@ -1131,4 +1143,66 @@ kbd {
     animation: none;
     transition: none;
   }
+}
+
+/* Choosing a spot on the note wall */
+.g-place-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: min(640px, calc(100vw - 32px));
+  padding: 10px 10px 10px 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 8px 32px rgba(11, 11, 11, .14);
+  transform: translateX(-50%);
+}
+
+.g-place-hint[hidden] {
+  display: none;
+}
+
+.g-place-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  font-family: Inter;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--highEmph);
+}
+
+.g-place-covers {
+  font-size: 13px;
+  color: var(--lowEmph);
+}
+
+.g-place-covers:empty,
+.g-place-touch {
+  display: none;
+}
+
+.g-place-hint .btn {
+  height: 38px;
+  flex-shrink: 0;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .g-place-mouse {
+    display: none;
+  }
+
+  .g-place-touch {
+    display: inline;
+  }
+}
+
+.is-placing .g-hint {
+  opacity: 0;
+  pointer-events: none;
 }
