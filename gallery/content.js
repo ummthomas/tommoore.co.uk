@@ -136,6 +136,11 @@ export const ROOMS = [
         action: 'exit', cursor: 'Leave the gallery',
       },
       {
+        // Visitors' sticky notes, kept on the server: see notes.js
+        id: 'notes', hang: 'W', kind: 'notes', w: 6, aspect: 2, y: 1.95,
+        action: 'notes', cursor: 'Leave a note',
+      },
+      {
         id: 'contact', hang: 'W', kind: 'text', w: 4.6, y: 2.2, size: 'h3',
         from: ({ home }) => ({
           over: home.one('.footer-kicker'),

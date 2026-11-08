@@ -6,3 +6,7 @@ dist/
 
 # Readable sources for password-protected pages (only the encrypted build is published)
 private/
+
+# The note wall API's installed tools and local test database
+api/notes/node_modules/
+api/notes/.wrangler/

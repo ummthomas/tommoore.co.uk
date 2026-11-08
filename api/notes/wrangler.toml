@@ -1,0 +1,18 @@
+# The note wall's API on Cloudflare Workers. setup.sh fills in database_id the first time.
+name = "tommoore-notes"
+main = "src/worker.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+# Sites allowed to post notes (localhost is always allowed, for working on it)
+ALLOWED_ORIGINS = "https://tommoore.co.uk,https://www.tommoore.co.uk"
+# Notes each visitor may leave a day, and notes the whole wall takes a day
+PER_DAY = "1"
+WALL_DAY = "300"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tommoore-notes"
+database_id = "11365000-abb0-48a5-a482-810a4060c0a4"
+migrations_dir = "migrations"

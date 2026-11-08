@@ -1,0 +1,15 @@
+{
+  "name": "tommoore-notes",
+  "private": true,
+  "description": "The gallery's note wall API, on Cloudflare Workers",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler d1 migrations apply tommoore-notes --local && wrangler dev --port 8787 --var PER_DAY:100",
+    "seed": "node seed.mjs > .wrangler/seed.sql && wrangler d1 execute tommoore-notes --local --file .wrangler/seed.sql",
+    "setup": "bash setup.sh",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.3"
+  }
+}
