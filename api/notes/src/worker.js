@@ -2,7 +2,8 @@
 //
 //   GET  /api/notes            the newest notes (?before=<id> pages back through the rest)
 //   GET  /api/notes/me         where the visitor seems to be, and whether they can post today
-//   POST /api/notes            { m, c }: stick a note up, with a message and colour by number
+//   POST /api/notes            { m, c, x, y }: stick a note up: message and colour by number, and
+//                              where on the wall, in centimetres
 //
 // Visitors only ever pick from the lists in gallery/notes-messages.js, so there's nothing to
 // moderate. Cloudflare tells us roughly where each visitor is (request.cf), and their IP address
@@ -10,7 +11,7 @@
 //
 // Settings are in wrangler.toml: ALLOWED_ORIGINS, PER_DAY and WALL_DAY.
 
-import { MESSAGES, COLOURS } from '../../../gallery/notes-messages.js';
+import { MESSAGES, COLOURS, BOUNDS } from '../../../gallery/notes-messages.js';
 
 const PAGE = 120;
 
@@ -78,7 +79,7 @@ function json(status, body, origin) {
 async function list(url, env) {
   const before = Number(url.searchParams.get('before'));
   const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || PAGE, 1), PAGE);
-  const columns = 'id, message AS m, colour AS c, place, created_at AS at';
+  const columns = 'id, message AS m, colour AS c, x, y, place, created_at AS at';
   const query = before > 0
     ? env.DB.prepare(`SELECT ${columns} FROM notes WHERE id < ? ORDER BY id DESC LIMIT ?`).bind(before, limit)
     : env.DB.prepare(`SELECT ${columns} FROM notes ORDER BY id DESC LIMIT ?`).bind(limit);
@@ -107,6 +108,10 @@ async function post(request, env, origin) {
   const c = Number(body.c);
   if (!Number.isInteger(m) || m < 0 || m >= MESSAGES.length) return json(400, { error: 'message' }, origin);
   if (!Number.isInteger(c) || c < 0 || c >= COLOURS.length) return json(400, { error: 'colour' }, origin);
+  const x = Number(body.x);
+  const y = Number(body.y);
+  const inside = (v, lo, hi) => Number.isInteger(v) && v >= lo && v <= hi;
+  if (!inside(x, BOUNDS.x0, BOUNDS.x1) || !inside(y, BOUNDS.y0, BOUNDS.y1)) return json(400, { error: 'spot' }, origin);
 
   const day = today();
   const visitor = await visitorOf(request, env);
@@ -121,7 +126,7 @@ async function post(request, env, origin) {
   const [, , inserted] = await env.DB.batch([
     env.DB.prepare('DELETE FROM daily WHERE day < ?').bind(day),
     env.DB.prepare('INSERT INTO daily (day, visitor, count) VALUES (?, ?, 1) ON CONFLICT (day, visitor) DO UPDATE SET count = count + 1').bind(day, visitor),
-    env.DB.prepare('INSERT INTO notes (message, colour, place, country) VALUES (?, ?, ?, ?) RETURNING id, message AS m, colour AS c, place, created_at AS at').bind(m, c, place, country),
+    env.DB.prepare('INSERT INTO notes (message, colour, x, y, place, country) VALUES (?, ?, ?, ?, ?, ?) RETURNING id, message AS m, colour AS c, x, y, place, created_at AS at').bind(m, c, x, y, place, country),
   ]);
   return json(201, { note: inserted.results[0] }, origin);
 }

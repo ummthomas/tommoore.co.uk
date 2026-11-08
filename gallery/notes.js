@@ -1,24 +1,33 @@
 // The note wall in the foyer: visitors stick up a note that says hello from where they are.
 //
-// The notes live on the server (api/notes/server.mjs). Here they're drawn onto one canvas, which
-// hangs on the wall as a single picture, and the reading panel becomes the place to make one.
-// Each note has a fixed spot on the board, picked from its number, so the wall looks the same on
-// every visit. New notes land on top of old ones, so the board fills up in layers.
+// The notes live on Cloudflare (api/notes). Here they're drawn onto one see-through canvas laid
+// straight onto the wall, and the reading panel becomes the place to make one. Visitors put their
+// note anywhere in the wall's note area (BOARD in notes-messages.js), and a newer note covers an
+// older one, so it fills up in layers. Notes you've left carry a blue pin, so you can find yours
+// again (remembered in this browser only).
 
-import { MESSAGES, COLOURS, UNKNOWN_PLACE } from './notes-messages.js';
+import { MESSAGES, COLOURS, UNKNOWN_PLACE, BOARD, BOUNDS } from './notes-messages.js';
 import { NOTES_API } from './notes-config.js';
 
 const API = NOTES_API;
-const NOTE = 40; // cm
-const GAP = 4;
-const HEADER = 44;
-const MARGIN = 16;
-const BOARD = '#F7F5F0';
+const { note: NOTE, top: HEADER, margin: MARGIN, snap: SNAP } = BOARD;
+// The most notes drawn at once: older ones are long covered by then
+const SHOWN = 400;
 const INK = '#1E1E1E';
 const LOW = '#5D5A54';
 const BRAND = '#1BA9DF';
 const SERIF = '"Libre Baskerville", Georgia, serif';
 const SANS = 'Inter, "Helvetica Neue", sans-serif';
+
+const MINE_KEY = 'gallery-notes-mine';
+
+function loadMine() {
+  try { return new Set(JSON.parse(localStorage.getItem(MINE_KEY) || '[]')); } catch { return new Set(); }
+}
+
+function saveMine(mine) {
+  try { localStorage.setItem(MINE_KEY, JSON.stringify([...mine].slice(-50))); } catch { /* private browsing */ }
+}
 
 const escapeHtml = (text) => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -31,10 +40,6 @@ function hash(id, salt) {
   h = Math.imul(h, 0x297a2d39);
   h ^= h >>> 15;
   return (h >>> 0) / 4294967296;
-}
-
-function gcd(a, b) {
-  return b ? gcd(b, a % b) : a;
 }
 
 function ago(iso) {
@@ -58,15 +63,9 @@ export function createNoteWall(ex, kit) {
   const width = ex.w * 100;
   const height = ex.h * 100;
 
-  // Spots on the board, in a grid with a little play
-  const cols = Math.floor((width - MARGIN * 2 + GAP) / (NOTE + GAP));
-  const rows = Math.floor((height - HEADER - MARGIN + GAP) / (NOTE + GAP));
-  const slots = cols * rows;
-  const stepX = (width - MARGIN * 2 - NOTE) / Math.max(cols - 1, 1);
-  const stepY = (height - HEADER - MARGIN - NOTE) / Math.max(rows - 1, 1);
-  // Walk the grid in big strides, so a run of new notes spreads across the board
-  let stride = Math.round(slots * 0.618);
-  while (gcd(stride, slots) !== 1) stride++;
+  if (Math.abs(width - BOARD.width) > 1 || Math.abs(height - BOARD.height) > 1) {
+    console.warn('Gallery: the note wall in content.js should be', BOARD.width / 100, 'by', BOARD.height / 100, 'metres');
+  }
 
   const wall = {
     notes: [],
@@ -77,19 +76,36 @@ export function createNoteWall(ex, kit) {
     status: 'loading', // loading, ready, offline
     pick: { m: Math.floor(Math.random() * MESSAGES.length), c: Math.floor(Math.random() * COLOURS.length) },
     posting: false,
-    landing: null,
+    pending: null,
+    mine: loadMine(),
     panel: null,
   };
 
-  function spot(note) {
-    const slot = (note.id * stride) % slots;
-    const col = slot % cols;
-    const row = Math.floor(slot / cols);
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const snap = (v, lo) => lo + Math.round((v - lo) / SNAP) * SNAP;
+
+  // Keeps a point in the note area, on the snapping steps
+  function tidy({ x, y }) {
     return {
-      x: MARGIN + NOTE / 2 + col * stepX + (hash(note.id, 1) - 0.5) * 7,
-      y: HEADER + NOTE / 2 + row * stepY + (hash(note.id, 2) - 0.5) * 7,
-      angle: (hash(note.id, 3) - 0.5) * 0.14,
+      x: clamp(snap(x, BOUNDS.x0), BOUNDS.x0, BOUNDS.x1),
+      y: clamp(snap(y, BOUNDS.y0), BOUNDS.y0, BOUNDS.y1),
     };
+  }
+
+  // Where a note sits, with just a hint of a tilt, as if pressed on by hand. Notes from before
+  // visitors chose get a place from their number.
+  function spot(note) {
+    const angle = (hash(note.id, 3) - 0.5) * 0.06;
+    if (Number.isInteger(note.x) && Number.isInteger(note.y)) return { x: note.x, y: note.y, angle };
+    return {
+      ...tidy({ x: BOUNDS.x0 + hash(note.id, 1) * (BOUNDS.x1 - BOUNDS.x0), y: BOUNDS.y0 + hash(note.id, 2) * (BOUNDS.y1 - BOUNDS.y0) }),
+      angle,
+    };
+  }
+
+  // The notes drawn on the wall, oldest first, so the newest end up on top
+  function shownNotes() {
+    return wall.notes.slice(0, SHOWN).filter((note) => note !== wall.pending).reverse();
   }
 
   function drawNote(c, note) {
@@ -125,6 +141,23 @@ export function createNoteWall(ex, kit) {
       y += size * 1.37;
       c.fillText(line, left, y);
     });
+
+    if (note.mine || wall.mine.has(note.id)) {
+      // A blue pin on your own notes
+      c.save();
+      c.shadowColor = 'rgba(0, 0, 0, .3)';
+      c.shadowBlur = 1.2;
+      c.shadowOffsetY = 0.6;
+      c.fillStyle = BRAND;
+      c.beginPath();
+      c.arc(0, -half + 3.4, 2.5, 0, Math.PI * 2);
+      c.fill();
+      c.restore();
+      c.fillStyle = 'rgba(255, 255, 255, .55)';
+      c.beginPath();
+      c.arc(-0.8, -half + 2.6, 0.8, 0, Math.PI * 2);
+      c.fill();
+    }
   }
 
   function drawBoard() {
@@ -132,8 +165,6 @@ export function createNoteWall(ex, kit) {
     const ppcm = Math.min(pixelsPerMetre / 100, limit / width, limit / height);
     const [canvas, c] = canvasOf(Math.ceil(width * ppcm), Math.ceil(height * ppcm));
     c.scale(ppcm, ppcm);
-    c.fillStyle = BOARD;
-    c.fillRect(0, 0, width, height);
 
     setFont(c, `400 15px ${SERIF}`, -0.2);
     c.fillStyle = INK;
@@ -156,8 +187,17 @@ export function createNoteWall(ex, kit) {
     c.stroke();
     c.restore();
 
-    // Two layers' worth, oldest first, so the newest sit on top
-    const shown = wall.notes.slice(0, slots * 2).filter((note) => note !== wall.landing?.note).reverse();
+    // While someone's choosing, the area they can use shows as a faint dashed outline
+    if (wall.choosing) {
+      c.save();
+      c.strokeStyle = 'rgba(27, 169, 223, .5)';
+      c.lineWidth = 0.6;
+      c.setLineDash([2.4, 1.6]);
+      c.strokeRect(BOUNDS.x0 - NOTE / 2, BOUNDS.y0 - NOTE / 2, BOUNDS.x1 - BOUNDS.x0 + NOTE, BOUNDS.y1 - BOUNDS.y0 + NOTE);
+      c.restore();
+    }
+
+    const shown = shownNotes();
     shown.forEach((note) => {
       const { x, y, angle } = spot(note);
       c.save();
@@ -167,9 +207,10 @@ export function createNoteWall(ex, kit) {
       c.restore();
     });
 
-    if (!shown.length && wall.status !== 'loading') {
-      // An empty spot, waiting for the first note
-      const { x, y } = spot({ id: 1 });
+    if (!shown.length && !wall.choosing && wall.status !== 'loading') {
+      // A space waiting for the first note
+      const x = (BOUNDS.x0 + BOUNDS.x1) / 2;
+      const y = (BOUNDS.y0 + BOUNDS.y1) / 2;
       c.save();
       c.translate(x, y);
       c.strokeStyle = BRAND;
@@ -185,6 +226,8 @@ export function createNoteWall(ex, kit) {
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    // It's see-through, laid on the wall like the lettering, so it needs the same clean edges
+    texture.premultiplyAlpha = true;
     return texture;
   }
 
@@ -208,7 +251,8 @@ export function createNoteWall(ex, kit) {
       wall.total = list.total;
       wall.places = list.places;
       wall.more = list.more;
-      wall.me = me;
+      // Keep the thank-you showing after posting, rather than "come back tomorrow"
+      wall.me = { ...me, justPosted: Boolean(wall.me?.justPosted) };
       wall.status = 'ready';
     } catch (error) {
       console.warn('Gallery: the note wall is offline', error);
@@ -231,65 +275,119 @@ export function createNoteWall(ex, kit) {
     renderPanel();
   }
 
-  async function stick() {
+  // Ask the gallery to let the visitor choose where on the wall
+  function choose() {
     if (wall.posting || !wall.me?.canPost) return;
+    wall.problem = null;
+    if (kit.onChoose) kit.onChoose();
+  }
+
+  // Sticks the visitor's note up at a point. Resolves to the saved note, or throws.
+  async function post(point) {
     wall.posting = true;
-    renderPanel();
     try {
       const { note } = await getJson(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(wall.pick),
+        body: JSON.stringify({ ...wall.pick, ...tidy(point) }),
       });
       wall.notes.unshift(note);
       wall.total += 1;
       if (!wall.notes.slice(1).some((other) => (other.place || '') === (note.place || ''))) wall.places += 1;
       wall.me = { ...wall.me, canPost: false, justPosted: true };
-      land(note);
+      wall.mine.add(note.id);
+      saveMine(wall.mine);
+      // The note stays off the wall's picture until it's been pressed on
+      wall.pending = note;
+      return note;
     } catch (error) {
       if (error.code === 'tomorrow') wall.me = { ...wall.me, canPost: false };
       else wall.problem = error.code === 'full' ? 'The wall’s had a busy day and is full until tomorrow.' : 'That didn’t stick. Try again in a moment.';
+      throw error;
+    } finally {
+      wall.posting = false;
     }
-    wall.posting = false;
-    renderPanel();
   }
 
-  /* -------------------------------------------------------------------- A new note landing */
+  // The visitor's note before it's saved, to carry around while choosing
+  function draft() {
+    return { id: 0, m: wall.pick.m, c: wall.pick.c, place: wall.me?.place, mine: true };
+  }
 
-  // The new note is its own little picture for a moment, dropping onto the board, then joins it
-  function land(note) {
-    const [canvas, c] = canvasOf(Math.ceil(NOTE * 1.2 * 6), Math.ceil(NOTE * 1.2 * 6));
-    c.scale(6, 6);
+  // Turns the outline of the note area on and off
+  function showArea(on) {
+    wall.choosing = on;
+    refresh();
+  }
+
+  // Where to start: the clearest space, leaning towards the middle
+  function startPoint() {
+    const notes = shownNotes().map(spot);
+    let best = null;
+    for (let y = BOUNDS.y0; y <= BOUNDS.y1; y += SNAP * 4) {
+      for (let x = BOUNDS.x0; x <= BOUNDS.x1; x += SNAP * 4) {
+        const room = notes.reduce((nearest, n) => Math.min(nearest, Math.hypot(n.x - x, n.y - y)), NOTE * 3);
+        const middle = Math.hypot(x - (BOUNDS.x0 + BOUNDS.x1) / 2, y - (BOUNDS.y0 + BOUNDS.y1) / 2);
+        const score = room - middle * 0.08;
+        if (!best || score > best.score) best = { x, y, score };
+      }
+    }
+    return tidy(best);
+  }
+
+  // The point on the wall under a spot in metres from the wall's middle (y up), or null if it's
+  // well off the note area
+  function pointAt(x, y) {
+    const point = { x: (x + ex.w / 2) * 100, y: (ex.h / 2 - y) * 100 };
+    const slack = NOTE;
+    if (point.x < BOUNDS.x0 - slack || point.x > BOUNDS.x1 + slack || point.y < BOUNDS.y0 - slack || point.y > BOUNDS.y1 + slack) return null;
+    return tidy(point);
+  }
+
+  // Moves a point by a number of steps, staying in the note area
+  function nudge(point, dx, dy) {
+    return tidy({ x: point.x + dx * SNAP * 2, y: point.y + dy * SNAP * 2 });
+  }
+
+  // The top note a note at this point would mostly cover, if any
+  function covers(point) {
+    return shownNotes().reverse().find((note) => {
+      const at = spot(note);
+      return Math.abs(at.x - point.x) < NOTE * 0.6 && Math.abs(at.y - point.y) < NOTE * 0.6;
+    }) || null;
+  }
+
+  /* -------------------------------------------------------------- Putting a new note up */
+
+  // The new note as its own little picture, for the gallery to carry onto the wall
+  function noteMesh(note) {
+    const scale = 6;
+    const [canvas, c] = canvasOf(Math.ceil(NOTE * 1.2 * scale), Math.ceil(NOTE * 1.2 * scale));
+    c.scale(scale, scale);
     c.translate(NOTE * 0.6, NOTE * 0.6);
     drawNote(c, note);
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
-    const material = lift(new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0, depthWrite: false, toneMapped: false }), layer);
+    const material = lift(new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false, toneMapped: false }), layer);
     const mesh = new THREE.Mesh(planeGeometry, material);
-    mesh.renderOrder = layer;
-    const { x, y, angle } = spot(note);
-    mesh.position.set(x / 100 - ex.w / 2, ex.h / 2 - y / 100, ex.faceZ + 0.03);
-    ex.group.add(mesh);
-    wall.landing = { note, mesh, angle, t: 0 };
-    refresh();
+    mesh.scale.set(NOTE * 1.2 / 100, NOTE * 1.2 / 100, 1);
+    mesh.renderOrder = layer + 1;
+    return mesh;
   }
 
-  function update(dt) {
-    const landing = wall.landing;
-    if (!landing) return;
-    landing.t = Math.min(1, landing.t + dt / 0.55);
-    const e = 1 - (1 - landing.t) ** 3;
-    const size = (NOTE * 1.2 / 100) * (1.35 - 0.35 * e);
-    landing.mesh.scale.set(size, size, 1);
-    landing.mesh.rotation.z = -(landing.angle + (1 - e) * 0.35);
-    landing.mesh.material.opacity = Math.min(1, landing.t * 3);
-    if (landing.t === 1) {
-      wall.landing = null;
-      refresh();
-      ex.group.remove(landing.mesh);
-      landing.mesh.material.map.dispose();
-      landing.mesh.material.dispose();
-    }
+  // Where a note sits on the wall, in the world: its middle, and which way it faces
+  function pose(note) {
+    const { x, y, angle } = spot(note);
+    const position = ex.group.localToWorld(new THREE.Vector3(x / 100 - ex.w / 2, ex.h / 2 - y / 100, ex.faceZ + 0.004));
+    const quaternion = ex.group.getWorldQuaternion(new THREE.Quaternion())
+      .multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), -angle));
+    return { position, quaternion, size: NOTE / 100 };
+  }
+
+  // The note is on: it joins the wall's picture
+  function settle() {
+    wall.pending = null;
+    refresh();
   }
 
   /* ----------------------------------------------------------------------------- The panel */
@@ -298,7 +396,7 @@ export function createNoteWall(ex, kit) {
     if (wall.status === 'loading') return '<p class="body g-note-status" tabindex="-1">Finding the pins…</p>';
     if (wall.status === 'offline') return '<p class="body g-note-status" tabindex="-1">The wall isn’t taking notes just now. Come back a little later.</p>';
     const { me, pick } = wall;
-    if (!me.canPost) {
+    if (!me.canPost || me.justPosted) {
       return me.justPosted
         ? '<p class="body g-note-status" tabindex="-1"><strong>You’re on the wall.</strong> Thanks for stopping by. You can leave another tomorrow.</p>'
         : '<p class="body g-note-status" tabindex="-1">You’ve left a note today already. Come back tomorrow to leave another.</p>';
@@ -319,7 +417,7 @@ export function createNoteWall(ex, kit) {
           <fieldset class="g-note-colours"><legend class="caption-regular">Colour</legend>${colours}</fieldset>
         </div>
       </div>
-      <button class="btn btn--primary g-note-stick" type="button" ${wall.posting ? 'aria-disabled="true"' : ''}>${wall.posting ? 'Sticking…' : 'Stick it on the wall'}</button>
+      <button class="btn btn--primary g-note-stick" type="button">Choose a spot on the wall</button>
       ${wall.problem ? `<p class="caption-regular g-note-problem" role="alert">${escapeHtml(wall.problem)}</p>` : ''}`;
   }
 
@@ -328,7 +426,7 @@ export function createNoteWall(ex, kit) {
     const items = wall.notes.map((note) => `
       <li>
         <span class="g-note-dot" style="--note: ${COLOURS[note.c] || COLOURS[0]}" aria-hidden="true"></span>
-        <span>${escapeHtml(MESSAGES[note.m] || MESSAGES[0])} from ${escapeHtml(note.place || UNKNOWN_PLACE)}</span>
+        <span>${escapeHtml(MESSAGES[note.m] || MESSAGES[0])} from ${escapeHtml(note.place || UNKNOWN_PLACE)}${wall.mine.has(note.id) ? ' <span class="g-note-yours">Yours</span>' : ''}</span>
         <time datetime="${escapeHtml(note.at)}">${ago(note.at)}</time>
       </li>`).join('');
     return `
@@ -344,7 +442,7 @@ export function createNoteWall(ex, kit) {
       <p class="body">Say hello to whoever wanders through next. Pick a message and a colour, and your note says roughly where you are.</p>
       <div class="g-note-make" aria-live="polite">${makerHtml()}</div>
       <div class="g-note-all">${listHtml()}</div>
-      <p class="caption-regular g-reader-caption g-note-small">Where you are is worked out from your connection, and your IP address isn’t kept. <a class="link" href="https://db-ip.com" target="_blank" rel="noopener"><span class="link-text">IP geolocation by DB-IP</span></a></p>`;
+      <p class="caption-regular g-reader-caption g-note-small">Where you are is worked out from your connection, and your IP address isn’t kept. Your notes have a blue pin.</p>`;
   }
 
   const FOCUSABLE = ['.g-note-shuffle', '.g-note-stick', '.g-note-older'];
@@ -377,7 +475,7 @@ export function createNoteWall(ex, kit) {
         wall.pick.m = next;
         renderPanel();
       } else if (event.target.closest('.g-note-stick')) {
-        stick();
+        choose();
       } else if (event.target.closest('.g-note-older')) {
         loadOlder();
       }
@@ -390,5 +488,8 @@ export function createNoteWall(ex, kit) {
     });
   }
 
-  return { draw: drawBoard, load, update, html, bind };
+  return {
+    draw: drawBoard, load, html, bind, noteMesh, pose, settle, post, draft, showArea, startPoint, pointAt, nudge, covers,
+    get problem() { return wall.problem; },
+  };
 }
