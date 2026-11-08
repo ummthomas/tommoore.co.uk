@@ -229,6 +229,8 @@ export async function loadContent(rooms) {
     }
 
     room.exhibits = room.exhibits.filter((ex) => {
+      // The note wall fills itself from the server, not from a page
+      if (ex.kind === 'notes') return true;
       if (ex.from) Object.assign(ex, ex.from({ page, home, card }));
       // A piece whose content has gone from the page comes off the wall
       if (hasContent(ex)) {

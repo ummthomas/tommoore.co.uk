@@ -7,6 +7,7 @@
 import * as THREE from 'three';
 import { ROOMS, DOORS, ROUTE } from './content.js';
 import { loadContent } from './pages.js';
+import { createNoteWall } from './notes.js';
 
 // Plan
 const WALL = 0.3;
@@ -584,6 +585,7 @@ const colliders = [];
 const exhibits = [];
 const trackLights = [];
 const signs = [];
+const noteWalls = [];
 
 // The dashed line: a sine wave rolling along the loop, like the wave lines on the home page. It
 // settles down at each door so that it always passes through the middle of the opening.
@@ -940,6 +942,7 @@ function placeExhibit(ex, room, position, normal, wall) {
     face.scale.set(ex.w, ex.h, 1);
     face.position.z = back.position.z + depth / 2 + 0.002;
     group.add(face);
+    ex.faceZ = face.position.z;
 
     if (ex.label) {
       ex.labelLayout = layoutPanel({ w: Math.min(ex.w, 3.4), lede: ex.label, scale: 0.72 }, theme);
@@ -1048,6 +1051,12 @@ function buildExhibits() {
   ROOMS.forEach((room) => room.exhibits.forEach((ex) => {
     if (!ex.room) throw new Error(`${room.id}/${ex.id} hangs on a wall that doesn't exist: ${ex.hang}`);
     exhibits.push(ex);
+    if (ex.kind === 'notes') {
+      ex.wall = createNoteWall(ex, {
+        THREE, renderer, canvasOf, setFont, wrap, lift, revealTexture, planeGeometry, layer: LAYER.lettering, pixelsPerMetre: PIXELS_PER_METRE,
+      });
+      noteWalls.push(ex.wall);
+    }
   }));
 }
 
@@ -1105,6 +1114,13 @@ function queueRoom(room) {
   room.exhibits.forEach((ex) => {
     if (ex.kind === 'text') {
       jobs.push(() => revealTexture(ex.material, panelTexture(ex.layout, ex.bg)));
+      return;
+    }
+    if (ex.kind === 'notes') {
+      jobs.push(() => {
+        revealTexture(ex.material, ex.wall.draw());
+        ex.wall.load();
+      });
       return;
     }
     if (ex.labelLayout) jobs.push(() => revealTexture(ex.labelMaterial, panelTexture(ex.labelLayout)));
@@ -1358,6 +1374,7 @@ function interact(ex) {
     openMap();
     return;
   }
+  // The note wall opens in the reading panel too, as the place to make a note
   openReader(ex);
 }
 
@@ -1409,6 +1426,7 @@ function escapeHtml(text) {
 }
 
 function readerHtml(ex) {
+  if (ex.wall) return ex.wall.html();
   const parts = [];
   if (ex.kind === 'film' && ex.vimeo) {
     parts.push(`<div class="g-reader-film"><iframe src="https://player.vimeo.com/video/${ex.vimeo}" title="${escapeHtml(ex.title)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`);
@@ -1462,6 +1480,9 @@ function openReader(ex) {
   dom.readerCount.textContent = `${inRoom.indexOf(ex) + 1} of ${inRoom.length}`;
   dom.readerBody.innerHTML = readerHtml(ex);
   dom.readerBody.scrollTop = 0;
+  if (ex.wall) ex.wall.bind(dom.readerBody);
+  // The note wall isn't part of the tour, so it has no previous and next
+  dom.reader.querySelector('.g-reader-steps').hidden = !inRoom.includes(ex);
   if (room.href) {
     dom.readerCta.href = room.href;
     dom.readerCta.textContent = room.cta;
@@ -1828,8 +1849,8 @@ function bindInput() {
 
     if (state === 'reading') {
       if (event.code === 'Escape' || event.code === 'KeyE') closeReader();
-      else if (event.code === 'ArrowRight') stepReader(1);
-      else if (event.code === 'ArrowLeft') stepReader(-1);
+      else if (event.code === 'ArrowRight' && !reading.wall) stepReader(1);
+      else if (event.code === 'ArrowLeft' && !reading.wall) stepReader(-1);
       return;
     }
     if (state === 'map') {
@@ -1948,6 +1969,7 @@ function frame(now) {
   if (tick % 20 === 0) updateVideos();
 
   if (routeTexture && !reduceMotion) routeTexture.offset.x = -now * 0.00042;
+  noteWalls.forEach((wall) => wall.update(dt));
 
   const job = jobs.shift();
   if (job) job();
