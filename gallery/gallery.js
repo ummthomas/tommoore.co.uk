@@ -8,6 +8,7 @@ import * as THREE from 'three';
 import { ROOMS, DOORS, ROUTE } from './content.js';
 import { loadContent } from './pages.js';
 import { createNoteWall } from './notes.js';
+import { createInstallation } from './installation.js';
 
 // Plan
 const WALL = 0.3;
@@ -60,6 +61,7 @@ const dom = {
   mapRooms: $('#map-rooms'),
   stick: $('#stick'),
   placeHint: $('#place-hint'),
+  playHint: $('#play-hint'),
   veil: $('#veil'),
 };
 
@@ -587,6 +589,7 @@ const exhibits = [];
 const trackLights = [];
 const signs = [];
 const noteWalls = [];
+const installations = [];
 
 // The dashed line: a sine wave rolling along the loop, like the wave lines on the home page. It
 // settles down at each door so that it always passes through the middle of the opening.
@@ -920,8 +923,11 @@ function placeExhibit(ex, room, position, normal, wall) {
 
   // The note wall is see-through, laid straight onto the wall like lettering
   const isArt = ex.kind !== 'text' && ex.kind !== 'notes';
+  // The Transience projection lights itself: see installation.js
+  const isInstallation = ex.kind === 'installation';
+  ex.wallBounds = wall;
 
-  if (onWall) {
+  if (onWall && !isInstallation) {
     group.add(wallDecal(softTextures.pool, 0xffffff, theme.pool * (isArt ? 1 : 0.7), wall, 0, ex.h * 0.08, 0.005, ex.w * 1.75 + 1, ex.h * 1.6 + 1.2));
 
     if (isArt) {
@@ -934,7 +940,9 @@ function placeExhibit(ex, room, position, normal, wall) {
     }
   }
 
-  if (isArt) {
+  if (isInstallation) {
+    ex.faceZ = 0.013;
+  } else if (isArt) {
     const depth = onWall ? 0.05 : 0.04;
     const back = new THREE.Mesh(new THREE.BoxGeometry(ex.w + 0.05, ex.h + 0.05, depth), new THREE.MeshBasicMaterial({ color: INK, toneMapped: false }));
     back.position.z = depth / 2 + (onWall ? 0.009 : -0.02);
@@ -980,7 +988,7 @@ function placeExhibit(ex, room, position, normal, wall) {
     group.add(ex.outline);
   }
 
-  if (onWall) trackLights.push([position.x + normal.x * 1.3, room.h - 0.1, position.z + normal.z * 1.3, position.x, position.y + ex.h / 2, position.z]);
+  if (onWall && !isInstallation) trackLights.push([position.x + normal.x * 1.3, room.h - 0.1, position.z + normal.z * 1.3, position.x, position.y + ex.h / 2, position.z]);
 }
 
 // Sets a panel's lettering, shrinking it if an edit has made it too tall for its wall
@@ -1048,6 +1056,16 @@ function buildExhibits() {
     room.exhibits.filter((ex) => ex.desk).forEach((ex) => {
       addDesk(ex);
       placeExhibit(ex, room, new THREE.Vector3(ex.desk.x, ex.y, ex.desk.z - 0.1), new THREE.Vector3(0, 0, 1), false);
+    });
+
+    // The controller in front of a projection is pointed at and clicked like any other piece
+    room.exhibits.filter((ex) => ex.kind === 'installation').forEach((ex) => {
+      const install = createInstallation(ex, {
+        THREE, shell, addCollider, floorShadow, wallDecal, decal, softTextures, outlineGeometry, lift, planeGeometry, canvasOf,
+        overlay, LAYER, BRAND, reduceMotion,
+      });
+      installations.push(install);
+      room.exhibits.push(install.controller);
     });
   });
 
@@ -1127,6 +1145,7 @@ function queueRoom(room) {
       });
       return;
     }
+    if (ex.install) return;
     if (ex.labelLayout) jobs.push(() => revealTexture(ex.labelMaterial, panelTexture(ex.labelLayout)));
     jobs.push(() => loadPicture(ex.poster || ex.src).then((texture) => {
       ex.poster2d = texture;
@@ -1315,7 +1334,9 @@ function exhibitUnder(x, y) {
     const py = origin.y + direction.y * t - ex.center.y;
     const pz = origin.z + direction.z * t - ex.center.z;
     if (Math.abs(px * ex.right.x + pz * ex.right.z) > ex.w / 2 + 0.1) return;
-    if (Math.abs(py) > ex.h / 2 + 0.1) return;
+    // Something tipped back, like the controller, is measured along its own slope
+    const up = ex.up ? px * ex.up.x + py * ex.up.y + pz * ex.up.z : py;
+    if (Math.abs(up) > ex.h / 2 + 0.1) return;
     bestT = t;
     best = ex;
   });
@@ -1379,6 +1400,10 @@ function interact(ex) {
   }
   if (ex.action === 'map') {
     openMap();
+    return;
+  }
+  if (ex.action === 'play') {
+    startPlaying(ex.install);
     return;
   }
   // The note wall opens in the reading panel too, as the place to make a note
@@ -1790,6 +1815,56 @@ function updateCloseUp(p) {
   if (p.t >= PLACE.admire) finishPlacing();
 }
 
+/* ------------------------------------------------------------------- Playing the Transience controller */
+
+// Step up to the plinth: the view glides to where a visitor stood, the pointer is freed to click
+// the pads on and off, and the sound starts. Esc steps back, which turns everything off.
+let playing = null;
+let muted = false;
+
+function startPlaying(install) {
+  if (!install || state !== 'walking') return;
+  state = 'playing';
+  playing = install;
+  if (locked) document.exitPointerLock();
+  input.keys.clear();
+  setHovered(null);
+  delete dom.canvas.dataset.cursor;
+  player.vx = player.vz = 0;
+
+  const to = install.standSpot();
+  if (reduceMotion) {
+    Object.assign(player, { x: to.x, z: to.z, yaw: to.yaw, pitch: to.pitch });
+    glide = null;
+  } else {
+    glideTo(to, 0.9);
+  }
+  install.setMuted(muted);
+  install.begin();
+  dom.playHint.hidden = false;
+  dom.body.classList.add('is-playing');
+  dom.canvas.focus({ preventScroll: true });
+}
+
+function stopPlaying({ byKey = false } = {}) {
+  if (!playing) return;
+  playing.end();
+  playing = null;
+  delete dom.canvas.dataset.cursor;
+  dom.playHint.hidden = true;
+  dom.body.classList.remove('is-playing');
+  glide = null;
+  resumeWalking({ fromPanel: true, lock: !byKey });
+}
+
+function setMuted(next) {
+  muted = next;
+  const button = dom.playHint.querySelector('.g-play-mute');
+  button.setAttribute('aria-pressed', String(muted));
+  button.textContent = muted ? 'Unmute' : 'Mute';
+  if (playing) playing.setMuted(muted);
+}
+
 /* ----------------------------------------------------------------------------------------- Maps */
 
 function planSvg(labelled = false) {
@@ -2074,6 +2149,23 @@ function bindInput() {
   dom.canvas.addEventListener('pointerup', release);
   dom.canvas.addEventListener('pointercancel', release);
 
+  // Playing the controller: a click or tap turns a pad on or off
+  dom.canvas.addEventListener('pointerdown', (event) => {
+    if (state !== 'playing' || !playing) return;
+    const pad = playing.padUnder(event.clientX, event.clientY, camera);
+    playing.toggle(pad);
+    if (pad && event.pointerType === 'mouse') dom.canvas.dataset.cursor = playing.isOn(pad) ? 'Turn off' : 'Turn on';
+  });
+  dom.canvas.addEventListener('pointermove', (event) => {
+    if (state !== 'playing' || !playing || event.pointerType !== 'mouse') return;
+    const pad = playing.padUnder(event.clientX, event.clientY, camera);
+    playing.setHover(pad);
+    if (pad) dom.canvas.dataset.cursor = playing.isOn(pad) ? 'Turn off' : 'Turn on';
+    else delete dom.canvas.dataset.cursor;
+  });
+  dom.playHint.querySelector('.g-play-back').addEventListener('click', () => stopPlaying());
+  dom.playHint.querySelector('.g-play-mute').addEventListener('click', () => setMuted(!muted));
+
   // Choosing a spot for a note: point (or tap) at a spot, click to press it on
   dom.canvas.addEventListener('pointermove', (event) => {
     if (state === 'placing' && placing) movePoint(pointUnder(event.clientX, event.clientY));
@@ -2098,6 +2190,21 @@ function bindInput() {
     }
     if (state === 'map') {
       if (event.code === 'Escape' || event.code === 'KeyM') closeMap({ byKey: true });
+      return;
+    }
+    if (state === 'playing') {
+      // Let the buttons in the hint work as buttons
+      if (event.target.closest?.('.g-play-hint')) return;
+      if (event.code === 'Escape' || event.code === 'KeyE' || event.code === 'Backspace') {
+        stopPlaying({ byKey: true });
+        return;
+      }
+      if (event.code === 'KeyM' && !event.repeat) setMuted(!muted);
+      const pad = playing.padByKey(event.code);
+      if (pad) {
+        event.preventDefault();
+        if (!event.repeat) playing.toggle(pad);
+      }
       return;
     }
     if (state === 'placing') {
@@ -2228,6 +2335,7 @@ function frame(now) {
 
   if (routeTexture && !reduceMotion) routeTexture.offset.x = -now * 0.00042;
   updatePlacing(dt);
+  installations.forEach((install) => install.update(dt, install.room === currentRoom && !document.hidden));
 
   const job = jobs.shift();
   if (job) job();

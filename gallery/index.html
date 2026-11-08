@@ -45,6 +45,7 @@
     <link rel="modulepreload" href="content.js">
     <link rel="modulepreload" href="pages.js">
     <link rel="modulepreload" href="notes.js">
+    <link rel="modulepreload" href="installation.js">
     <link rel="modulepreload" href="notes-messages.js">
     <link rel="modulepreload" href="notes-config.js">
   </head>
@@ -81,6 +82,16 @@
         <span class="g-place-covers"></span>
       </p>
       <button class="btn btn--secondary g-place-back" type="button">Back</button>
+    </div>
+
+    <!-- Playing the Transience controller -->
+    <div class="g-place-hint g-play-hint" id="play-hint" role="status" hidden>
+      <p class="g-place-text">
+        <span class="g-place-mouse">Click pads on and off: music on top, films below. Or keys <kbd>1</kbd>–<kbd>6</kbd> and <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd>.</span>
+        <span class="g-place-touch">Tap the pads to turn them on and off.</span>
+      </p>
+      <button class="btn btn--secondary g-play-mute" type="button" aria-pressed="false">Mute</button>
+      <button class="btn btn--secondary g-play-back" type="button">Step back</button>
     </div>
 
     <!-- Reading panel: opens when you look closer at a piece -->

@@ -346,33 +346,55 @@ export const ROOMS = [
     bounds: [13, 33, 0, 14],
     h: 4.4,
     spawn: { at: [30.8, 7], look: [13, 9] },
-    benches: [{ x: 23, z: 9.2, along: 'x' }],
     exhibits: [
       {
-        id: 'title', hang: 'S', kind: 'text', w: 4.8, size: 'h2',
+        // The installation itself, rebuilt: a projection on the south wall and the conductive-ink
+        // controller on a plinth in front of it (see installation.js). Each film, sound channel and
+        // photo is a placeholder until it's given a `src`: the films are drawn live, the six sound
+        // channels are synthesised in time with each other, and the photos are blank prints.
+        id: 'installation', hang: 'S', kind: 'installation', w: 5.6, aspect: 16 / 9, y: 2,
+        action: 'play', cursor: 'Step up to play',
+        plinth: 4.4, // metres out from the projection
+        films: [
+          { name: 'Persona one', hue: 28 },
+          { name: 'Persona two', hue: 350 },
+          { name: 'Persona three', hue: 290 },
+        ],
+        stems: [
+          { name: 'Kick', voice: 'kick' },
+          { name: 'Hats', voice: 'hats' },
+          { name: 'Bass', voice: 'bass' },
+          { name: 'Clap', voice: 'clap' },
+          { name: 'Stab', voice: 'stab' },
+          { name: 'Pad', voice: 'pad' },
+        ],
+        photos: { cols: 4, rows: 2, srcs: [] },
+      },
+      {
+        id: 'title', hang: 'N', kind: 'text', w: 4.8, size: 'h2',
         from: ({ page }) => ({ over: page.over(), title: page.title(), lede: page.intro() }),
       },
       {
-        id: 'film', hang: 'S', kind: 'film', w: 6.8, aspect: 16 / 9, y: 2.2,
+        id: 'film', hang: 'N', kind: 'film', w: 6.8, aspect: 16 / 9, y: 2.2,
         src: '../resources/video/transience-wide.mp4', poster: '../resources/video/transience-wide.jpg',
         from: ({ page }) => ({ title: page.title(), lede: page.caption('introduction'), vimeo: page.vimeo('introduction') }),
       },
-      { id: 'brief', hang: 'S', kind: 'text', w: 4.8, size: 'h3', from: briefPanel('introduction') },
-      { id: 'idea', hang: 'N', kind: 'text', w: 4.2, from: ({ page }) => page.quote('introduction') },
+      { id: 'brief', hang: 'N', kind: 'text', w: 4.8, size: 'h3', from: briefPanel('introduction') },
+      { id: 'idea', hang: 'W.1', kind: 'text', w: 4.2, from: ({ page }) => page.quote('introduction') },
       {
-        id: 'hero', hang: 'N', kind: 'image', w: 5.6, aspect: 16 / 9, y: 2.05,
+        id: 'outcome', hang: 'W.0', kind: 'text', w: 4.3, size: 'h3',
+        from: ({ page }) => ({ over: page.heading('outcome'), stats: page.results('outcome'), body: page.paras('outcome') }),
+      },
+      {
+        id: 'hero', hang: 'E.0', kind: 'image', w: 4.6, aspect: 16 / 9, y: 2.05,
         from: ({ page }) => ({ ...page.hero(), title: page.heading('development'), ...page.story('development') }),
       },
       {
-        id: 'deck', hang: 'N', kind: 'image', w: 3.4, aspect: 3456 / 1940, y: 1.95,
+        id: 'deck', hang: 'E.1', kind: 'image', w: 3.4, aspect: 3456 / 1940, y: 1.95,
         from: ({ page }) => {
           const asset = page.asset('development');
           return { ...asset, title: asset.label, lede: asset.assetTitle };
         },
-      },
-      {
-        id: 'outcome', hang: 'W.0', kind: 'text', w: 4.3, size: 'h3',
-        from: ({ page }) => ({ over: page.heading('outcome'), stats: page.results('outcome'), body: page.paras('outcome') }),
       },
     ],
   },
