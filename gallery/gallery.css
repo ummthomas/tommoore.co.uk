@@ -1206,3 +1206,44 @@ kbd {
   opacity: 0;
   pointer-events: none;
 }
+
+/* Playing the Transience controller */
+.g-play-hint {
+  max-width: min(760px, calc(100vw - 32px));
+  gap: 10px;
+}
+
+.g-play-hint .g-place-text {
+  margin-right: 6px;
+}
+
+.g-play-hint kbd {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  margin-right: 1px;
+  font-size: 12px;
+}
+
+.is-playing .g-hint,
+.is-playing .g-room,
+.is-playing .g-mini,
+.is-playing .g-reticle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* On a phone the board fills the bottom of the screen, so the hint goes up top */
+@media (max-width: 600px) {
+  .g-play-hint {
+    top: 16px;
+    bottom: auto;
+    width: calc(100vw - 32px);
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+
+  .g-play-hint .g-place-text {
+    flex-basis: 100%;
+  }
+}
