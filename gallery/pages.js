@@ -233,6 +233,8 @@ export async function loadContent(rooms) {
       if (ex.kind === 'notes') return true;
       // So does the Transience installation, from installation.js
       if (ex.kind === 'installation') return true;
+      // And the red button has nothing to say for itself
+      if (ex.kind === 'button') return true;
       if (ex.from) Object.assign(ex, ex.from({ page, home, card }));
       // A piece whose content has gone from the page comes off the wall
       if (hasContent(ex)) {

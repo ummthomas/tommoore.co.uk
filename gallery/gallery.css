@@ -1247,3 +1247,462 @@ kbd {
     flex-basis: 100%;
   }
 }
+
+/* ---------------------------------------------------------------------------------------------
+   Closing time: the game behind the red button in the Garments room (see zombies.js)
+   --------------------------------------------------------------------------------------------- */
+
+.is-zombies .g-hud,
+.is-zombies .g-reticle,
+.is-zombies .g-vignette {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.is-zombies:not(.is-zombies-menu) .tm-cursor {
+  opacity: 0 !important;
+}
+
+.is-zombies #world {
+  cursor: crosshair;
+}
+
+.z-hud {
+  position: fixed;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  color: #FFF;
+  font-family: Inter, "Helvetica Neue", sans-serif;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .55);
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(40, 0, 0, .55) 100%);
+}
+
+.z-hud[hidden],
+.z-screen[hidden] {
+  display: none;
+}
+
+.z-hud p {
+  margin: 0;
+}
+
+.z-label {
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .7);
+}
+
+.z-top {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  font-size: 15px;
+}
+
+.z-wave b {
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.z-left {
+  color: rgba(255, 255, 255, .75);
+}
+
+.z-score {
+  margin-left: auto !important;
+}
+
+.z-score b {
+  font-size: 26px;
+  font-weight: 500;
+}
+
+/* Crosshair: four short dashes, like the route on the floor */
+.z-cross {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.z-cross span {
+  position: absolute;
+  background: #FFF;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+}
+
+.z-cross span:nth-child(1),
+.z-cross span:nth-child(2) {
+  top: -1px;
+  width: 9px;
+  height: 2px;
+}
+
+.z-cross span:nth-child(1) { left: -15px; }
+.z-cross span:nth-child(2) { left: 6px; }
+
+.z-cross span:nth-child(3),
+.z-cross span:nth-child(4) {
+  left: -1px;
+  width: 2px;
+  height: 9px;
+}
+
+.z-cross span:nth-child(3) { top: -15px; }
+.z-cross span:nth-child(4) { top: 6px; }
+
+.z-hitmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  opacity: 0;
+  background:
+    linear-gradient(45deg, transparent 46%, #FFF 46%, #FFF 54%, transparent 54%) center / 100% 100%,
+    linear-gradient(-45deg, transparent 46%, #FFF 46%, #FFF 54%, transparent 54%) center / 100% 100%;
+  -webkit-mask: radial-gradient(circle, transparent 5px, #000 6px);
+  mask: radial-gradient(circle, transparent 5px, #000 6px);
+}
+
+.z-hitmark.is-on {
+  animation: z-hit .22s ease-out;
+}
+
+.z-hitmark.is-kill {
+  filter: drop-shadow(0 0 0 #FF3B2F) sepia(1) saturate(9) hue-rotate(-30deg);
+}
+
+@keyframes z-hit {
+  from { opacity: 1; transform: scale(.8); }
+  to { opacity: 0; transform: scale(1.15); }
+}
+
+.z-banner {
+  position: absolute;
+  top: 26%;
+  left: 50%;
+  width: min(640px, calc(100vw - 32px));
+  text-align: center;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+
+.z-banner.is-on {
+  opacity: 1;
+  transition-duration: .15s;
+}
+
+.z-banner-over {
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #FF6A55;
+}
+
+.z-banner-title {
+  margin: 8px 0 6px;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: clamp(34px, 6vw, 64px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: #FFF;
+}
+
+.z-banner-sub {
+  font-size: 15px;
+  color: rgba(255, 255, 255, .8);
+}
+
+.z-health {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.z-health .z-label {
+  grid-column: 1 / -1;
+}
+
+.z-bar {
+  width: min(240px, 40vw);
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .18);
+  overflow: hidden;
+}
+
+.z-bar span {
+  display: block;
+  height: 100%;
+  background: #FFF;
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+
+.z-health b {
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.z-health.is-low .z-bar span {
+  background: #FF3B2F;
+}
+
+.z-health.is-low b {
+  color: #FF6A55;
+}
+
+/* "+35 health" and the like, popping up over the bar */
+.z-health::after {
+  content: attr(data-toast);
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  font-size: 15px;
+  font-weight: 500;
+  color: #9BE38E;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.z-health.has-toast::after {
+  opacity: 1;
+  transform: none;
+}
+
+.z-weapon {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  text-align: right;
+}
+
+.z-ammo {
+  font-size: 40px;
+  line-height: 1.1;
+}
+
+.z-ammo b {
+  font-weight: 500;
+}
+
+.z-ammo span {
+  margin-left: 6px;
+  font-size: 18px;
+  color: rgba(255, 255, 255, .6);
+}
+
+.z-ammo.is-empty b {
+  color: #FF6A55;
+}
+
+.z-slots {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px !important;
+  font-size: 12px;
+  color: rgba(255, 255, 255, .5);
+}
+
+.z-slots span.is-on {
+  color: #FFF;
+}
+
+.z-slots kbd {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  margin-right: 5px;
+  font-size: 11px;
+  border-color: rgba(255, 255, 255, .3);
+  background: transparent;
+  color: inherit;
+  text-shadow: none;
+}
+
+.z-mute {
+  font-size: 12px;
+  color: rgba(255, 255, 255, .6);
+}
+
+.z-hurt {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at center, rgba(160, 0, 0, 0) 35%, rgba(170, 0, 0, .75) 100%);
+}
+
+/* Touch: a big fire button under the right thumb */
+.z-touch {
+  display: none;
+}
+
+.is-touch-game .z-touch {
+  position: absolute;
+  right: 20px;
+  bottom: 120px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.is-touch-game .z-weapon .z-slots {
+  display: none;
+}
+
+.z-touch-btn {
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(255, 255, 255, .5);
+  border-radius: 50%;
+  background: rgba(20, 0, 0, .35);
+  color: #FFF;
+  font: 500 12px Inter, sans-serif;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.z-touch-fire {
+  width: 84px;
+  height: 84px;
+  border-color: #FF3B2F;
+  background: rgba(210, 30, 30, .45);
+  font-size: 14px;
+}
+
+/* Pause and game over */
+.z-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(14, 3, 3, .72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: g-arrive .3s ease;
+}
+
+.z-card {
+  width: min(520px, 100%);
+  padding: 32px;
+  border-radius: var(--radius);
+  background: #1E1E1E;
+  color: #FFF;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+}
+
+.z-card .overline {
+  color: #FF6A55;
+}
+
+.z-card .title {
+  margin: 8px 0 12px;
+  font-size: clamp(30px, 5vw, 44px);
+  color: #FFF;
+}
+
+.z-card .body {
+  color: rgba(255, 255, 255, .78);
+}
+
+.z-stats {
+  display: flex;
+  gap: 32px;
+  margin: 20px 0 28px;
+  padding: 16px 0 0;
+  border-top: 1px dashed rgba(255, 255, 255, .22);
+}
+
+.z-stats dt {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .6);
+}
+
+.z-stats dd {
+  margin: 4px 0 0;
+  font-size: 28px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.z-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* The site's buttons, turned inside out for the dark card */
+.z-card .btn.btn--primary,
+.z-card .btn.btn--primary:focus-visible {
+  border-color: #D21E1E;
+  background: #D21E1E;
+  color: #FFF;
+}
+
+.z-card .btn.btn--primary:hover:not(:disabled) {
+  border-color: #FF3B2F;
+  background: #FF3B2F;
+}
+
+.z-card .btn.btn--secondary,
+.z-card .btn.btn--secondary:focus-visible {
+  border-color: rgba(255, 255, 255, .4);
+  color: #FFF;
+}
+
+.z-card .btn.btn--secondary:hover:not(:disabled) {
+  border-color: #FFF;
+  background: #FFF;
+  color: #1E1E1E;
+}
+
+@media (max-width: 600px) {
+  .z-top {
+    top: 14px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .z-health {
+    left: 16px;
+    bottom: 16px;
+  }
+
+  .z-weapon {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .z-card {
+    padding: 24px;
+  }
+}
