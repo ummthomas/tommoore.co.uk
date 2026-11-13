@@ -9,6 +9,7 @@ import { ROOMS, DOORS, ROUTE } from './content.js';
 import { loadContent } from './pages.js';
 import { createNoteWall } from './notes.js';
 import { createInstallation } from './installation.js';
+import { createZombieMode } from './zombies.js';
 
 // Plan
 const WALL = 0.3;
@@ -184,28 +185,46 @@ class Shell {
 }
 
 // Walls fall off gently towards the floor and ceiling, the way they do in a lit room
+// uDread and uFlicker are the emergency lighting for the game behind the red button (zombies.js)
+const DREAD_GLSL = `
+  uniform float uDread;
+  uniform float uFlicker;
+  uniform vec3 uFog;
+  vec3 dread(vec3 c, float dist) {
+    if (uDread <= 0.0) return c;
+    vec3 red = c * vec3(0.22, 0.035, 0.03) * uFlicker;
+    red = mix(red, uFog, smoothstep(2.5, 26.0, dist));
+    return mix(c, red, uDread);
+  }`;
+const dreadUniforms = () => ({ uDread: { value: 0 }, uFlicker: { value: 1 }, uFog: { value: new THREE.Color(0x160505) } });
+
 const shellMaterial = new THREE.ShaderMaterial({
   vertexColors: true,
   side: THREE.DoubleSide,
+  uniforms: dreadUniforms(),
   vertexShader: `
     attribute float aTop;
     varying vec3 vColor;
     varying float vY;
     varying float vTop;
+    varying float vDist;
     void main() {
       vColor = color;
       vTop = aTop;
       vec4 world = modelMatrix * vec4(position, 1.0);
       vY = abs(world.y);
+      vDist = distance(cameraPosition, world.xyz);
       gl_Position = projectionMatrix * viewMatrix * world;
     }`,
   fragmentShader: `
     varying vec3 vColor;
     varying float vY;
     varying float vTop;
+    varying float vDist;
+    ${DREAD_GLSL}
     void main() {
       float shade = 1.0 - 0.28 * exp(-vY / 0.28) - 0.16 * exp(-(vTop - vY) / 0.55) + 0.05 * smoothstep(0.0, 3.0, vY);
-      gl_FragColor = vec4(vColor * shade, 1.0);
+      gl_FragColor = vec4(dread(vColor * shade, vDist), 1.0);
       #include <colorspace_fragment>
     }`,
 });
@@ -215,7 +234,7 @@ const floorMaterial = new THREE.ShaderMaterial({
   transparent: true,
   vertexColors: true,
   side: THREE.DoubleSide,
-  uniforms: { uRefl: { value: 1 } },
+  uniforms: { uRefl: { value: 1 }, ...dreadUniforms() },
   vertexShader: `
     attribute float aRefl;
     varying vec3 vColor;
@@ -233,13 +252,14 @@ const floorMaterial = new THREE.ShaderMaterial({
     varying vec3 vColor;
     varying vec3 vView;
     varying float vRefl;
+    ${DREAD_GLSL}
     void main() {
       // Clamped: rounding can push this a hair past 1, and pow() of a negative is undefined on
       // many phone GPUs, which shows up as black speckles on the floor
       float facing = clamp(abs(normalize(vView).y), 0.0, 1.0);
       float fresnel = pow(1.0 - facing, 2.5);
       float mirror = uRefl * vRefl * (0.28 + 0.72 * fresnel);
-      gl_FragColor = vec4(vColor, 1.0 - mirror);
+      gl_FragColor = vec4(dread(vColor, length(vView)), 1.0 - mirror);
       #include <colorspace_fragment>
     }`,
 });
@@ -927,6 +947,17 @@ function placeExhibit(ex, room, position, normal, wall) {
   const isInstallation = ex.kind === 'installation';
   ex.wallBounds = wall;
 
+  // The red button: see zombies.js
+  if (ex.kind === 'button') {
+    zombies.buildButton(ex, group, theme, wall);
+    ex.faceZ = 0.012;
+    ex.outline = new THREE.Mesh(outlineGeometry(ex.w, ex.h, 0.014), new THREE.MeshBasicMaterial({ color: BRAND, toneMapped: false }));
+    ex.outline.position.z = 0.02;
+    ex.outline.visible = false;
+    group.add(ex.outline);
+    return;
+  }
+
   if (onWall && !isInstallation) {
     group.add(wallDecal(softTextures.pool, 0xffffff, theme.pool * (isArt ? 1 : 0.7), wall, 0, ex.h * 0.08, 0.005, ex.w * 1.75 + 1, ex.h * 1.6 + 1.2));
 
@@ -1145,7 +1176,7 @@ function queueRoom(room) {
       });
       return;
     }
-    if (ex.install) return;
+    if (ex.install || ex.kind === 'button') return;
     if (ex.labelLayout) jobs.push(() => revealTexture(ex.labelMaterial, panelTexture(ex.labelLayout)));
     jobs.push(() => loadPicture(ex.poster || ex.src).then((texture) => {
       ex.poster2d = texture;
@@ -1165,7 +1196,11 @@ const player = { x: 0, z: 0, y: 0, vx: 0, vz: 0, vy: 0, yaw: 0, pitch: 0, stride
 const input = { keys: new Set(), stickX: 0, stickY: 0 };
 let currentRoom = null;
 let hovered = null;
-let state = 'loading'; // loading, intro, walking, paused, reading, map
+let state = 'loading'; // loading, intro, walking, paused, reading, map, placing, playing, zombies
+let zombies = null;
+
+// Free to move about: walking the gallery, or fighting for your life in it
+const roaming = () => state === 'walking' || (state === 'zombies' && zombies.live());
 let locked = false;
 let everLocked = false;
 let dragMode = isTouch;
@@ -1404,6 +1439,10 @@ function interact(ex) {
   }
   if (ex.action === 'play') {
     startPlaying(ex.install);
+    return;
+  }
+  if (ex.action === 'zombies') {
+    startZombies();
     return;
   }
   // The note wall opens in the reading panel too, as the place to make a note
@@ -1865,6 +1904,23 @@ function setMuted(next) {
   if (playing) playing.setMuted(muted);
 }
 
+/* ------------------------------------------------------------------------------ Closing time */
+
+// You were told not to press it
+function startZombies() {
+  if (state !== 'walking') return;
+  state = 'zombies';
+  setHovered(null);
+  delete dom.canvas.dataset.cursor;
+  input.keys.clear();
+  zombies.start();
+}
+
+function endZombies() {
+  state = 'walking';
+  resumeWalking({ fromPanel: true });
+}
+
 /* ----------------------------------------------------------------------------------------- Maps */
 
 function planSvg(labelled = false) {
@@ -2065,6 +2121,8 @@ function bindInput() {
       keepWalkingUnlocked = false;
     } else if (state === 'walking') {
       pause();
+    } else if (state === 'zombies') {
+      zombies.onUnlock();
     }
   });
   document.addEventListener('pointerlockerror', lockFailed);
@@ -2075,15 +2133,28 @@ function bindInput() {
   });
 
   document.addEventListener('mousemove', (event) => {
-    if (!locked || state !== 'walking') return;
+    if (!locked || !roaming()) return;
     // Some browsers occasionally report a huge jump when the pointer is captured
     if (Math.abs(event.movementX) > 300 || Math.abs(event.movementY) > 300) return;
     look(event.movementX, event.movementY, 0.0021);
   });
 
   dom.canvas.addEventListener('mousedown', (event) => {
-    if (locked && event.button === 0) interact(hovered);
+    if (event.button !== 0) return;
+    if (state === 'zombies') {
+      // Without pointer lock, a click shoots where the crosshair is
+      if (locked || dragMode) zombies.trigger(true);
+      else requestLock();
+      return;
+    }
+    if (locked) interact(hovered);
   });
+  window.addEventListener('mouseup', (event) => {
+    if (event.button === 0 && zombies) zombies.trigger(false);
+  });
+  window.addEventListener('wheel', (event) => {
+    if (state === 'zombies' && zombies.live() && Math.abs(event.deltaY) > 4) zombies.cycleWeapon(Math.sign(event.deltaY));
+  }, { passive: true });
 
   // Dragging to look, for touch screens and anywhere pointer lock isn't available
   const pointers = new Map();
@@ -2091,7 +2162,7 @@ function bindInput() {
   let stickOrigin = null;
 
   dom.canvas.addEventListener('pointerdown', (event) => {
-    if (locked || state !== 'walking') return;
+    if (locked || !roaming()) return;
     if (event.pointerType === 'touch' && event.clientX < window.innerWidth * 0.4 && stickId === null) {
       stickId = event.pointerId;
       stickOrigin = { x: event.clientX, y: event.clientY };
@@ -2222,6 +2293,16 @@ function bindInput() {
       }
       return;
     }
+    if (state === 'zombies') {
+      // Let the buttons on the pause and game-over screens work as buttons
+      if (event.target.closest?.('.z-screen') || !zombies.live()) return;
+      if (event.code === 'Space' || event.code.startsWith('Arrow')) event.preventDefault();
+      if (event.repeat) return;
+      if (zombies.key(event.code)) return;
+      if (event.code === 'Escape' && !locked) zombies.pause();
+      else input.keys.add(event.code);
+      return;
+    }
     if (state !== 'walking') return;
 
     if (event.code === 'Space' || event.code.startsWith('Arrow')) event.preventDefault();
@@ -2323,12 +2404,13 @@ function frame(now) {
   last = now;
   tick++;
 
-  if (state === 'walking') updateMovement(dt);
+  if (roaming()) updateMovement(dt);
   updateGlide(dt);
 
   if (state === 'intro' && !reduceMotion) updateTour(dt);
 
   applyCamera();
+  zombies.update(dt);
   if (tick % 3 === 0) updateHover();
   if (tick % 2 === 0) updateMarkers();
   if (tick % 20 === 0) updateVideos();
@@ -2343,7 +2425,8 @@ function frame(now) {
   if (!jobs.length) dom.body.classList.add('is-revealed');
 
   renderer.render(scene, camera);
-  if (dt > 0 && state === 'walking') adapt(dt);
+  zombies.renderOverlay();
+  if (dt > 0 && roaming()) adapt(dt);
 }
 
 /* ------------------------------------------------------------------------------------- Start */
@@ -2380,6 +2463,13 @@ async function boot() {
   }
 
   scene.add(world, overlay);
+  zombies = createZombieMode({
+    THREE, scene, camera, renderer, player, colliders, ROOMS, DOORS, roomById, collide,
+    shellMaterial, floorMaterial, canvasOf, wallDecal, softTextures, reduceMotion, isTouch,
+    requestLock,
+    exitLock: () => { if (locked) document.exitPointerLock(); },
+    onQuit: endZombies,
+  });
   buildExhibits();
   buildShell();
   buildSigns();

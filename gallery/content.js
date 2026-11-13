@@ -334,6 +334,12 @@ export const ROOMS = [
         id: 'outcome', hang: 'N.0', kind: 'text', w: 4, size: 'h3',
         from: ({ page }) => ({ over: page.heading('outcome'), stats: page.results('outcome'), body: page.paras('outcome') }),
       },
+      {
+        // Low on the wall beside the door you came in by, so it's behind you as you enter.
+        // Whatever you do, don't press it (see zombies.js).
+        id: 'button', hang: 'N.1', kind: 'button', w: 0.3, aspect: 0.3 / 0.42, y: 0.95,
+        action: 'zombies', cursor: 'Do not press',
+      },
     ],
   },
 
